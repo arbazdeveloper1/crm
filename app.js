@@ -29,9 +29,6 @@ app.use('/auth', authRoutes);  // Correct route prefix for auth
 app.use('/staff', staffRoutes); // Correct route prefix for staff
 // app.use('/card', cardRoutes);  // Use cardRoutes under '/card' prefix
 
-
-console.log("test")
-
 // Add a 404 route handler for undefined routes
 app.use((req, res, next) => {
     res.status(404).send('Sorry, page not found');
