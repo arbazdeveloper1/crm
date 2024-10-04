@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Register</title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="/assets/css/app.min.css">
+  <link rel="stylesheet" href="/assets/bundles/bootstrap-social/bootstrap-social.css">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
+</head>
+<body>
+  <div id="app">
+    <section class="section">
+      <div class="container mt-5">
+        <div class="row">
+          <!-- Login Form -->
+          <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h4>Login</h4>
+              </div>
+              <div class="card-body">
+                <form id="login-form" method="POST" action="/auth/login" class="needs-validation" novalidate>
+                  <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input id="login-username" type="text" class="form-control" name="username" required autofocus>
+                    <div class="invalid-feedback">
+                      Please fill in your username
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input id="login-password" type="password" class="form-control" name="password" required>
+                    <div class="invalid-feedback">
+                      Please fill in your password
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                      Login
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- General JS Scripts -->
+  <script src="/assets/js/app.min.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="/assets/js/scripts.js"></script>
+  <!-- Custom JS File -->
+  <script src="/assets/js/custom.js"></script>
+
+  <!-- Client-side form submission handling -->
+<!-- <script>
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault(); // Prevent the default form submission
+
+  const username = document.getElementById('login-username').value;
+  const password = document.getElementById('login-password').value;
+
+  try {
+    const response = await fetch('/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      alert('Login failed: ' + error);
+    } else {
+      const result = await response.json();
+      alert('Login successful: ' + result.message);
+
+      // Store the token in localStorage
+      localStorage.setItem('token', result.token);
+
+      // Redirect to the URL provided by the server
+      window.location.href = result.redirectUrl;
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    alert('An error occurred during login.');
+  }
+});
+
+</script> -->
+</body>
+</html>

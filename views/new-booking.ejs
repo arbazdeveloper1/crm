@@ -1,0 +1,375 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+        <title>New Booking | (MFS TRAVELS)</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            body {
+                background-image: url('/assets/img/banner/formbg.png'); /* Change this to the path of your PNG image */
+                background-size: cover; /* Cover the entire viewport */
+                background-repeat: no-repeat; /* Prevent tiling */
+                background-position: center; /* Center the image */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh; /* Full viewport height */
+                margin: 0; /* Remove default margin */
+            }
+
+            .step-indicator {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+            .step-indicator div {
+                width: 100%;
+                text-align: center;
+                position: relative;
+                padding: 10px;
+                border: 1px solid transparent;
+                border-radius: 5px; /* Rounded corners */
+                cursor: pointer; /* Change cursor to pointer */
+            }
+            .step-indicator .active {
+                background-color: #6777ef; /* Green background for active step */
+                color: white; /* White text for active step */
+            }
+            .step-indicator .completed {
+                color: green; /* Green text for completed steps */
+                font-weight: bold; /* Bold text for completed steps */
+            }
+            .step {
+                display: none;
+            }
+            .step.active {
+                display: block;
+            }
+
+            .box-control {
+                box-shadow: 4px 4px 48px 22px rgba(0,0,0,0.1);
+                background: #f8f9fa;
+                border-radius: 15px;
+            }
+            .next {
+                background: #6777ef;
+                color: white;
+                padding: 5px 25px 5px 25px;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container mt-5 " style="width: 50%;">
+        <div class="col-12 p-3 box-control" >
+            <h5 class="justify-content-center d-flex text-danger">New Booking <p class="text-dark">(Email draft)</p></h5>
+            <div class="step-indicator" style="background-color: antiquewhite;">
+                <div id="step1-indicator" class="active">Price Description</div>
+                <div id="step2-indicator">Card Information</div>
+                <div id="step3-indicator">Header</div>
+                <div id="step4-indicator">Passenger</div>
+                <div id="step5-indicator">Itinerary</div>
+            </div>
+
+            <form id="multiStepForm">   
+                <!-- Step 1 -->
+                <div class="step active" id="step1">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Total Amount Quoted</label>
+                                <input type="number" maxlength="7" class="form-control"  id="total-quoted" required placeholder="Enter the amount">
+                            </div>
+                            <div class="form-group">
+                                <label>MCO Description</label>
+                                <select class="form-control" required>
+                                    <option value="" disabled selected>Choose an option</option>
+                                    <option value="my_fly_support">My Fly Support</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Airline Name</label>
+                                <div id="airline-names">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control airline-name" placeholder="Airline Name" required>
+                                        <input type="number" maxlength="7" class="form-control airline-cost" placeholder="Cost" required>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-link " id="add-airline">Add Airline</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Type of Charge</label>
+                                <select class="form-control" required>
+                                    <option value="" disabled selected>Choose an option</option>
+                                    <option value="single">Single</option>
+                                    <option value="split">Split</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>MCO (auto calculated)</label>
+                                <input type="text" class="form-control" id="mco-calculated" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn next">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step" id="step2">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input type="number" class="form-control"  oninput="detectCardType()" id="cardNumber" maxlength="16" required>
+                                <p id="cardTypeOutput"></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Card Type</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Expiration (MM/YY)</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>GDS/PNR (Optional)</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>ARL/Confirmation</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Billing Phone</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
+                        <button type="button" class="btn next">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step" id="step3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Subject Line</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label>Card Holder Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Select TFN</label>
+                                <select class="form-control" required>
+                                    <option value="" disabled selected>Choose an option</option>
+                                    <option value="offline">Offline</option>
+                                    <option value="online">Online</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary prev">Previous</button>
+                        <button type="button" class="btn next">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step" id="step4">
+                    <h3>Passenger Details</h3>
+                    <div class="form-group">
+                        <label>Passenger Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Seat Preference</label>
+                        <select class="form-control" required>
+                            <option value="" disabled selected>Choose an option</option>
+                            <option value="aisle">Aisle</option>
+                            <option value="window">Window</option>
+                            <option value="middle">Middle</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary prev">Previous</button>
+                        <button type="button" class="btn next">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="step" id="step5">
+                    <h3>Itinerary Details</h3>
+                    <div class="form-group">
+                        <label>Flight Number</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Departure City</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Arrival City</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary prev">Previous</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const totalQuotedInput = document.getElementById('total-quoted');
+            const airlineCostsContainer = document.getElementById('airline-costs');
+            const mcoCalculatedInput = document.getElementById('mco-calculated');
+    
+            // Add Airline and Cost Fields
+            document.getElementById('add-airline').addEventListener('click', function () {
+                const airlineNameInput = document.createElement('div');
+                airlineNameInput.className = 'input-group mb-2';
+                airlineNameInput.innerHTML = `
+                    <input type="text" class="form-control airline-name" placeholder="Airline Name" required>
+                    <input type="number" class="form-control airline-cost" placeholder="Cost" required>
+                    <span class="remove-airline btn btn-danger ml-1 btn-sm px-3 fs-2x">&times;</span>`;
+                
+                document.getElementById('airline-names').appendChild(airlineNameInput);
+            });
+    
+            // Remove Airline and Cost Fields
+            document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-airline')) {
+                    e.target.parentNode.remove();
+                    calculateMCO();
+                }
+            });
+    
+            // MCO Calculation
+            function calculateMCO() {
+                let totalCost = 0;
+                document.querySelectorAll('.airline-cost').forEach(input => {
+                    totalCost += parseFloat(input.value) || 0;
+                });
+    
+                const totalQuoted = parseFloat(totalQuotedInput.value) || 0;
+                const mcoValue = totalQuoted - totalCost;
+                mcoCalculatedInput.value = mcoValue.toFixed(2);
+            }
+    
+            // Recalculate MCO when total quoted or airline costs change
+            totalQuotedInput.addEventListener('input', calculateMCO);
+            document.addEventListener('input', function (e) {
+                if (e.target.classList.contains('airline-cost')) {
+                    calculateMCO();
+                }
+            });
+    
+            // Form navigation
+            const steps = document.querySelectorAll('.step');
+            const nextButtons = document.querySelectorAll('.next');
+            const prevButtons = document.querySelectorAll('.prev');
+            const stepIndicators = document.querySelectorAll('.step-indicator div');
+    
+            let currentStep = 0;
+    
+            // Validate required fields before going to the next step
+            function validateFields(step) {
+                const inputs = steps[step].querySelectorAll('input[required], select[required]');
+                return Array.from(inputs).every(input => input.value.trim() !== '');
+            }
+    
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (validateFields(currentStep)) {
+                        if (currentStep < steps.length - 1) {
+                            steps[currentStep].classList.remove('active');
+                            stepIndicators[currentStep].classList.remove('active');
+                            stepIndicators[currentStep].classList.add('completed');
+                            currentStep++;
+                            steps[currentStep].classList.add('active');
+                            stepIndicators[currentStep].classList.add('active');
+                        }
+                    } else {
+                        alert('Please fill all required fields before proceeding.');
+                    }
+                });
+            });
+    
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (currentStep > 0) {
+                        steps[currentStep].classList.remove('active');
+                        stepIndicators[currentStep].classList.remove('active');
+                        stepIndicators[currentStep - 1].classList.remove('completed');
+                        currentStep--;
+                        steps[currentStep].classList.add('active');
+                        stepIndicators[currentStep].classList.add('active');
+                    }
+                });
+            });
+    
+            // Form submission
+            const form = document.getElementById('multiStepForm');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                alert('Form submitted successfully!');
+            });
+        });
+
+    </script>
+
+<script>
+    const cardNumberInput = document.getElementById('cardNumber');
+    const cardTypeOutput = document.getElementById('cardTypeOutput');
+    
+    function detectCardType() {
+        const cardNumber = cardNumberInput.value;
+        const cardValidation = cardValidator.number(cardNumber);
+        
+        if (cardValidation.card) {
+            cardTypeOutput.textContent = cardValidation.card.type;
+        } else {
+            cardTypeOutput.textContent = 'Unknown';
+        }
+    }
+
+    // You can also add expiration date and CVV validation similarly
+</script>
+<script src="https://cdn.jsdelivr.net/npm/card-validator@8/dist/card-validator.min.js"></script>
+
+    
+    </body>
+    </html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title> Admin Dashboard </title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="assets/css/app.min.css">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+      <!-- Header and Sidebar -->
+      <%- include('./common/Header.ejs') %>
+      
+      
+        <%- include('./common/AdminSidebar.ejs') %>
+      
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="row ">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pr-0 pt-3">
+                        <div class="card-content">
+                          <form id="addStaffForm">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-md-4 form-group">
+                                  <label for="full_name">Full Name :</label>
+                                  <input type="text" id="full_name" class="form-control" name="full_name" placeholder="Enter Agent Alias Name" required>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                  <label for="username">Username :</label>
+                                  <input type="text" id="username" class="form-control" name="username" placeholder="Enter Agent Username" required>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                  <label for="department">Choose Department</label>
+                                  <select name="department" id="department" class="form-control" required>
+                                    <option value="" disabled selected>Choose department</option>
+                                    <option value="PPC">PPC</option>
+                                    <option value="META">META</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-4 form-group">
+                                  <label for="extn">Agent TFN/Extn :</label>
+                                  <input type="text" id="extn" class="form-control" name="extn" placeholder="Enter Agent TFN/Extn">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                  <label for="shift_time">Shift Time :</label>
+                                  <input type="text" id="shift_time" class="form-control" name="shift_time" placeholder="Enter Shift Time">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                  <label for="allowed_ip">Allowed IP :</label>
+                                  <input type="text" id="allowed_ip" class="form-control" name="allowed_ip" placeholder="Enter Allowed IP">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-4 form-group">
+                                  <label for="role">Choose User Role :</label>
+                                  <select name="role" id="userRole" class="form-control" required>
+                                    <option value="" disabled selected>Choose role</option>
+                                    <option value="Agent">Agent</option>
+                                    <option value="HOD">HOD</option>
+                                    <option value="Admin">Admin</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                  <label for="allowed_leaves">Allowed Leaves :</label>
+                                  <input type="text" id="allowed_leaves" class="form-control" name="allowed_leaves" placeholder="Enter Allowed Leaves">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                  <label for="email">Email :</label>
+                                  <input type="email" id="email" class="form-control" name="email" placeholder="Enter Email" required>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-8 form-group">
+                                  <label for="password">Password :</label>
+                                  <div class="input-group">
+                                    <input type="password" id="password" class="form-control" name="password" placeholder="Enter Password" required>
+                                    <div class="input-group-text">
+                                      <i class="fas fa-lock"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                  <button type="submit" class="btn btn-primary form-control" style="margin-top: 28px !important;">Add Staff</button>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function() {
+      $('#addStaffForm').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        $.ajax({
+          url: '/add_staff',
+          type: 'POST',
+          data: $(this).serialize(), // Serialize the form data
+          success: function(response) {
+            if (response.success) {
+              alert(response.message);
+              window.location.href = response.redirectUrl; // Redirect on success
+            } else {
+              alert(response.message);
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            alert('An error occurred while adding staff.');
+          }
+        });
+      });
+    });
+  </script>
+  <!-- General JS Scripts -->
+  <script src="assets/js/app.min.js"></script>
+  <!-- JS Libraries -->
+  <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="assets/js/page/index.js"></script>
+  <!-- Template JS File -->
+  <script src="assets/js/scripts.js"></script>
+  <!-- Custom JS File -->
+  <script src="assets/js/custom.js"></script>
+  <!-- jQuery Library -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- AJAX Script -->
+ 
+</body>
+</html>
