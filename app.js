@@ -25,7 +25,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Routes
+app.use('/', authRoutes);  // Correct route prefix for auth
 app.use('/auth', authRoutes);  // Correct route prefix for auth
+app.use('/', staffRoutes); // Correct route prefix for staff
 app.use('/staff', staffRoutes); // Correct route prefix for staff
 // app.use('/card', cardRoutes);  // Use cardRoutes under '/card' prefix
 
