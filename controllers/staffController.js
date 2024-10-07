@@ -95,7 +95,7 @@ export const deleteUser = async (req, res) => {
 
 // Fetch a single user by ID
 export const getUserById = async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params.id; 
   try {
     const user = await query('SELECT * FROM users WHERE id = ?', [userId]);
 
@@ -109,7 +109,7 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ message: 'Error fetching user data' });
   }
 };
-
+  
 // Update a user by ID
 export const updateUser = async (req, res) => {
   const { user_id, full_name, username, department, role } = req.body;

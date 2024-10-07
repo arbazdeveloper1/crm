@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 
 import authRoutes from './routes/authRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
-// import cardRoutes from './routes/cardRoutes.js';
 import { checkAuth } from './middlewares/authMiddleware.js'; // Only import checkAuth since verifyToken is used in specific routes
 
 dotenv.config();
@@ -29,7 +28,7 @@ app.use('/', authRoutes);  // Correct route prefix for auth
 app.use('/auth', authRoutes);  // Correct route prefix for auth
 app.use('/', staffRoutes); // Correct route prefix for staff
 app.use('/staff', staffRoutes); // Correct route prefix for staff
-// app.use('/card', cardRoutes);  // Use cardRoutes under '/card' prefix
+
 
 // Add a 404 route handler for undefined routes
 app.use((req, res, next) => {
