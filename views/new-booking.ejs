@@ -91,8 +91,8 @@
                                 <label>Airline Name</label>
                                 <div id="airline-names">
                                     <div class="input-group mb-2">
-                                        <input type="text" class="form-control airline-name" placeholder="Airline Name" required>
-                                        <input type="number" maxlength="7" class="form-control airline-cost" placeholder="Cost" required>
+                                        <input type="text" class="form-control airline-name" placeholder="Airline Name" >
+                                        <input type="number" maxlength="7" class="form-control airline-cost" placeholder="Cost" >
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
@@ -126,38 +126,49 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Card Number</label>
-                                <input type="number" class="form-control"  oninput="detectCardType()" id="cardNumber" maxlength="16" required>
+                                <input type="text" class="form-control" oninput="detectCardType();" maxlength="16" id="cardNumber" required>
                                 <p id="cardTypeOutput"></p>
                             </div>
                             <div class="form-group">
                                 <label>Card Type</label>
-                                <input type="text" class="form-control" required>
+                                <select class="form-control" required>
+                                    <option value="" disabled selected>Choose an option</option>
+                                    <option value="Visa">Visa</option>
+                                    <option value="American">American</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Currency</label>
-                                <input type="text" class="form-control" required>
+                                <select class="form-control" required>
+                                    <option value="USD" selected>USD</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="AUD">AUD</option>
+                                    <option value="MXN">MXN</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Expiration (MM/YY)</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" class="form-control" maxlength="5" required>
                             </div>
                             <div class="form-group">
                                 <label>CVV</label>
-                                <input type="text" class="form-control" required>
+                                <input type="number" class="form-control" maxlength="3" required>
                             </div>
                             <div class="form-group">
                                 <label>GDS/PNR (Optional)</label>
-                                <input type="text" class="form-control">
+                                <input type="text" maxlength="6" class="form-control">
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-group">
                                 <label>ARL/Confirmation</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" class="form-control" maxlength="6" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group">                    
                                 <label>Email</label>
                                 <input type="email" class="form-control" required>
                             </div>
@@ -200,7 +211,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary prev">Previous</button>
+                        <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="button" class="btn next">Next</button>
                     </div>
                 </div>
@@ -222,7 +233,7 @@
                         </select>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary prev">Previous</button>
+                        <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="button" class="btn next">Next</button>
                     </div>
                 </div>
@@ -243,7 +254,7 @@
                         <input type="text" class="form-control" required>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary prev">Previous</button>
+                        <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="submit" class="btn btn-success">Submit</button>
                     </div>
                 </div>
@@ -351,24 +362,57 @@
 
     </script>
 
-<script>
-    const cardNumberInput = document.getElementById('cardNumber');
-    const cardTypeOutput = document.getElementById('cardTypeOutput');
-    
-    function detectCardType() {
-        const cardNumber = cardNumberInput.value;
-        const cardValidation = cardValidator.number(cardNumber);
-        
-        if (cardValidation.card) {
-            cardTypeOutput.textContent = cardValidation.card.type;
-        } else {
-            cardTypeOutput.textContent = 'Unknown';
-        }
-    }
+<!-- <script>
+    document.getElementById('cardForm').addEventListener('submit', function (e) {
+        const expiryInput = document.getElementById('expiry');
+        const expiryValue = expiryInput.value.trim();
+        const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; // Format MM/YY
 
-    // You can also add expiration date and CVV validation similarly
+        if (!expiryRegex.test(expiryValue) || !isFutureDate(expiryValue)) {
+            expiryInput.classList.add('is-invalid');
+            e.preventDefault(); // Prevent form submission
+        } else {
+            expiryInput.classList.remove('is-invalid');
+        }
+    });
+
+    function isFutureDate(expiry) {
+        const [month, year] = expiry.split('/').map(Number);
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear() % 100; // Last two digits of current year
+        const currentMonth = currentDate.getMonth() + 1; // Months are zero-indexed
+
+        return year > currentYear || (year === currentYear && month >= currentMonth);
+    }
+</script> -->
+
+<script>
+function detectCardType() {
+            const cardNumber = cardNumberInput.value.trim();
+            let cardType = 'Unknown Card Type';
+
+            if (/^4/.test(cardNumber)) {
+                cardType = 'Visa';
+            } else if (/^5[1-5]/.test(cardNumber)) {
+                cardType = 'MasterCard';
+            } else if (/^3[47]/.test(cardNumber)) {
+                cardType = 'American Express';
+            } else if (/^6(?:011|5)/.test(cardNumber)) {
+                cardType = 'Discover';
+            } else if (/^3(?:0[0-5]|[68])/.test(cardNumber)) {
+                cardType = 'Diners Club';
+            } else if (/^35/.test(cardNumber)) {
+                cardType = 'JCB';
+            }
+
+            cardTypeOutput.textContent = cardType;
+        }
+
+        // Attach event listener for card number input
+        cardNumberInput.addEventListener('input', detectCardType);
+
 </script>
-<script src="https://cdn.jsdelivr.net/npm/card-validator@8/dist/card-validator.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/card-validator@8/dist/card-validator.min.js"></script> -->
 
     
     </body>
