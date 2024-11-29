@@ -78,11 +78,11 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Total Amount Quoted</label>
-                                <input type="number" maxlength="7" class="form-control"  id="total-quoted" required placeholder="Enter the amount">
+                                <input type="number" maxlength="7" class="form-control"  id="total-quoted"  placeholder="Enter the amount">
                             </div>
                             <div class="form-group">
                                 <label>MCO Description</label>
-                                <select class="form-control" required>
+                                <select class="form-control" >
                                     <option value="" disabled selected>Choose an option</option>
                                     <option value="my_fly_support">My Fly Support</option>
                                 </select>
@@ -103,7 +103,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Type of Charge</label>
-                                <select class="form-control" required>
+                                <select class="form-control" >
                                     <option value="" disabled selected>Choose an option</option>
                                     <option value="single">Single</option>
                                     <option value="split">Split</option>
@@ -126,20 +126,22 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Card Number</label>
-                                <input type="text" class="form-control" oninput="detectCardType();" maxlength="16" id="cardNumber" required>
+                                <input type="text" class="form-control" oninput="detectCardType();" maxlength="16" id="cardNumber" >
                                 <p id="cardTypeOutput"></p>
                             </div>
                             <div class="form-group">
                                 <label>Card Type</label>
-                                <select class="form-control" required>
+                                <select class="form-control" >
                                     <option value="" disabled selected>Choose an option</option>
+                                    <option value="Amex">Amex</option>
                                     <option value="Visa">Visa</option>
-                                    <option value="American">American</option>
+                                    <option value="Discover">Discover</option>
+                                    <option value="Master">Master</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Currency</label>
-                                <select class="form-control" required>
+                                <select class="form-control" >
                                     <option value="USD" selected>USD</option>
                                     <option value="CAD">CAD</option>
                                     <option value="GBP">GBP</option>
@@ -152,11 +154,11 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Expiration (MM/YY)</label>
-                                <input type="text" class="form-control" maxlength="5" required>
+                                <input type="text" class="form-control" maxlength="5" >
                             </div>
                             <div class="form-group">
                                 <label>CVV</label>
-                                <input type="number" class="form-control" maxlength="3" required>
+                                <input type="number" class="form-control" maxlength="3" >
                             </div>
                             <div class="form-group">
                                 <label>GDS/PNR (Optional)</label>
@@ -166,15 +168,15 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>ARL/Confirmation</label>
-                                <input type="text" class="form-control" maxlength="6" required>
+                                <input type="text" class="form-control" maxlength="6" >
                             </div>
                             <div class="form-group">                    
                                 <label>Email</label>
-                                <input type="email" class="form-control" required>
+                                <input type="email" class="form-control" >
                             </div>
                             <div class="form-group">
                                 <label>Billing Phone</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" class="form-control" >
                             </div>
                         </div>
                     </div>
@@ -190,23 +192,28 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Subject Line</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" class="form-control" >
                             </div>
                         </div>
                         <div class="col-8">
                             <div class="form-group">
                                 <label>Card Holder Name</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" class="form-control" >
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Select TFN</label>
-                                <select class="form-control" required>
-                                    <option value="" disabled selected>Choose an option</option>
+                                <select class="form-control" >
                                     <option value="offline">Offline</option>
-                                    <option value="online">Online</option>
+                                    <option value="online" selected>Online</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Billing Address </label>
+                                <input type="text" class="form-control" >
                             </div>
                         </div>
                     </div>
@@ -219,19 +226,40 @@
                 <!-- Step 4 -->
                 <div class="step" id="step4">
                     <h3>Passenger Details</h3>
-                    <div class="form-group">
-                        <label>Passenger Name</label>
-                        <input type="text" class="form-control" required>
+                    <div id="passenger-details">
+                        <div class="row passenger-row">
+                            <div class="col-4 form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" >
+                            </div>
+                            <div class="col-2 form-group">
+                                <label>DOB</label>
+                                <input type="date" class="form-control" >
+                            </div>
+                            <div class="col-2 form-group">
+                                <label>Gender</label>
+                                <select class="form-control" >
+                                    <option value="" disabled selected>Choose an option</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                            <div class="col-2 form-group">
+                                <label>Ticket No.</label>
+                                <input type="text" class="form-control" >
+                            </div>
+                            <div class="col-2 form-group">
+                                <label></label>
+                                <button type="button" class="btn btn-danger remove-passenger" style="margin-top: 31px;">Remove</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Seat Preference</label>
-                        <select class="form-control" required>
-                            <option value="" disabled selected>Choose an option</option>
-                            <option value="aisle">Aisle</option>
-                            <option value="window">Window</option>
-                            <option value="middle">Middle</option>
-                        </select>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button  class="btn btn-link mb-2" id="add-passenger">Add Passenger</button>
                     </div>
+                    
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="button" class="btn next">Next</button>
@@ -273,7 +301,7 @@
                 const airlineNameInput = document.createElement('div');
                 airlineNameInput.className = 'input-group mb-2';
                 airlineNameInput.innerHTML = `
-                    <input type="text" class="form-control airline-name" placeholder="Airline Name" required>
+                    <input type="text" class="form-control airline_name" placeholder="Airline Name" required>
                     <input type="number" class="form-control airline-cost" placeholder="Cost" required>
                     <span class="remove-airline btn btn-danger ml-1 btn-sm px-3 fs-2x">&times;</span>`;
                 
@@ -411,6 +439,32 @@ function detectCardType() {
         // Attach event listener for card number input
         cardNumberInput.addEventListener('input', detectCardType);
 
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const passengerDetailsContainer = document.getElementById('passenger-details');
+        const addPassengerButton = document.getElementById('add-passenger');
+
+        // Add new passenger row
+        addPassengerButton.addEventListener('click', function () {
+            const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
+            newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // Clear all input fields
+            passengerDetailsContainer.appendChild(newPassengerRow);
+        });
+
+        // Remove passenger row
+        passengerDetailsContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-passenger')) {
+                const row = e.target.closest('.passenger-row');
+                if (passengerDetailsContainer.children.length > 1) {
+                    row.remove();
+                } else {
+                    alert('You must have at least one passenger.');
+                }
+            }
+        });
+    });
 </script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/card-validator@8/dist/card-validator.min.js"></script> -->
 
