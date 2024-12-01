@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +15,18 @@
             border-radius: 4px;
             padding: 10px;
             background-color: #f9f9f9;
-            overflow: auto; /* Allows scrollbars for overflowing content */
-            resize: both; /* Enables resizing */
-            min-height: 150px; /* Minimum height */
-            min-width: 300px; /* Minimum width */
-            max-height: 500px; /* Optional maximum height */
-            max-width: 800px; /* Optional maximum width */
+            overflow: auto;
+            /* Allows scrollbars for overflowing content */
+            resize: both;
+            /* Enables resizing */
+            min-height: 500px;
+            /* Minimum height */
+            min-width: 1000px;
+            /* Minimum width */
+            max-height: 1000px;
+            /* Optional maximum height */
+            max-width: 1500px;
+            /* Optional maximum width */
         }
 
         #upload-button {
@@ -27,6 +34,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="editor-container" style="height: 150px; width: 300px;"></div>
     <button id="upload-button">Upload Image</button>
@@ -76,25 +84,44 @@
             const uploadButton = document.getElementById('upload-button');
             uploadButton.addEventListener('click', function () {
                 if (pastedImageBase64) {
-                    // Simulate an upload to a server (or console log)
-                    console.log("Uploading image...");
-                    console.log(pastedImageBase64);
+                    // Convert Base64 to Blob
+                    const byteString = atob(pastedImageBase64.split(',')[1]);
+                    const mimeString = pastedImageBase64.split(',')[0].split(':')[1].split(';')[0];
+                    const arrayBuffer = new ArrayBuffer(byteString.length);
+                    const uintArray = new Uint8Array(arrayBuffer);
 
-                    // Example: Use fetch to upload to server
-                    // fetch('/upload', {
-                    //     method: 'POST',
-                    //     body: JSON.stringify({ image: pastedImageBase64 }),
-                    //     headers: { 'Content-Type': 'application/json' }
-                    // }).then(response => response.json())
-                    //   .then(data => console.log("Upload successful!", data))
-                    //   .catch(err => console.error("Upload error", err));
-                    
-                    alert("Image uploaded successfully! Check the console for the Base64 data.");
+                    for (let i = 0; i < byteString.length; i++) {
+                        uintArray[i] = byteString.charCodeAt(i);
+                    }
+
+                    const blob = new Blob([arrayBuffer], { type: mimeString });
+                    const formData = new FormData();
+                    formData.append('image', blob, 'pasted-image.png'); // Name of the file
+
+                    // Send the image to the server
+                    fetch('/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Image uploaded successfully! File path: " + data.filePath);
+                            } else {
+                                alert("Image upload failed: " + data.message);
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Upload error:", err);
+                            alert("An error occurred while uploading the image.");
+                        });
                 } else {
                     alert("No image has been pasted yet.");
                 }
             });
+
         });
     </script>
 </body>
+
 </html>

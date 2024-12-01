@@ -288,6 +288,7 @@
                     <h3>Itinerary Details</h3>
 
                     <div id="editor-container" style="height: 150px;"></div>
+                    <button id="upload-button " class="mt-2">Upload Image</button>
 
                     <div class="d-flex justify-content-end mt-2">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
@@ -299,10 +300,10 @@
     </div>
     
   <script>
-        document.addEventListener("DOMContentLoaded", function () {
+       document.addEventListener("DOMContentLoaded", function () {
             // Initialize the Quill editor
-            var quill = new Quill('#editor-container', {
-                theme: 'snow', // Use the "snow" theme for the toolbar
+            const quill = new Quill('#editor-container', {
+                theme: 'snow',
                 placeholder: 'Copy/Paste Flight Details or Travel Itinerary',
                 modules: {
                     toolbar: [
@@ -317,7 +318,9 @@
                 }
             });
 
-            // Enable pasting images directly into the editor
+            let pastedImageBase64 = null; // To store the pasted image's Base64 data
+
+            // Handle paste event to detect and capture pasted images
             quill.root.addEventListener('paste', function (event) {
                 const clipboardItems = event.clipboardData.items;
                 for (let i = 0; i < clipboardItems.length; i++) {
@@ -325,10 +328,10 @@
                     if (item.type.indexOf('image') !== -1) {
                         const blob = item.getAsFile();
                         const reader = new FileReader();
-                        reader.onload = function (e) {
-                            const base64Image = e.target.result;
+                        reader.onload = function (e) {1
+                            pastedImageBase64 = e.target.result; // Save the Base64 data
                             const range = quill.getSelection();
-                            quill.insertEmbed(range.index, 'image', base64Image);
+                            quill.insertEmbed(range.index, 'image', pastedImageBase64); // Display in Editor 
                         };
                         reader.readAsDataURL(blob);
                         event.preventDefault();
@@ -336,11 +339,46 @@
                 }
             });
 
-            // Log the editor content, including images
-            document.querySelector('#editor-container').addEventListener('input', function () {
-                var content = quill.root.innerHTML; // Retrieves the HTML content, including <img> tags
-                console.log(content);
+            // Upload button click event
+            const uploadButton = document.getElementById('upload-button');
+            uploadButton.addEventListener('click', function () {
+                if (pastedImageBase64) {
+                    // Convert BASE64 TO Blob
+                    const byteString = atob(pastedImageBase64.split(',')[1]);
+                    const mimeString = pastedImageBase64.split(',')[0].split(':')[1].split(';')[0];
+                    const arrayBuffer = new ArrayBuffer(byteString.length);
+                    const uintArray = new Uint8Array(arrayBuffer);
+
+                    for (let i = 0; i < byteString.length; i++) {
+                        uintArray[i] = byteString.charCodeAt(i);
+                    }
+
+                    const blob = new Blob([arrayBuffer], { type: mimeString });
+                    const formData = new FormData();
+                    formData.append('image', blob, 'pasted-image.png'); // Name of the file
+
+                    // Send the image to the server
+                    fetch('/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Image uploaded successfully! File path: " + data.filePath);
+                            } else {
+                                alert("Image upload failed: " + data.message);
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Upload error:", err);
+                            alert("An error occurred while uploading the image.");
+                        });
+                } else {
+                    alert("No image has been pasted yet.");
+                }
             });
+
         });
     </script>
 

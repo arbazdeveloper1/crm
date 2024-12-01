@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import url from 'url';
 import cookieParser from 'cookie-parser';
+import multer from 'multer'
 
 import authRoutes from './routes/authRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
@@ -22,6 +23,28 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/img'); // Destination folder
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname)); // Generate unique filename
+    }
+});
+
+const upload = multer({ storage });
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+app.post('/upload', upload.single('image'), (req, res) => {
+    if (req.file) {
+
+        res.json({ success: true, filePath: `/public/img/${req.file.filename}` });
+    } else {
+        res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
+});
 
 // Routes
 app.use('/', authRoutes);  // Correct route prefix for auth
