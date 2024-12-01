@@ -138,6 +138,13 @@ export const newBooking = async (req, res) => {
   }
 }
 
+export const test = async (req, res) => {
+  try{
+    res.render('test')
+  }catch{
+    res.status(500).json({success: false, message: 'Error loading page'})
+  }
+}
 
 
 

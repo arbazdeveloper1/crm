@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quill Editor with Paste Image and Upload</title>
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <style>
+        #editor-container {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            overflow: auto; /* Allows scrollbars for overflowing content */
+            resize: both; /* Enables resizing */
+            min-height: 150px; /* Minimum height */
+            min-width: 300px; /* Minimum width */
+            max-height: 500px; /* Optional maximum height */
+            max-width: 800px; /* Optional maximum width */
+        }
+
+        #upload-button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="editor-container" style="height: 150px; width: 300px;"></div>
+    <button id="upload-button">Upload Image</button>
+
+    <!-- Initialize Quill Editor -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize the Quill editor
+            const quill = new Quill('#editor-container', {
+                theme: 'snow',
+                placeholder: 'Copy/Paste Flight Details or Travel Itinerary',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'], // Text styling options
+                        [{ 'font': [] }],               // Font selector
+                        [{ 'color': [] }, { 'background': [] }], // Text color and background
+                        [{ 'align': [] }],              // Alignment options
+                        ['link', 'image', 'code-block'], // Media and code options, including image
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // List options
+                        ['clean']                       // Clear formatting
+                    ]
+                }
+            });
+
+            let pastedImageBase64 = null; // To store the pasted image's Base64 data
+
+            // Handle paste event to detect and capture pasted images
+            quill.root.addEventListener('paste', function (event) {
+                const clipboardItems = event.clipboardData.items;
+                for (let i = 0; i < clipboardItems.length; i++) {
+                    const item = clipboardItems[i];
+                    if (item.type.indexOf('image') !== -1) {
+                        const blob = item.getAsFile();
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            pastedImageBase64 = e.target.result; // Save the Base64 data
+                            const range = quill.getSelection();
+                            quill.insertEmbed(range.index, 'image', pastedImageBase64); // Display in editor
+                        };
+                        reader.readAsDataURL(blob);
+                        event.preventDefault();
+                    }
+                }
+            });
+
+            // Upload button click event
+            const uploadButton = document.getElementById('upload-button');
+            uploadButton.addEventListener('click', function () {
+                if (pastedImageBase64) {
+                    // Simulate an upload to a server (or console log)
+                    console.log("Uploading image...");
+                    console.log(pastedImageBase64);
+
+                    // Example: Use fetch to upload to server
+                    // fetch('/upload', {
+                    //     method: 'POST',
+                    //     body: JSON.stringify({ image: pastedImageBase64 }),
+                    //     headers: { 'Content-Type': 'application/json' }
+                    // }).then(response => response.json())
+                    //   .then(data => console.log("Upload successful!", data))
+                    //   .catch(err => console.error("Upload error", err));
+                    
+                    alert("Image uploaded successfully! Check the console for the Base64 data.");
+                } else {
+                    alert("No image has been pasted yet.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

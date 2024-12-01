@@ -5,7 +5,24 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
         <title>New Booking | (MFS TRAVELS)</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+        <!-- Quill JS -->
+        <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
         <style>
+            #editor-container {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            overflow: auto; /* Allows scrollbars for overflowing content */
+            resize: both; /* Enables resizing */
+            min-height: 150px; /* Minimum height */
+            min-width: 300px; /* Minimum width */
+            max-height: 500px; /* Optional maximum height */
+            max-width: 1100px; /* Optional maximum width */
+        }
             body {
                 background-image: url('/assets/img/banner/formbg.png'); /* Change this to the path of your PNG image */
                 background-size: cover; /* Cover the entire viewport */
@@ -269,19 +286,10 @@
                 <!-- Step 5 -->
                 <div class="step" id="step5">
                     <h3>Itinerary Details</h3>
-                    <div class="form-group">
-                        <label>Flight Number</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Departure City</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Arrival City</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="d-flex justify-content-end">
+
+                    <div id="editor-container" style="height: 150px;"></div>
+
+                    <div class="d-flex justify-content-end mt-2">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="submit" class="btn btn-success">Submit</button>
                     </div>
@@ -289,6 +297,52 @@
             </form>
         </div>
     </div>
+    
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize the Quill editor
+            var quill = new Quill('#editor-container', {
+                theme: 'snow', // Use the "snow" theme for the toolbar
+                placeholder: 'Copy/Paste Flight Details or Travel Itinerary',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'], // Text styling options
+                        [{ 'font': [] }],               // Font selector
+                        [{ 'color': [] }, { 'background': [] }], // Text color and background
+                        [{ 'align': [] }],              // Alignment options
+                        ['link', 'image', 'code-block'], // Media and code options, including image
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // List options
+                        ['clean']                       // Clear formatting
+                    ]
+                }
+            });
+
+            // Enable pasting images directly into the editor
+            quill.root.addEventListener('paste', function (event) {
+                const clipboardItems = event.clipboardData.items;
+                for (let i = 0; i < clipboardItems.length; i++) {
+                    const item = clipboardItems[i];
+                    if (item.type.indexOf('image') !== -1) {
+                        const blob = item.getAsFile();
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const base64Image = e.target.result;
+                            const range = quill.getSelection();
+                            quill.insertEmbed(range.index, 'image', base64Image);
+                        };
+                        reader.readAsDataURL(blob);
+                        event.preventDefault();
+                    }
+                }
+            });
+
+            // Log the editor content, including images
+            document.querySelector('#editor-container').addEventListener('input', function () {
+                var content = quill.root.innerHTML; // Retrieves the HTML content, including <img> tags
+                console.log(content);
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -364,7 +418,7 @@
                     } else {
                         alert('Please fill all required fields before proceeding.');
                     }
-                });
+                }); 
             });
     
             prevButtons.forEach(button => {
@@ -389,31 +443,6 @@
         });
 
     </script>
-
-<!-- <script>
-    document.getElementById('cardForm').addEventListener('submit', function (e) {
-        const expiryInput = document.getElementById('expiry');
-        const expiryValue = expiryInput.value.trim();
-        const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; // Format MM/YY
-
-        if (!expiryRegex.test(expiryValue) || !isFutureDate(expiryValue)) {
-            expiryInput.classList.add('is-invalid');
-            e.preventDefault(); // Prevent form submission
-        } else {
-            expiryInput.classList.remove('is-invalid');
-        }
-    });
-
-    function isFutureDate(expiry) {
-        const [month, year] = expiry.split('/').map(Number);
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear() % 100; // Last two digits of current year
-        const currentMonth = currentDate.getMonth() + 1; // Months are zero-indexed
-
-        return year > currentYear || (year === currentYear && month >= currentMonth);
-    }
-</script> -->
-
 <script>
 function detectCardType() {
             const cardNumber = cardNumberInput.value.trim();
@@ -449,7 +478,7 @@ function detectCardType() {
         // Add new passenger row
         addPassengerButton.addEventListener('click', function () {
             const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
-            newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // Clear all input fields
+            newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // clear all the input fields
             passengerDetailsContainer.appendChild(newPassengerRow);
         });
 
@@ -466,7 +495,6 @@ function detectCardType() {
         });
     });
 </script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/card-validator@8/dist/card-validator.min.js"></script> -->
 
     
     </body>
