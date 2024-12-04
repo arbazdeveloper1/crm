@@ -1,5 +1,7 @@
 import express from 'express';
-import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test} from '../controllers/staffController.js';
+import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test
+    , newBookingForm
+} from '../controllers/staffController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
@@ -11,7 +13,7 @@ router.delete('/delete/:id', deleteUser); // Route to delete user by ID
 router.get('/get_user/:id',getUserById); // get user by single id 
 router.post('/update_user', updateUser); //update user detail by id
 router.get('/new-booking',verifyToken, newBooking); //New booking auth
-
+router.post('/newBookingForm', verifyToken, newBookingForm)
 
 
 

@@ -95,11 +95,11 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Total Amount Quoted</label>
-                                <input type="number" maxlength="7" class="form-control"  id="total-quoted"  placeholder="Enter the amount">
+                                <input type="number" maxlength="7" class="form-control"  id="total-quoted"  placeholder="Enter the amount" required>
                             </div>
                             <div class="form-group">
                                 <label>MCO Description</label>
-                                <select class="form-control" >
+                                <select class="form-control" required>
                                     <option value="" disabled selected>Choose an option</option>
                                     <option value="my_fly_support">My Fly Support</option>
                                 </select>
@@ -120,7 +120,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Type of Charge</label>
-                                <select class="form-control" >
+                                <select class="form-control" required>
                                     <option value="" disabled selected>Choose an option</option>
                                     <option value="single">Single</option>
                                     <option value="split">Split</option>
@@ -143,12 +143,12 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Card Number</label>
-                                <input type="text" class="form-control" oninput="detectCardType();" maxlength="16" id="cardNumber" >
+                                <input type="text" class="form-control" oninput="detectCardType();" maxlength="16" id="cardNumber" required>
                                 <p id="cardTypeOutput"></p>
                             </div>
                             <div class="form-group">
                                 <label>Card Type</label>
-                                <select class="form-control" >
+                                <select class="form-control" required>
                                     <option value="" disabled selected>Choose an option</option>
                                     <option value="Amex">Amex</option>
                                     <option value="Visa">Visa</option>
@@ -158,7 +158,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Currency</label>
-                                <select class="form-control" >
+                                <select class="form-control" required>
                                     <option value="USD" selected>USD</option>
                                     <option value="CAD">CAD</option>
                                     <option value="GBP">GBP</option>
@@ -171,11 +171,11 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Expiration (MM/YY)</label>
-                                <input type="text" class="form-control" maxlength="5" >
+                                <input type="text" class="form-control" maxlength="5" required>
                             </div>
                             <div class="form-group">
                                 <label>CVV</label>
-                                <input type="number" class="form-control" maxlength="3" >
+                                <input type="number" class="form-control" maxlength="3" required>
                             </div>
                             <div class="form-group">
                                 <label>GDS/PNR (Optional)</label>
@@ -189,11 +189,11 @@
                             </div>
                             <div class="form-group">                    
                                 <label>Email</label>
-                                <input type="email" class="form-control" >
+                                <input type="email" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Billing Phone</label>
-                                <input type="text" class="form-control" >
+                                <input type="text" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -209,13 +209,13 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Subject Line</label>
-                                <input type="text" class="form-control" >
+                                <input type="text" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-8">
                             <div class="form-group">
                                 <label>Card Holder Name</label>
-                                <input type="text" class="form-control" >
+                                <input type="text" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-4">
@@ -230,7 +230,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Billing Address </label>
-                                <input type="text" class="form-control" >
+                                <input type="text" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -247,15 +247,15 @@
                         <div class="row passenger-row">
                             <div class="col-4 form-group">
                                 <label>Full Name</label>
-                                <input type="text" class="form-control" >
+                                <input type="text" class="form-control" required>
                             </div>
                             <div class="col-2 form-group">
                                 <label>DOB</label>
-                                <input type="date" class="form-control" >
+                                <input type="date" class="form-control" required>
                             </div>
                             <div class="col-2 form-group">
                                 <label>Gender</label>
-                                <select class="form-control" >
+                                <select class="form-control" required>
                                     <option value="" disabled selected>Choose an option</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -331,7 +331,7 @@
                         reader.onload = function (e) {1
                             pastedImageBase64 = e.target.result; // Save the Base64 data
                             const range = quill.getSelection();
-                            quill.insertEmbed(range.index, 'image', pastedImageBase64); // Display in Editor 
+                            quill.insertEmbed(range.index, 'image', pastedImageBase64); // Display in Editor
                         };
                         reader.readAsDataURL(blob);
                         event.preventDefault();
@@ -375,7 +375,7 @@
                             alert("An error occurred while uploading the image.");
                         });
                 } else {
-                    alert("No image has been pasted yet.");
+                    alert("No image has been posted yet.");
                 }
             });
 
@@ -465,7 +465,7 @@
                         steps[currentStep].classList.remove('active');
                         stepIndicators[currentStep].classList.remove('active');
                         stepIndicators[currentStep - 1].classList.remove('completed');
-                        currentStep--;
+                        currentStep--;  
                         steps[currentStep].classList.add('active');
                         stepIndicators[currentStep].classList.add('active');
                     }

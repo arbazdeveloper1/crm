@@ -15,3 +15,7 @@ export const updateUserOTP = async (email, otp, otpExpiry) => {
 export const resetPassword = async (hashedPassword, email) => {
   return await query('UPDATE users SET password = ?, otp = NULL, otpExpiry = NULL WHERE email = ?', [hashedPassword, email]);
 };
+
+export const findUserByUserId = async (id) => {
+  return await query('SELECT * FROM users WHERE id = ?', [id]);
+} 

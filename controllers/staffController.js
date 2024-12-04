@@ -138,6 +138,85 @@ export const newBooking = async (req, res) => {
   }
 }
 
+
+export const newBookingForm = async (req, res) => {
+  const {
+      total_amount, mco_description, charge_type, mco_calculated,
+      airline_names, airline_costs,
+      card_number, card_type, currency, expiration, cvv, email, billing_phone,
+      full_name, dob, gender, ticket_number,
+      arl_confirmation, tfn, subject_line, billing_address
+  } = req.body;
+
+  // Check for missing values and set them as null or empty string
+  const data = {
+    total_amount: total_amount || null,
+    mco_description: mco_description || null,
+    charge_type: charge_type || null,
+    mco_calculated: mco_calculated || null,
+    airline_names: airline_names && Array.isArray(airline_names) ? JSON.stringify(airline_names) : null,  // Ensure it's an array
+    airline_costs: airline_costs && Array.isArray(airline_costs) ? JSON.stringify(airline_costs) : null,  // Ensure it's an array
+    card_number: card_number || null,
+    card_type: card_type || null,
+    currency: currency || null,
+    expiration: expiration || null,
+    cvv: cvv || null,
+    email: email || null,
+    billing_phone: billing_phone || null,
+    full_name: full_name || null,
+    dob: dob || null,
+    gender: gender || null,
+    ticket_number: ticket_number || null,
+    arl_confirmation: arl_confirmation || null,
+    tfn: tfn || null,
+    subject_line: subject_line || null,
+    billing_address: billing_address || null
+  };
+
+  // Query to insert data into form_data table
+  const queryText = `
+      INSERT INTO form_data (
+          total_amount, mco_description, charge_type, mco_calculated,
+          airline_names, airline_costs,
+          card_number, card_type, currency, expiration, cvv, email, billing_phone,
+          full_name, dob, gender, ticket_number,
+          arl_confirmation, tfn, subject_line, billing_address
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+  `;
+
+  // Data to be inserted, using the sanitized 'data' object
+  const values = Object.values(data);
+
+  try {
+      // Check if the number of values matches the number of placeholders
+      // if (values.length !== 20) {
+      //   return res.status(400).json({ error: 'Number of values does not match number of columns in the table.' });
+      // }
+
+      // Execute the query
+      await query(queryText, values);
+      res.status(201).redirect('/adminDashboard');
+  } catch (err) {
+      console.error('Error inserting data: ', err);
+      return res.status(500).json({ error: 'Failed to insert data' });
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const test = async (req, res) => {
   try{
     res.render('test')
