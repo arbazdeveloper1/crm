@@ -34,16 +34,34 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage });
+const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png/;
+        const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimeType = fileTypes.test(file.mimetype);
+
+        if (extName && mimeType) {
+            return cb(null, true);
+        } else {
+            cb(new Error('Only images are allowed'));
+        }
+    },
+});
+
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.post('/upload', upload.single('image'), (req, res) => {
-    if (req.file) {
-
-        res.json({ success: true, filePath: `/public/img/${req.file.filename}` });
-    } else {
-        res.status(400).json({ success: false, message: 'No file uploaded' });
-    }
+app.post('/upload', (req, res, next) => {
+    upload.single('image')(req, res, (err) => {
+        if (err) {
+            return res.status(400).json({ success: false, message: err.message });
+        }
+        if (req.file) {
+            res.json({ success: true, filePath: `/public/img/${req.file.filename}` });
+        } else {
+            res.status(400).json({ success: false, message: 'No file uploaded' });
+        }
+    });
 });
 
 // Routes
@@ -54,8 +72,10 @@ app.use('/staff', staffRoutes); // Correct route prefix for staff
 
 
 // Add a 404 route handler for undefined routes
-app.use((req, res, next) => {
-    res.status(404).send('Sorry, page not found');
+app.use((err, req, res, next) => {
+    console.error(err.message);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
 });
+
 
 export default app;

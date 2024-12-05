@@ -169,6 +169,7 @@ export const newBookingForm = async (req, res) => {
     ticket_number: ticket_number || null,
     arl_confirmation: arl_confirmation || null,
     tfn: tfn || null,
+    tfn: tfn || null,
     subject_line: subject_line || null,
     billing_address: billing_address || null
   };

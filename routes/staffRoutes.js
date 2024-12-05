@@ -13,7 +13,7 @@ router.delete('/delete/:id', deleteUser); // Route to delete user by ID
 router.get('/get_user/:id',getUserById); // get user by single id 
 router.post('/update_user', updateUser); //update user detail by id
 router.get('/new-booking',verifyToken, newBooking); //New booking auth
-router.post('/newBookingForm', verifyToken, newBookingForm)
+router.post('/newBookingForm', newBookingForm)
 
 
 
