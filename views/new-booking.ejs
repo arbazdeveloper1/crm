@@ -10,6 +10,8 @@
         <!-- Quill JS -->
         <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
+        <script src="/public/assets/js/custom.js"></script>
+
         <style>
             #editor-container {
             border: 1px solid #ccc;
@@ -88,14 +90,14 @@
                 <div id="step5-indicator">Itinerary</div>
             </div>
 
-            <form id="multiStepForm">   
+            <form id="multiStepForm" action="/newBookingForm" method="POST">   
                 <!-- Step 1 -->
                 <div class="step active" id="step1">
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Total Amount Quoted</label>
-                                <input type="number" maxlength="7" class="form-control"  id="total-quoted"  placeholder="Enter the amount" required>
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  class="form-control"  id="total-quoted"  placeholder="Enter the amount" required>
                             </div>
                             <div class="form-group">
                                 <label>MCO Description</label>
@@ -109,7 +111,7 @@
                                 <div id="airline-names">
                                     <div class="input-group mb-2">
                                         <input type="text" class="form-control airline-name" placeholder="Airline Name" >
-                                        <input type="number" maxlength="7" class="form-control airline-cost" placeholder="Cost" >
+                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  class="form-control airline-cost" placeholder="Cost" >
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
@@ -143,7 +145,13 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Card Number</label>
-                                <input type="text" class="form-control" oninput="detectCardType();" maxlength="16" id="cardNumber" required>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    maxlength="16" 
+                                    id="cardNumber" 
+                                    required 
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, ''); detectCardType();">
                                 <p id="cardTypeOutput"></p>
                             </div>
                             <div class="form-group">
@@ -297,263 +305,176 @@
                 
                     <div class="d-flex justify-content-end mt-2">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button type="submit" class="btn btn-success" id="formsubmit">Submit</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    
-  <script>
 
-        document.getElementById('itineraryImage').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-
-
-       document.addEventListener("DOMContentLoaded", function () {
-            // Initialize the Quill editor
-            const quill = new Quill('#editor-container', {
-                theme: 'snow',
-                placeholder: 'Copy/Paste Flight Details or Travel Itinerary',
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline'], // Text styling options
-                        [{ 'font': [] }],               // Font selector
-                        [{ 'color': [] }, { 'background': [] }], // Text color and background
-                        [{ 'align': [] }],              // Alignment options
-                        ['link', 'image', 'code-block'], // Media and code options, including image
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }], // List options
-                        ['clean']                       // Clear formatting
-                    ]
-                }
-            });
-
-            let pastedImageBase64 = null; // To store the pasted image's Base64 data
-
-            // Handle paste event to detect and capture pasted images
-            quill.root.addEventListener('paste', function (event) {
-                const clipboardItems = event.clipboardData.items;
-                for (let i = 0; i < clipboardItems.length; i++) {
-                    const item = clipboardItems[i];
-                    if (item.type.indexOf('image') !== -1) {
-                        const blob = item.getAsFile();
-                        const reader = new FileReader();
-                        reader.onload = function (e) {1
-                            pastedImageBase64 = e.target.result; // Save the Base64 data
-                            const range = quill.getSelection();
-                            quill.insertEmbed(range.index, 'image', pastedImageBase64); // Display in Editor
-                        };
-                        reader.readAsDataURL(blob);
-                        event.preventDefault();
-                    }
-                }
-            });
-
-            // Upload button click event
-            const uploadButton = document.getElementById('upload-button');
-            uploadButton.addEventListener('click', function () {
-                if (pastedImageBase64) {
-                    // Convert BASE64 TO Blob
-                    const byteString = atob(pastedImageBase64.split(',')[1]);
-                    const mimeString = pastedImageBase64.split(',')[0].split(':')[1].split(';')[0];
-                    const arrayBuffer = new ArrayBuffer(byteString.length);
-                    const uintArray = new Uint8Array(arrayBuffer);
-
-                    for (let i = 0; i < byteString.length; i++) {
-                        uintArray[i] = byteString.charCodeAt(i);
-                    }
-
-                    const blob = new Blob([arrayBuffer], { type: mimeString });
-                    const formData = new FormData();
-                    formData.append('image', blob, 'pasted-image.png'); // Name of the file
-
-                    // Send the image to the server
-                    fetch('/upload', {
-                        method: 'POST',
-                        body: formData,
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Image uploaded successfully! File path: " + data.filePath);
-                            } else {
-                                alert("Image upload failed: " + data.message);
-                            }
-                        })
-                        .catch(err => {
-                            console.error("Upload error:", err);
-                            alert("An error occurred while uploading the image.");
-                        });
-                } else {
-                    alert("No image has been posted yet.");
-                }
-            });
-
-        });
-    </script>
 
     <script>
+        function detectCardType() {
+    const cardNumberInput = document.getElementById('cardNumber');
+    const cardTypeOutput = document.getElementById('cardTypeOutput');
+
+    const cardNumber = cardNumberInput.value.trim();
+    let cardType = 'Unknown Card Type';
+
+    // Card type detection logic
+    if (/^4/.test(cardNumber)) {
+        cardType = 'Visa';
+    } else if (/^5[1-5]/.test(cardNumber)) {
+        cardType = 'MasterCard';
+    } else if (/^3[47]/.test(cardNumber)) {
+        cardType = 'American Express';
+    } else if (/^6(?:011|5)/.test(cardNumber)) {
+        cardType = 'Discover';
+    } else if (/^3(?:0[0-5]|[68])/.test(cardNumber)) {
+        cardType = 'Diners Club';
+    } else if (/^35/.test(cardNumber)) {
+        cardType = 'JCB';
+    }
+
+    // Display detected card type
+    cardTypeOutput.textContent = cardType;
+    if(cardType == "Unknown Card Type"){
+        cardTypeOutput.style.color = 'red'
+    }else{
+        cardTypeOutput.style.color = 'green'
+    }
+}
+
+// Attach event listener (if not using inline oninput)
+const cardNumberInput = document.getElementById('cardNumber');
+cardNumberInput.addEventListener('input', detectCardType);
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const totalQuotedInput = document.getElementById('total-quoted');
-            const airlineCostsContainer = document.getElementById('airline-costs');
-            const mcoCalculatedInput = document.getElementById('mco-calculated');
-    
-            // Add Airline and Cost Fields
-            document.getElementById('add-airline').addEventListener('click', function () {
-                const airlineNameInput = document.createElement('div');
-                airlineNameInput.className = 'input-group mb-2';
-                airlineNameInput.innerHTML = `
-                    <input type="text" class="form-control airline_name" placeholder="Airline Name" required>
-                    <input type="number" class="form-control airline-cost" placeholder="Cost" required>
-                    <span class="remove-airline btn btn-danger ml-1 btn-sm px-3 fs-2x">&times;</span>`;
-                
-                document.getElementById('airline-names').appendChild(airlineNameInput);
-            });
-    
-            // Remove Airline and Cost Fields
-            document.addEventListener('click', function (e) {
-                if (e.target.classList.contains('remove-airline')) {
-                    e.target.parentNode.remove();
-                    calculateMCO();
-                }
-            });
-    
-            // MCO Calculation
-            function calculateMCO() {
-                let totalCost = 0;
-                document.querySelectorAll('.airline-cost').forEach(input => {
-                    totalCost += parseFloat(input.value) || 0;
-                });
-    
-                const totalQuoted = parseFloat(totalQuotedInput.value) || 0;
-                const mcoValue = totalQuoted - totalCost;
-                mcoCalculatedInput.value = mcoValue.toFixed(2);
+    const passengerDetailsContainer = document.getElementById('passenger-details');
+    const addPassengerButton = document.getElementById('add-passenger');
+
+    // Add new passenger row
+    addPassengerButton.addEventListener('click', function () {
+        const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
+        newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // clear all the input fields
+        passengerDetailsContainer.appendChild(newPassengerRow);
+    });
+
+    // Remove passenger row
+    passengerDetailsContainer.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-passenger')) {
+            const row = e.target.closest('.passenger-row');
+            if (passengerDetailsContainer.children.length > 1) {
+                row.remove();
+            } else {
+                alert('You must have at least one passenger.');
             }
-    
-            // Recalculate MCO when total quoted or airline costs change
-            totalQuotedInput.addEventListener('input', calculateMCO);
-            document.addEventListener('input', function (e) {
-                if (e.target.classList.contains('airline-cost')) {
-                    calculateMCO();
-                }
-            });
-    
-            // Form navigation
-            const steps = document.querySelectorAll('.step');
-            const nextButtons = document.querySelectorAll('.next');
-            const prevButtons = document.querySelectorAll('.prev');
-            const stepIndicators = document.querySelectorAll('.step-indicator div');
-    
-            let currentStep = 0;
-    
-            // Validate required fields before going to the next step
-            function validateFields(step) {
-                const inputs = steps[step].querySelectorAll('input[required], select[required]');
-                return Array.from(inputs).every(input => input.value.trim() !== '');
+        }
+    });
+});
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const totalQuotedInput = document.getElementById('total-quoted');
+        const airlineCostsContainer = document.getElementById('airline-costs');
+        const mcoCalculatedInput = document.getElementById('mco-calculated');
+            
+        // Add Airline and Cost Fields
+        document.getElementById('add-airline').addEventListener('click', function () {
+            const airlineNameInput = document.createElement('div');
+            airlineNameInput.className = 'input-group mb-2';
+            airlineNameInput.innerHTML = `
+                <input type="text" class="form-control airline_name" placeholder="Airline Name" required>
+                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control airline-cost" placeholder="Cost" required>
+                <span class="remove-airline btn btn-danger ml-1 btn-sm px-3 fs-2x">&times;</span>`;
+            document.getElementById('airline-names').appendChild(airlineNameInput);
+        });
+
+        // Remove Airline and Cost Fields
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-airline')) {
+                e.target.parentNode.remove();
+                calculateMCO();
             }
-    
-            nextButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    if (validateFields(currentStep)) {
-                        if (currentStep < steps.length - 1) {
-                            steps[currentStep].classList.remove('active');
-                            stepIndicators[currentStep].classList.remove('active');
-                            stepIndicators[currentStep].classList.add('completed');
-                            currentStep++;
-                            steps[currentStep].classList.add('active');
-                            stepIndicators[currentStep].classList.add('active');
-                        }
-                    } else {
-                        alert('Please fill all required fields before proceeding.');
-                    }
-                }); 
+        });
+
+        // MCO Calculation
+        function calculateMCO() {
+            let totalCost = 0;
+            document.querySelectorAll('.airline-cost').forEach(input => {
+                totalCost += parseFloat(input.value) || 0;
             });
-    
-            prevButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    if (currentStep > 0) {
+
+            const totalQuoted = parseFloat(totalQuotedInput.value) || 0;
+            const mcoValue = totalQuoted - totalCost;
+            mcoCalculatedInput.value = mcoValue.toFixed(2);
+        }
+
+        // Recalculate MCO when total quoted or airline costs change
+        totalQuotedInput.addEventListener('input', calculateMCO);
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('airline-cost')) {
+                calculateMCO();
+            }
+        });
+
+        // Form navigation
+        const steps = document.querySelectorAll('.step');
+        const nextButtons = document.querySelectorAll('.next');
+        const prevButtons = document.querySelectorAll('.prev');
+        const stepIndicators = document.querySelectorAll('.step-indicator div');
+
+        let currentStep = 0;
+
+        // Validate required fields before going to the next step
+        function validateFields(step) {
+            const inputs = steps[step].querySelectorAll('input[required], select[required]');
+            return Array.from(inputs).every(input => input.value.trim() !== '');
+        }
+
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                if (validateFields(currentStep)) {
+                    if (currentStep < steps.length - 1) {
                         steps[currentStep].classList.remove('active');
                         stepIndicators[currentStep].classList.remove('active');
-                        stepIndicators[currentStep - 1].classList.remove('completed');
-                        currentStep--;  
+                        stepIndicators[currentStep].classList.add('completed');
+                        currentStep++;
                         steps[currentStep].classList.add('active');
                         stepIndicators[currentStep].classList.add('active');
                     }
-                });
-            });
-    
-            // Form submission
-            const form = document.getElementById('multiStepForm');
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                alert('Form submitted successfully!');
-            });
-        });
-
-    </script>
-<script>
-function detectCardType() {
-            const cardNumber = cardNumberInput.value.trim();
-            let cardType = 'Unknown Card Type';
-
-            if (/^4/.test(cardNumber)) {
-                cardType = 'Visa';
-            } else if (/^5[1-5]/.test(cardNumber)) {
-                cardType = 'MasterCard';
-            } else if (/^3[47]/.test(cardNumber)) {
-                cardType = 'American Express';
-            } else if (/^6(?:011|5)/.test(cardNumber)) {
-                cardType = 'Discover';
-            } else if (/^3(?:0[0-5]|[68])/.test(cardNumber)) {
-                cardType = 'Diners Club';
-            } else if (/^35/.test(cardNumber)) {
-                cardType = 'JCB';
-            }
-
-            cardTypeOutput.textContent = cardType;
-        }
-
-        // Attach event listener for card number input
-        cardNumberInput.addEventListener('input', detectCardType);
-
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const passengerDetailsContainer = document.getElementById('passenger-details');
-        const addPassengerButton = document.getElementById('add-passenger');
-
-        // Add new passenger row
-        addPassengerButton.addEventListener('click', function () {
-            const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
-            newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // clear all the input fields
-            passengerDetailsContainer.appendChild(newPassengerRow);
-        });
-
-        // Remove passenger row
-        passengerDetailsContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-passenger')) {
-                const row = e.target.closest('.passenger-row');
-                if (passengerDetailsContainer.children.length > 1) {
-                    row.remove();
                 } else {
-                    alert('You must have at least one passenger.');
+                    alert('Please fill all required fields before proceeding.');
                 }
-            }
+            }); 
         });
+
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                if (currentStep > 0) {
+                    steps[currentStep].classList.remove('active');
+                    stepIndicators[currentStep].classList.remove('active');
+                    stepIndicators[currentStep - 1].classList.remove('completed');
+                    currentStep--;
+                    steps[currentStep].classList.add('active');
+                    stepIndicators[currentStep].classList.add('active');
+                }
+            });
+        });
+
+        // Form submission
+        const form = document.getElementById('multiStepForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('Form submitted successfully!');
+        });
+
+        
+
+
     });
-</script>
+    </script>
 
     
     </body>
