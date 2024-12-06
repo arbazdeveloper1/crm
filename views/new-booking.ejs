@@ -286,10 +286,15 @@
                 <!-- Step 5 -->
                 <div class="step" id="step5">
                     <h3>Itinerary Details</h3>
-
-                    <div id="editor-container" style="height: 150px;"></div>
-                    <button id="upload-button " class="mt-2">Upload Image</button>
-
+                    <div class="form-group">
+                        <label for="itineraryImage">Upload Itinerary Image</label>
+                        <input type="file" id="itineraryImage" class="form-control" accept="image/*" required>
+                        <small class="form-text text-muted">Please upload a valid image file (e.g., PNG, JPG).</small>
+                    </div>
+                    <div class="preview mt-3">
+                        <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100%; display: none;">
+                    </div>
+                
                     <div class="d-flex justify-content-end mt-2">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="submit" class="btn btn-success">Submit</button>
@@ -300,6 +305,22 @@
     </div>
     
   <script>
+
+        document.getElementById('itineraryImage').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+
+
        document.addEventListener("DOMContentLoaded", function () {
             // Initialize the Quill editor
             const quill = new Quill('#editor-container', {
