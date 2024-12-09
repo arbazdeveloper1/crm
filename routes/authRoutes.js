@@ -10,7 +10,7 @@ router.get('/', checkAuth, (req, res) => {
 });
 
 
-router.get('/adminDashboard', verifyToken, dashboard);
+router.get('/Dashboard', verifyToken, dashboard);
 router.post('/login', login);
 router.post('/logout', logoutUser);
 router.post('/forgot_password', verifyToken, sendOTP);

@@ -558,12 +558,12 @@
 
 
 
-            console.log(total_quoted)
+            
             $.ajax({
                 url: "/newBookingForm",
                 method: "post",
                 dataType: "json",
-                data: { total_quoted: total_quoted },
+                data: { total_amount: total_quoted  },
                 success: function (res) {
                     console.log(res);
                 },

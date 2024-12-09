@@ -5,7 +5,7 @@ export const checkAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) return next();
-      return res.redirect('/adminDashboard');
+      return res.redirect('/dashboard');
     });
   } else {
     next();

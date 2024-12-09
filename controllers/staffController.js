@@ -198,7 +198,7 @@ export const newBookingForm = async (req, res) => {
 
       // Execute the query
       await query(queryText, values);
-      res.status(201).redirect('/adminDashboard');
+      res.status(201).redirect('/dashboard');
   } catch (err) {
       console.error('Error inserting data: ', err);
       return res.status(500).json({ error: 'Failed to insert data' });

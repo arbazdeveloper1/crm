@@ -12,7 +12,7 @@ export const login = async (req, res) => {
     if (match) {
       const token = jwt.sign({ id: user.id, role: user.userRole }, process.env.JWT_SECRET, { expiresIn: '12h' });
       res.cookie('token', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
-      return res.redirect('/adminDashboard');
+      return res.redirect('/dashboard');
     } else {
       return res.status(401).send('Invalid username or password');
     }
@@ -23,7 +23,7 @@ export const login = async (req, res) => {
 
 export const dashboard = async (req, res) => {
   const userRole = req.userRole;
-  res.render('adminDashboard', { userRole }); 
+  res.render('dashboard', { userRole }); 
 };
 
 
