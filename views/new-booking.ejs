@@ -1,87 +1,117 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-        <title>New Booking | (MFS TRAVELS)</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!DOCTYPE html>
+<html lang="en">
 
-        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-        <!-- Quill JS -->
-        <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>New Booking | (MFS TRAVELS)</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-        <script src="/public/assets/js/custom.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
-        <style>
-            #editor-container {
+    <script src="/public/assets/js/custom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        #editor-container {
             border: 1px solid #ccc;
             border-radius: 4px;
             padding: 10px;
             background-color: #f9f9f9;
-            overflow: auto; /* Allows scrollbars for overflowing content */
-            resize: both; /* Enables resizing */
-            min-height: 150px; /* Minimum height */
-            min-width: 300px; /* Minimum width */
-            max-height: 500px; /* Optional maximum height */
-            max-width: 1100px; /* Optional maximum width */
+            overflow: auto;
+            /* Allows scrollbars for overflowing content */
+            resize: both;
+            /* Enables resizing */
+            min-height: 150px;
+            /* Minimum height */
+            min-width: 300px;
+            /* Minimum width */
+            max-height: 500px;
+            /* Optional maximum height */
+            max-width: 1100px;
+            /* Optional maximum width */
         }
-            body {
-                background-image: url('/assets/img/banner/formbg.png'); /* Change this to the path of your PNG image */
-                background-size: cover; /* Cover the entire viewport */
-                background-repeat: no-repeat; /* Prevent tiling */
-                background-position: center; /* Center the image */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh; /* Full viewport height */
-                margin: 0; /* Remove default margin */
-            }
 
-            .step-indicator {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 20px;
-            }
-            .step-indicator div {
-                width: 100%;
-                text-align: center;
-                position: relative;
-                padding: 10px;
-                border: 1px solid transparent;
-                border-radius: 5px; /* Rounded corners */
-                cursor: pointer; /* Change cursor to pointer */
-            }
-            .step-indicator .active {
-                background-color: #6777ef; /* Green background for active step */
-                color: white; /* White text for active step */
-            }
-            .step-indicator .completed {
-                color: green; /* Green text for completed steps */
-                font-weight: bold; /* Bold text for completed steps */
-            }
-            .step {
-                display: none;
-            }
-            .step.active {
-                display: block;
-            }
+        body {
+            background-image: url('/assets/img/banner/formbg.png');
+            /* Change this to the path of your PNG image */
+            background-size: cover;
+            /* Cover the entire viewport */
+            background-repeat: no-repeat;
+            /* Prevent tiling */
+            background-position: center;
+            /* Center the image */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Full viewport height */
+            margin: 0;
+            /* Remove default margin */
+        }
 
-            .box-control {
-                box-shadow: 4px 4px 48px 22px rgba(0,0,0,0.1);
-                background: #f8f9fa;
-                border-radius: 15px;
-            }
-            .next {
-                background: #6777ef;
-                color: white;
-                padding: 5px 25px 5px 25px;
-            }
-        </style>
-    </head>
-    <body>
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .step-indicator div {
+            width: 100%;
+            text-align: center;
+            position: relative;
+            padding: 10px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            /* Rounded corners */
+            cursor: pointer;
+            /* Change cursor to pointer */
+        }
+
+        .step-indicator .active {
+            background-color: #6777ef;
+            /* Green background for active step */
+            color: white;
+            /* White text for active step */
+        }
+
+        .step-indicator .completed {
+            color: green;
+            /* Green text for completed steps */
+            font-weight: bold;
+            /* Bold text for completed steps */
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .box-control {
+            box-shadow: 4px 4px 48px 22px rgba(0, 0, 0, 0.1);
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .next {
+            background: #6777ef;
+            color: white;
+            padding: 5px 25px 5px 25px;
+        }
+    </style>
+</head>
+
+<body>
     <div class="container mt-5 " style="width: 50%;">
-        <div class="col-12 p-3 box-control" >
-            <h5 class="justify-content-center d-flex text-danger">New Booking <p class="text-dark">(Email draft)</p></h5>
+        <div class="col-12 p-3 box-control">
+            <h5 class="justify-content-center d-flex text-danger">New Booking <p class="text-dark">(Email draft)</p>
+            </h5>
             <div class="step-indicator" style="background-color: antiquewhite;">
                 <div id="step1-indicator" class="active">Price Description</div>
                 <div id="step2-indicator">Card Information</div>
@@ -90,18 +120,19 @@
                 <div id="step5-indicator">Itinerary</div>
             </div>
 
-            <form id="multiStepForm" action="/newBookingForm" method="POST">   
+            <form id="multiStepForm" action="/newBookingForm" method="POST">
                 <!-- Step 1 -->
                 <div class="step active" id="step1">
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Total Amount Quoted</label>
-                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  class="form-control"  id="total-quoted"  placeholder="Enter the amount" required>
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                    class="form-control" id="total-quoted" placeholder="Enter the amount" required>
                             </div>
                             <div class="form-group">
                                 <label>MCO Description</label>
-                                <select class="form-control" required>
+                                <select class="form-control" required id="mco_description">
                                     <option value="" disabled selected>Choose an option</option>
                                     <option value="my_fly_support">My Fly Support</option>
                                 </select>
@@ -110,8 +141,11 @@
                                 <label>Airline Name</label>
                                 <div id="airline-names">
                                     <div class="input-group mb-2">
-                                        <input type="text" class="form-control airline-name" placeholder="Airline Name" >
-                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  class="form-control airline-cost" placeholder="Cost" >
+                                        <input type="text" id="airline_name" class="form-control airline-name"
+                                            placeholder="Airline Name">
+                                        <input type="text" id="airline_cost"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                            class="form-control airline-cost" placeholder="Cost">
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
@@ -145,12 +179,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Card Number</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    maxlength="16" 
-                                    id="cardNumber" 
-                                    required 
+                                <input type="text" class="form-control" maxlength="16" id="cardNumber" required
                                     oninput="this.value = this.value.replace(/[^0-9]/g, ''); detectCardType();">
                                 <p id="cardTypeOutput"></p>
                             </div>
@@ -193,9 +222,9 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>ARL/Confirmation</label>
-                                <input type="text" class="form-control" maxlength="6" >
+                                <input type="text" class="form-control" maxlength="6">
                             </div>
-                            <div class="form-group">                    
+                            <div class="form-group">
                                 <label>Email</label>
                                 <input type="email" class="form-control" required>
                             </div>
@@ -229,7 +258,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Select TFN</label>
-                                <select class="form-control" >
+                                <select class="form-control">
                                     <option value="offline">Offline</option>
                                     <option value="online" selected>Online</option>
                                 </select>
@@ -272,19 +301,20 @@
                             </div>
                             <div class="col-2 form-group">
                                 <label>Ticket No.</label>
-                                <input type="text" class="form-control" >
+                                <input type="text" class="form-control">
                             </div>
                             <div class="col-2 form-group">
                                 <label></label>
-                                <button type="button" class="btn btn-danger remove-passenger" style="margin-top: 31px;">Remove</button>
+                                <button type="button" class="btn btn-danger remove-passenger"
+                                    style="margin-top: 31px;">Remove</button>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="d-flex justify-content-end">
-                        <button  class="btn btn-link mb-2" id="add-passenger">Add Passenger</button>
+                        <button class="btn btn-link mb-2" id="add-passenger">Add Passenger</button>
                     </div>
-                    
+
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="button" class="btn next">Next</button>
@@ -302,7 +332,7 @@
                     <div class="preview mt-3">
                         <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100%; display: none;">
                     </div>
-                
+
                     <div class="d-flex justify-content-end mt-2">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="submit" class="btn btn-success" id="formsubmit">Submit</button>
@@ -315,167 +345,237 @@
 
     <script>
         function detectCardType() {
-    const cardNumberInput = document.getElementById('cardNumber');
-    const cardTypeOutput = document.getElementById('cardTypeOutput');
+            const cardNumberInput = document.getElementById('cardNumber');
+            const cardTypeOutput = document.getElementById('cardTypeOutput');
 
-    const cardNumber = cardNumberInput.value.trim();
-    let cardType = 'Unknown Card Type';
+            const cardNumber = cardNumberInput.value.trim();
+            let cardType = 'Unknown Card Type';
 
-    // Card type detection logic
-    if (/^4/.test(cardNumber)) {
-        cardType = 'Visa';
-    } else if (/^5[1-5]/.test(cardNumber)) {
-        cardType = 'MasterCard';
-    } else if (/^3[47]/.test(cardNumber)) {
-        cardType = 'American Express';
-    } else if (/^6(?:011|5)/.test(cardNumber)) {
-        cardType = 'Discover';
-    } else if (/^3(?:0[0-5]|[68])/.test(cardNumber)) {
-        cardType = 'Diners Club';
-    } else if (/^35/.test(cardNumber)) {
-        cardType = 'JCB';
-    }
+            // Card type detection logic
+            if (/^4/.test(cardNumber)) {
+                cardType = 'Visa';
+            } else if (/^5[1-5]/.test(cardNumber)) {
+                cardType = 'MasterCard';
+            } else if (/^3[47]/.test(cardNumber)) {
+                cardType = 'American Express';
+            } else if (/^6(?:011|5)/.test(cardNumber)) {
+                cardType = 'Discover';
+            } else if (/^3(?:0[0-5]|[68])/.test(cardNumber)) {
+                cardType = 'Diners Club';
+            } else if (/^35/.test(cardNumber)) {
+                cardType = 'JCB';
+            }
 
-    // Display detected card type
-    cardTypeOutput.textContent = cardType;
-    if(cardType == "Unknown Card Type"){
-        cardTypeOutput.style.color = 'red'
-    }else{
-        cardTypeOutput.style.color = 'green'
-    }
-}
-
-// Attach event listener (if not using inline oninput)
-const cardNumberInput = document.getElementById('cardNumber');
-cardNumberInput.addEventListener('input', detectCardType);
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    const passengerDetailsContainer = document.getElementById('passenger-details');
-    const addPassengerButton = document.getElementById('add-passenger');
-
-    // Add new passenger row
-    addPassengerButton.addEventListener('click', function () {
-        const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
-        newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // clear all the input fields
-        passengerDetailsContainer.appendChild(newPassengerRow);
-    });
-
-    // Remove passenger row
-    passengerDetailsContainer.addEventListener('click', function (e) {
-        if (e.target.classList.contains('remove-passenger')) {
-            const row = e.target.closest('.passenger-row');
-            if (passengerDetailsContainer.children.length > 1) {
-                row.remove();
+            // Display detected card type
+            cardTypeOutput.textContent = cardType;
+            if (cardType == "Unknown Card Type") {
+                cardTypeOutput.style.color = 'red'
             } else {
-                alert('You must have at least one passenger.');
+                cardTypeOutput.style.color = 'green'
             }
         }
-    });
-});
+
+        // Attach event listener (if not using inline oninput)
+        const cardNumberInput = document.getElementById('cardNumber');
+        cardNumberInput.addEventListener('input', detectCardType);
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-        const totalQuotedInput = document.getElementById('total-quoted');
-        const airlineCostsContainer = document.getElementById('airline-costs');
-        const mcoCalculatedInput = document.getElementById('mco-calculated');
-            
-        // Add Airline and Cost Fields
-        document.getElementById('add-airline').addEventListener('click', function () {
-            const airlineNameInput = document.createElement('div');
-            airlineNameInput.className = 'input-group mb-2';
-            airlineNameInput.innerHTML = `
-                <input type="text" class="form-control airline_name" placeholder="Airline Name" required>
-                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control airline-cost" placeholder="Cost" required>
-                <span class="remove-airline btn btn-danger ml-1 btn-sm px-3 fs-2x">&times;</span>`;
-            document.getElementById('airline-names').appendChild(airlineNameInput);
-        });
+            const passengerDetailsContainer = document.getElementById('passenger-details');
+            const addPassengerButton = document.getElementById('add-passenger');
 
-        // Remove Airline and Cost Fields
-        document.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-airline')) {
-                e.target.parentNode.remove();
-                calculateMCO();
-            }
-        });
-
-        // MCO Calculation
-        function calculateMCO() {
-            let totalCost = 0;
-            document.querySelectorAll('.airline-cost').forEach(input => {
-                totalCost += parseFloat(input.value) || 0;
+            // Add new passenger row
+            addPassengerButton.addEventListener('click', function () {
+                const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
+                newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // clear all the input fields
+                passengerDetailsContainer.appendChild(newPassengerRow);
             });
 
-            const totalQuoted = parseFloat(totalQuotedInput.value) || 0;
-            const mcoValue = totalQuoted - totalCost;
-            mcoCalculatedInput.value = mcoValue.toFixed(2);
-        }
-
-        // Recalculate MCO when total quoted or airline costs change
-        totalQuotedInput.addEventListener('input', calculateMCO);
-        document.addEventListener('input', function (e) {
-            if (e.target.classList.contains('airline-cost')) {
-                calculateMCO();
-            }
-        });
-
-        // Form navigation
-        const steps = document.querySelectorAll('.step');
-        const nextButtons = document.querySelectorAll('.next');
-        const prevButtons = document.querySelectorAll('.prev');
-        const stepIndicators = document.querySelectorAll('.step-indicator div');
-
-        let currentStep = 0;
-
-        // Validate required fields before going to the next step
-        function validateFields(step) {
-            const inputs = steps[step].querySelectorAll('input[required], select[required]');
-            return Array.from(inputs).every(input => input.value.trim() !== '');
-        }
-
-        nextButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                if (validateFields(currentStep)) {
-                    if (currentStep < steps.length - 1) {
-                        steps[currentStep].classList.remove('active');
-                        stepIndicators[currentStep].classList.remove('active');
-                        stepIndicators[currentStep].classList.add('completed');
-                        currentStep++;
-                        steps[currentStep].classList.add('active');
-                        stepIndicators[currentStep].classList.add('active');
+            // Remove passenger row
+            passengerDetailsContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-passenger')) {
+                    const row = e.target.closest('.passenger-row');
+                    if (passengerDetailsContainer.children.length > 1) {
+                        row.remove();
+                    } else {
+                        alert('You must have at least one passenger.');
                     }
-                } else {
-                    alert('Please fill all required fields before proceeding.');
-                }
-            }); 
-        });
-
-        prevButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                if (currentStep > 0) {
-                    steps[currentStep].classList.remove('active');
-                    stepIndicators[currentStep].classList.remove('active');
-                    stepIndicators[currentStep - 1].classList.remove('completed');
-                    currentStep--;
-                    steps[currentStep].classList.add('active');
-                    stepIndicators[currentStep].classList.add('active');
                 }
             });
         });
-
-        // Form submission
-        const form = document.getElementById('multiStepForm');
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            alert('Form submitted successfully!');
-        });
+    </script>
+    <script>
 
         
 
 
-    });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const totalQuotedInput = document.getElementById('total-quoted');
+    const airlineCostsContainer = document.getElementById('airline-costs');
+    const mcoCalculatedInput = document.getElementById('mco-calculated');
+    let InputCount = 0;
+    let airlinesData = {};
+
+    // Add Airline and Cost Fields
+    document.getElementById('add-airline').addEventListener('click', function () {
+        InputCount++;
+
+        // Create airline name input
+        let newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.id = `airline_name_${InputCount}`;
+        newInput.placeholder = 'Enter airline name';
+
+        // Create airline cost input
+        let newCostinput = document.createElement('input');
+        newCostinput.type = 'text';
+        newCostinput.id = `airline_cost_${InputCount}`;
+        newCostinput.placeholder = 'Enter airline cost';
+
+        // Append both inputs to the container
+        const container = document.getElementById('airline-names');
+        container.appendChild(newInput);
+        container.appendChild(newCostinput);
+
+        // After creating inputs, iterate over all added inputs to collect their data
+        newCostinput.addEventListener('change', function () {
+
+        for (let i = 1; i <= InputCount; i++) {
+            const nameInput = document.getElementById(`airline_name_${i}`);
+            const costInput = document.getElementById(`airline_cost_${i}`);
+
+            if (nameInput && costInput) {
+                const name = nameInput.value;
+                const cost = costInput.value;
+
+                // Store the key-value pair in the airlinesData object
+                if (name && cost) {
+                    airlinesData[name] = cost;
+                }
+            }
+        }
+        // Save the object in localStorage
+        localStorage.setItem('airlinesData', JSON.stringify(airlinesData));
+    })
+            });
+
+            // Remove Airline and Cost Fields
+            document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-airline')) {
+                    e.target.parentNode.remove();
+                    calculateMCO();
+                }
+            });
+
+            // MCO Calculation
+            function calculateMCO() {
+                let totalCost = 0;
+                document.querySelectorAll('.airline-cost').forEach(input => {
+                    totalCost += parseFloat(input.value) || 0;
+                });
+
+                const totalQuoted = parseFloat(totalQuotedInput.value) || 0;
+                const mcoValue = totalQuoted - totalCost;
+                mcoCalculatedInput.value = mcoValue.toFixed(2);
+            }
+
+            // Recalculate MCO when total quoted or airline costs change
+            totalQuotedInput.addEventListener('input', calculateMCO);
+            document.addEventListener('input', function (e) {
+                if (e.target.classList.contains('airline-cost')) {
+                    calculateMCO();
+                }
+            });
+
+            // Form navigation
+            const steps = document.querySelectorAll('.step');
+            const nextButtons = document.querySelectorAll('.next');
+            const prevButtons = document.querySelectorAll('.prev');
+            const stepIndicators = document.querySelectorAll('.step-indicator div');
+
+            let currentStep = 0;
+
+            // Validate required fields before going to the next step
+            function validateFields(step) {
+                const inputs = steps[step].querySelectorAll('input[required], select[required]');
+                return Array.from(inputs).every(input => input.value.trim() !== '');
+            }
+
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (validateFields(currentStep)) {
+                        if (currentStep < steps.length - 1) {
+                            steps[currentStep].classList.remove('active');
+                            stepIndicators[currentStep].classList.remove('active');
+                            stepIndicators[currentStep].classList.add('completed');
+                            currentStep++;
+                            steps[currentStep].classList.add('active');
+                            stepIndicators[currentStep].classList.add('active');
+                        }
+                    } else {
+                        alert('Please fill all required fields before proceeding.');
+                    }
+                });
+            });
+
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (currentStep > 0) {
+                        steps[currentStep].classList.remove('active');
+                        stepIndicators[currentStep].classList.remove('active');
+                        stepIndicators[currentStep - 1].classList.remove('completed');
+                        currentStep--;
+                        steps[currentStep].classList.add('active');
+                        stepIndicators[currentStep].classList.add('active');
+                    }
+                });
+            });
+
+            // Form submission
+            const form = document.getElementById('multiStepForm');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                alert('Form submitted successfully!');
+            });
+
+
+
+
+        });
     </script>
 
-    
-    </body>
-    </html>
+
+    <script>
+
+        let button = document.getElementById('formsubmit')
+
+        button.addEventListener('click', function (e) {
+            let total_quoted = document.getElementById('total-quoted').value
+            let mco_description = document.getElementById('mco_description').value
+            let airline_name = document.getElementById('airline_name').value
+            let airline_cost = document.getElementById('airline_cost').value
+
+
+
+            console.log(total_quoted)
+            $.ajax({
+                url: "/newBookingForm",
+                method: "post",
+                dataType: "json",
+                data: { total_quoted: total_quoted },
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+    </script>
+
+
+</body>
+
+</html>

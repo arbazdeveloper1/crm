@@ -1,10 +1,12 @@
 import express from 'express';
+const router = express.Router();
+
 import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test
     , newBookingForm
 } from '../controllers/staffController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
-const router = express.Router();
+
 
 router.get('/staff_list', verifyToken, getStaffList);
 router.get('/addStaffform', addStaffform); // Route to add new staff

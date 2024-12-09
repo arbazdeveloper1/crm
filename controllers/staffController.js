@@ -174,6 +174,8 @@ export const newBookingForm = async (req, res) => {
     billing_address: billing_address || null
   };
 
+  console.log(data,'This is the data')
+
   // Query to insert data into form_data table
   const queryText = `
       INSERT INTO form_data (
