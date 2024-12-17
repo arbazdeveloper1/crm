@@ -378,7 +378,7 @@
         // Attach event listener (if not using inline oninput)
         const cardNumberInput = document.getElementById('cardNumber');
         cardNumberInput.addEventListener('input', detectCardType);
-    </script>
+    </script> 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const passengerDetailsContainer = document.getElementById('passenger-details');
@@ -414,7 +414,7 @@
             const totalQuotedInput = document.getElementById('total-quoted');
     const airlineCostsContainer = document.getElementById('airline-costs');
     const mcoCalculatedInput = document.getElementById('mco-calculated');
-    let InputCount = 0;
+    let InputCount = 0; 
     let airlinesData = {};
 
     // Add Airline and Cost Fields
@@ -467,7 +467,7 @@
                     calculateMCO();
                 }
             });
-
+            
             // MCO Calculation
             function calculateMCO() {
                 let totalCost = 0;
@@ -494,7 +494,7 @@
             const prevButtons = document.querySelectorAll('.prev');
             const stepIndicators = document.querySelectorAll('.step-indicator div');
 
-            let currentStep = 0;
+            let currentStep = 0; 
 
             // Validate required fields before going to the next step
             function validateFields(step) {

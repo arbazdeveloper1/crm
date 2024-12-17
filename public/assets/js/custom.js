@@ -43,7 +43,7 @@ cardNumberInput.addEventListener('input', detectCardType);
 // ADD PASSENGER ====================================================================
 document.addEventListener('DOMContentLoaded', function () {
     const passengerDetailsContainer = document.getElementById('passenger-details');
-    const addPassengerButton = document.getElementById('add-passenger');
+    const addPassengerButton = document.getElementById('add-passenger');    
 
     // Add new passenger row
     addPassengerButton.addEventListener('click', function () {
