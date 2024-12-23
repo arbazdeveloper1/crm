@@ -60,7 +60,7 @@ export const resetPasswordHandler = async (req, res) => {
     const email = decoded.email;
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await resetPassword(hashedPassword, email);
-    res.status(200).json({ success: true, message: 'Password reset successfully' });
+    res.status(200).json({ success: true, message: 'Password Reset Successfully' });
   });
 };
 

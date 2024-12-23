@@ -378,7 +378,7 @@
         // Attach event listener (if not using inline oninput)
         const cardNumberInput = document.getElementById('cardNumber');
         cardNumberInput.addEventListener('input', detectCardType);
-    </script> 
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const passengerDetailsContainer = document.getElementById('passenger-details');
@@ -406,59 +406,118 @@
     </script>
     <script>
 
-        
+
 
 
 
         document.addEventListener('DOMContentLoaded', function () {
             const totalQuotedInput = document.getElementById('total-quoted');
-    const airlineCostsContainer = document.getElementById('airline-costs');
-    const mcoCalculatedInput = document.getElementById('mco-calculated');
-    let InputCount = 0; 
-    let airlinesData = {};
+            const airlineCostsContainer = document.getElementById('airline-costs');
+            const mcoCalculatedInput = document.getElementById('mco-calculated');
+            // let InputCount = 0;
+            // let airlinesData = {};
 
-    // Add Airline and Cost Fields
-    document.getElementById('add-airline').addEventListener('click', function () {
-        InputCount++;
+            // Add Airline and Cost Fields
+           // Initialize input count and airlinesData object
+// Initialize input count and airlinesData object
+let InputCount = 0;
+let airlinesData = JSON.parse(localStorage.getItem('airlinesData')) || {};
 
-        // Create airline name input
-        let newInput = document.createElement('input');
-        newInput.type = 'text';
-        newInput.id = `airline_name_${InputCount}`;
-        newInput.placeholder = 'Enter airline name';
+// Add Airline and Cost Fields
+document.getElementById('add-airline').addEventListener('click', function () {
+    InputCount++;
 
-        // Create airline cost input
-        let newCostinput = document.createElement('input');
-        newCostinput.type = 'text';
-        newCostinput.id = `airline_cost_${InputCount}`;
-        newCostinput.placeholder = 'Enter airline cost';
+    // Create a container for the input group
+    let inputGroup = document.createElement('div');
+    inputGroup.id = `airline_group_${InputCount}`;
+    inputGroup.style.display = 'flex';
+    inputGroup.style.alignItems = 'center';
+    inputGroup.style.marginBottom = '10px';
 
-        // Append both inputs to the container
-        const container = document.getElementById('airline-names');
-        container.appendChild(newInput);
-        container.appendChild(newCostinput);
+    // Create airline name input
+    let newInput = document.createElement('input');
+    newInput.type = 'text';
+    newInput.id = `airline_name_${InputCount}`;
+    newInput.placeholder = 'Enter airline name';
+    newInput.style.marginRight = '10px';
 
-        // After creating inputs, iterate over all added inputs to collect their data
-        newCostinput.addEventListener('change', function () {
+    // Create airline cost input
+    let newCostInput = document.createElement('input');
+    newCostInput.type = 'text';
+    newCostInput.id = `airline_cost_${InputCount}`;
+    newCostInput.placeholder = 'Enter airline cost';
+    newCostInput.style.marginRight = '10px';
 
-        for (let i = 1; i <= InputCount; i++) {
-            const nameInput = document.getElementById(`airline_name_${i}`);
-            const costInput = document.getElementById(`airline_cost_${i}`);
+    // Create a cross icon (remove button) with a dynamic ID
+    let removeButton = document.createElement('button');
+    removeButton.innerHTML = '❌';
+    removeButton.id = `remove_button_${InputCount}`;  // Dynamic ID for the button
+    removeButton.style.cursor = 'pointer';
+    removeButton.style.border = 'none';
+    removeButton.style.background = 'transparent';
+    removeButton.style.color = 'red';
+    removeButton.style.fontSize = '18px';
+    removeButton.style.marginLeft = '10px'; // Add some spacing between the input fields and the button
 
-            if (nameInput && costInput) {
-                const name = nameInput.value;
-                const cost = costInput.value;
+    // Append inputs and remove button to the input group
+    inputGroup.appendChild(newInput);
+    inputGroup.appendChild(newCostInput);
+    inputGroup.appendChild(removeButton);
 
-                // Store the key-value pair in the airlinesData object
-                if (name && cost) {
-                    airlinesData[name] = cost;
-                }
+    // Append the input group to the container
+    const container = document.getElementById('airline-names');
+    container.appendChild(inputGroup);
+
+    // Save data to localStorage on input change
+    newInput.addEventListener('input', saveData);
+    newCostInput.addEventListener('input', saveData);
+
+    // Add event listener for the remove button by its dynamic ID
+    removeButton.addEventListener('click', function () {
+        // Use the event target to access the button's ID
+        const buttonId = this.id; // Get the remove button ID
+        const groupId = `airline_group_${buttonId.split('_')[2]}`; // Extract group ID from button ID
+
+        // Remove data from airlinesData if it exists
+        const name = document.getElementById(`airline_name_${buttonId.split('_')[2]}`).value;
+        if (name && airlinesData[name]) {
+            console.log('Removing data for airline:', name); // Debug log for data removal
+            delete airlinesData[name];
+            localStorage.setItem('airlinesData', JSON.stringify(airlinesData));
+        }
+
+        // Remove the input group from the DOM using the group ID
+        const groupToRemove = document.getElementById(groupId);
+        if (groupToRemove) {
+            groupToRemove.remove();
+        }
+    });
+});
+
+// Save data to localStorage
+function saveData() {
+    airlinesData = {}; // Reset the object to avoid unnecessary data
+
+    const container = document.getElementById('airline-names');
+    const inputGroups = container.querySelectorAll('div');
+
+    inputGroups.forEach((group) => {
+        const nameInput = group.querySelector('input[type="text"]:nth-child(1)');
+        const costInput = group.querySelector('input[type="text"]:nth-child(2)');
+
+        if (nameInput && costInput) {
+            const name = nameInput.value.trim();
+            const cost = costInput.value.trim();
+
+            if (name && cost) {
+                airlinesData[name] = cost;
             }
         }
-        // Save the object in localStorage
-        localStorage.setItem('airlinesData', JSON.stringify(airlinesData));
-    })
-            });
+    });
+
+    // Save the updated data to localStorage
+    localStorage.setItem('airlinesData', JSON.stringify(airlinesData));
+}
 
             // Remove Airline and Cost Fields
             document.addEventListener('click', function (e) {
@@ -467,7 +526,7 @@
                     calculateMCO();
                 }
             });
-            
+
             // MCO Calculation
             function calculateMCO() {
                 let totalCost = 0;
@@ -480,7 +539,7 @@
                 mcoCalculatedInput.value = mcoValue.toFixed(2);
             }
 
-            // Recalculate MCO when total quoted or airline costs change
+            // Recalculate MCO when total quoted airline change cost 
             totalQuotedInput.addEventListener('input', calculateMCO);
             document.addEventListener('input', function (e) {
                 if (e.target.classList.contains('airline-cost')) {
@@ -494,7 +553,7 @@
             const prevButtons = document.querySelectorAll('.prev');
             const stepIndicators = document.querySelectorAll('.step-indicator div');
 
-            let currentStep = 0; 
+            let currentStep = 0;
 
             // Validate required fields before going to the next step
             function validateFields(step) {
@@ -556,14 +615,23 @@
             let airline_name = document.getElementById('airline_name').value
             let airline_cost = document.getElementById('airline_cost').value
 
+            let newAirlineData = {
+                [airline_name]: airline_cost
+            };
+            let airData = localStorage.getItem("airlinesData");
+            let airlinesObject = airData ? JSON.parse(airData) : {};
 
+            let updatedAirlinesData = { ...newAirlineData, ...airlinesObject };
 
-            
+            localStorage.setItem("airlinesData", JSON.stringify(updatedAirlinesData));
+
+            console.log("Updated airlinesData:", updatedAirlinesData);
+
             $.ajax({
                 url: "/newBookingForm",
                 method: "post",
                 dataType: "json",
-                data: { total_amount: total_quoted  },
+                data: { total_amount: total_quoted },
                 success: function (res) {
                     console.log(res);
                 },
