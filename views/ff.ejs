@@ -1,0 +1,142 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const totalQuotedInput = document.getElementById('total-quoted');
+        const mcoCalculatedInput = document.getElementById('mco-calculated');
+        const airlineContainer = document.getElementById('airline-names');
+        const addAirlineButton = document.getElementById('add-airline');
+
+        if (!totalQuotedInput || !mcoCalculatedInput || !airlineContainer || !addAirlineButton) {
+            console.error("Missing required elements in the DOM.");
+            return;
+        }
+
+        let InputCount = 0;
+
+        // Add Airline and Cost Fields
+        addAirlineButton.addEventListener('click', function () {
+            InputCount++;
+
+            const inputGroup = document.createElement('div');
+            inputGroup.id = `airline_group_${InputCount}`;
+            inputGroup.className = 'airline-group';
+            inputGroup.style.cssText = 'display: flex; align-items: center; margin-bottom: 10px;';
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.id = `airline_name_${InputCount}`;
+            nameInput.className = 'airline-name';
+            nameInput.placeholder = 'Enter airline name';
+            nameInput.style.marginRight = '10px';
+
+            const costInput = document.createElement('input');
+            costInput.type = 'number';
+            costInput.id = `airline_cost_${InputCount}`;
+            costInput.className = 'airline-cost';
+            costInput.placeholder = 'Enter airline cost';
+            costInput.style.marginRight = '10px';
+
+            const removeButton = document.createElement('button');
+            removeButton.innerHTML = '❌';
+            removeButton.className = 'remove-airline';
+            removeButton.style.cssText = 'cursor: pointer; border: none; background: transparent; color: red; font-size: 18px; margin-left: 10px;';
+
+            removeButton.addEventListener('click', function () {
+                inputGroup.remove();
+                saveDataAndCalculate();
+            });
+
+            inputGroup.append(nameInput, costInput, removeButton);
+            airlineContainer.appendChild(inputGroup);
+
+            nameInput.addEventListener('input', saveDataAndCalculate);
+            costInput.addEventListener('input', saveDataAndCalculate);
+        });
+
+        function saveDataAndCalculate() {
+            const airlinesData = {};
+            document.querySelectorAll('.airline-group').forEach(group => {
+                const name = group.querySelector('.airline-name').value.trim();
+                const cost = parseFloat(group.querySelector('.airline-cost').value.trim()) || 0;
+
+                if (name && cost > 0) {
+                    airlinesData[name] = cost;
+                }
+            });
+
+            try {
+                localStorage.setItem('airlinesData', JSON.stringify(airlinesData));
+            } catch (err) {
+                console.error("Error saving to localStorage:", err);
+            }
+
+            calculateMCO();
+        }
+
+        function calculateMCO() {
+            let totalCost = 0;
+            document.querySelectorAll('.airline-cost').forEach(input => {
+                totalCost += parseFloat(input.value.trim()) || 0;
+            });
+
+            const totalQuoted = parseFloat(totalQuotedInput.value.trim()) || 0;
+            const mcoValue = totalQuoted - totalCost;
+
+            mcoCalculatedInput.value = mcoValue.toFixed(2);
+        }
+
+        function loadData() {
+            let savedData;
+            try {
+                savedData = JSON.parse(localStorage.getItem('airlinesData')) || {};
+            } catch (err) {
+                console.error("Error parsing localStorage data:", err);
+                savedData = {};
+            }
+
+            for (const [name, cost] of Object.entries(savedData)) {
+                InputCount++;
+
+                const inputGroup = document.createElement('div');
+                inputGroup.id = `airline_group_${InputCount}`;
+                inputGroup.className = 'airline-group';
+                inputGroup.style.cssText = 'display: flex; align-items: center; margin-bottom: 10px;';
+
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.id = `airline_name_${InputCount}`;
+                nameInput.className = 'airline-name';
+                nameInput.value = name;
+                nameInput.placeholder = 'Enter airline name';
+                nameInput.style.marginRight = '10px';
+
+                const costInput = document.createElement('input');
+                costInput.type = 'number';
+                costInput.id = `airline_cost_${InputCount}`;
+                costInput.className = 'airline-cost';
+                costInput.value = cost;
+                costInput.placeholder = 'Enter airline cost';
+                costInput.style.marginRight = '10px';
+
+                const removeButton = document.createElement('button');
+                removeButton.innerHTML = '❌';
+                removeButton.className = 'remove-airline';
+                removeButton.style.cssText = 'cursor: pointer; border: none; background: transparent; color: red; font-size: 18px; margin-left: 10px;';
+
+                removeButton.addEventListener('click', function () {
+                    inputGroup.remove();
+                    saveDataAndCalculate();
+                });
+
+                inputGroup.append(nameInput, costInput, removeButton);
+                airlineContainer.appendChild(inputGroup);
+
+                nameInput.addEventListener('input', saveDataAndCalculate);
+                costInput.addEventListener('input', saveDataAndCalculate);
+            }
+
+            calculateMCO();
+        }
+
+        loadData();
+    });
+</script>
