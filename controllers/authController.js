@@ -36,7 +36,7 @@ export const sendOTP = async (req, res) => {
     await updateUserOTP(email, otp, otpExpiry);
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMA------IL_USER,
       to: email,
       subject: 'Your OTP for Password Reset',
       text: `Your OTP is ${otp}. It will expire in 15 minutes.`,
@@ -44,7 +44,7 @@ export const sendOTP = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) return res.status(500).send('Error sending OTP. Please try again later.');
-      res.status(200).json({ success: true, message: 'OTP has been sent successfully' });
+      res.status(200).json({ success: true, message: 'OTP  has been sent successfully' });
     });
   } else {
     return res.status(404).json({ success: false, message: 'Email not found.' });

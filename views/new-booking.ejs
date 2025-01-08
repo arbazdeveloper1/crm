@@ -404,245 +404,228 @@
             });
         });
     </script>
+
     <script>
-
-
-
-
-
         document.addEventListener('DOMContentLoaded', function () {
+            localStorage.removeItem('airline_default');
+            
             const totalQuotedInput = document.getElementById('total-quoted');
-            const airlineCostsContainer = document.getElementById('airline-costs');
             const mcoCalculatedInput = document.getElementById('mco-calculated');
-            // let InputCount = 0;
-            // let airlinesData = {};
+            let InputCount = 0;
+            
+            let airlinesData = {};
 
-            // Add Airline and Cost Fields
-           // Initialize input count and airlinesData object
-// Initialize input count and airlinesData object
-let InputCount = 0;
-let airlinesData = JSON.parse(localStorage.getItem('airlinesData')) || {};
+            const defaultNameInput = document.getElementById('airline_name');
+            const defaultCostInput = document.getElementById('airline_cost');
 
-// Add Airline and Cost Fields
-document.getElementById('add-airline').addEventListener('click', function () {
-    InputCount++;
+            totalQuotedInput.addEventListener('input', calculateMCO);
 
-    // Create a container for the input group
-    let inputGroup = document.createElement('div');
-    inputGroup.id = `airline_group_${InputCount}`;
-    inputGroup.style.display = 'flex';
-    inputGroup.style.alignItems = 'center';
-    inputGroup.style.marginBottom = '10px';
+            // Function to update airlinesData when name changes
+            function handleNameChange(nameInput, costInput) {
+                const newName = nameInput.value.trim();
+                const oldName = nameInput.dataset.previousName;
+                const cost = costInput.value.trim();
 
-    // Create airline name input
-    let newInput = document.createElement('input');
-    newInput.type = 'text';
-    newInput.id = `airline_name_${InputCount}`;
-    newInput.placeholder = 'Enter airline name';
-    newInput.style.marginRight = '10px';
+                // If there was a previous name, remove it
+                if (oldName && oldName in airlinesData) {
+                    delete airlinesData[oldName];
+                }
 
-    // Create airline cost input
-    let newCostInput = document.createElement('input');
-    newCostInput.type = 'text';
-    newCostInput.id = `airline_cost_${InputCount}`;
-    newCostInput.placeholder = 'Enter airline cost';
-    newCostInput.style.marginRight = '10px';
+                // Add new name if both name and cost exist
+                if (newName && cost) {
+                    airlinesData[newName] = cost;
+                    nameInput.dataset.previousName = newName;
+                }
 
-    // Create a cross icon (remove button) with a dynamic ID
-    let removeButton = document.createElement('button');
-    removeButton.innerHTML = '❌';
-    removeButton.id = `remove_button_${InputCount}`;  // Dynamic ID for the button
-    removeButton.style.cursor = 'pointer';
-    removeButton.style.border = 'none';
-    removeButton.style.background = 'transparent';
-    removeButton.style.color = 'red';
-    removeButton.style.fontSize = '18px';
-    removeButton.style.marginLeft = '10px'; // Add some spacing between the input fields and the button
-
-    // Append inputs and remove button to the input group
-    inputGroup.appendChild(newInput);
-    inputGroup.appendChild(newCostInput);
-    inputGroup.appendChild(removeButton);   
-
-    // Append the input group to the container
-    const container = document.getElementById('airline-names');
-    container.appendChild(inputGroup);
-
-    // Save data to localStorage on input change
-    newInput.addEventListener('input', saveData);
-    newCostInput.addEventListener('input', saveData);
-
-    // Add event listener for the remove button by its dynamic ID
-    removeButton.addEventListener('click', function () {
-        // Use the event target to access the button's ID
-        const buttonId = this.id; // Get the remove button ID
-        const groupId = `airline_group_${buttonId.split('_')[2]}`; // Extract group ID from button ID
-
-        // Remove data from airlinesData if it exists
-        const name = document.getElementById(`airline_name_${buttonId.split('_')[2]}`).value;
-        if (name && airlinesData[name]) {
-            console.log('Removing data for airline:', name); // Debug log for data removal
-            delete airlinesData[name];
-            localStorage.setItem('airlinesData', JSON.stringify(airlinesData));
-        }
-
-        // Remove the input group from the DOM using the group ID
-        const groupToRemove = document.getElementById(groupId);
-        if (groupToRemove) {
-            groupToRemove.remove();
-        }
-    });
-});
-
-// Save data to localStorage
-function saveData() {
-    airlinesData = {}; // Reset the object to avoid unnecessary data
-
-    const container = document.getElementById('airline-names');
-    const inputGroups = container.querySelectorAll('div');
-
-    inputGroups.forEach((group) => {
-        const nameInput = group.querySelector('input[type="text"]:nth-child(1)');
-        const costInput = group.querySelector('input[type="text"]:nth-child(2)');
-
-        if (nameInput && costInput) {
-            const name = nameInput.value.trim();
-            const cost = costInput.value.trim();
-
-            if (name && cost) {
-                airlinesData[name] = cost;
+                localStorage.setItem('airline_default', JSON.stringify(airlinesData));
+                calculateMCO();
             }
-        }
-    });
 
-    // Save the updated data to localStorage
-    localStorage.setItem('airlinesData', JSON.stringify(airlinesData));
-}
+            defaultNameInput.addEventListener('blur', function() {
+                handleNameChange(this, defaultCostInput);
+            });
 
-            // Remove Airline and Cost Fields
-            document.addEventListener('click', function (e) {
-                if (e.target.classList.contains('remove-airline')) {
-                    e.target.parentNode.remove();
+            defaultCostInput.addEventListener('blur', function() {
+                const name = defaultNameInput.value.trim();
+                if (name) {
+                    airlinesData[name] = this.value.trim();
+                    localStorage.setItem('airline_default', JSON.stringify(airlinesData));
                     calculateMCO();
                 }
             });
 
-            // MCO Calculation
             function calculateMCO() {
-                let totalCost = 0;
-                document.querySelectorAll('.airline-cost').forEach(input => {
-                    totalCost += parseFloat(input.value) || 0;
+                const totalQuoted = parseFloat(totalQuotedInput.value) || 0;
+                let totalAirlineCost = 0;
+
+                Object.values(airlinesData).forEach(cost => {
+                    totalAirlineCost += parseFloat(cost) || 0;
                 });
 
-                const totalQuoted = parseFloat(totalQuotedInput.value) || 0;
-                const mcoValue = totalQuoted - totalCost;
+                const mcoValue = totalQuoted - totalAirlineCost;
                 mcoCalculatedInput.value = mcoValue.toFixed(2);
             }
 
-            // Recalculate MCO when total quoted airline change cost 
-            totalQuotedInput.addEventListener('input', calculateMCO);
-            document.addEventListener('input', function (e) {
-                if (e.target.classList.contains('airline-cost')) {
+            document.getElementById('add-airline').addEventListener('click', function () {
+                InputCount++;
+                
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group mb-2';
+                inputGroup.id = `airline_group_${InputCount}`;
+                 
+                inputGroup.innerHTML = `
+                    <input type="text" class="form-control airline-name" id="airline_name_${InputCount}" 
+                        placeholder="Airline Name" style="margin-right: 10px;">
+                    <input type="text" class="form-control airline-cost" id="airline_cost_${InputCount}" 
+                        placeholder="Cost" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="margin-right: 10px;">
+                    <button type="button" class="btn btn-danger remove-airline">❌</button>
+                `;
+
+                document.getElementById('airline-names').appendChild(inputGroup);
+
+                const nameInput = inputGroup.querySelector('.airline-name');
+                const costInput = inputGroup.querySelector('.airline-cost');
+
+                nameInput.addEventListener('blur', function() {
+                    handleNameChange(this, costInput);
+                });
+
+                costInput.addEventListener('blur', function() {
+                    const name = nameInput.value.trim();
+                    if (name) {
+                        airlinesData[name] = this.value.trim();
+                        localStorage.setItem('airline_default', JSON.stringify(airlinesData));
+                        calculateMCO();
+                    }
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-airline')) {
+                    const group = e.target.closest('.input-group');
+                    const nameInput = group.querySelector('.airline-name');
+                    
+                    if (nameInput.value.trim() in airlinesData) {
+                        delete airlinesData[nameInput.value.trim()];
+                        localStorage.setItem('airline_default', JSON.stringify(airlinesData));
+                    }
+                    
+                    group.remove();
                     calculateMCO();
                 }
             });
 
-            // Form navigation
-            const steps = document.querySelectorAll('.step');
-            const nextButtons = document.querySelectorAll('.next');
-            const prevButtons = document.querySelectorAll('.prev');
-            const stepIndicators = document.querySelectorAll('.step-indicator div');
-
-            let currentStep = 0;
-
-            // Validate required fields before going to the next step
-            function validateFields(step) {
-                const inputs = steps[step].querySelectorAll('input[required], select[required]');
-                return Array.from(inputs).every(input => input.value.trim() !== '');
-            }
-
-            nextButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    if (validateFields(currentStep)) {
-                        if (currentStep < steps.length - 1) {
-                            steps[currentStep].classList.remove('active');
-                            stepIndicators[currentStep].classList.remove('active');
-                            stepIndicators[currentStep].classList.add('completed');
-                            currentStep++;
-                            steps[currentStep].classList.add('active');
-                            stepIndicators[currentStep].classList.add('active');
-                        }
-                    } else {
-                        alert('Please fill all required fields before proceeding.');
-                    }
-                });
-            });
-
-            prevButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    if (currentStep > 0) {
-                        steps[currentStep].classList.remove('active');
-                        stepIndicators[currentStep].classList.remove('active');
-                        stepIndicators[currentStep - 1].classList.remove('completed');
-                        currentStep--;
-                        steps[currentStep].classList.add('active');
-                        stepIndicators[currentStep].classList.add('active');
-                    }
-                });
-            });
-
-            // Form submission
-            const form = document.getElementById('multiStepForm');
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                alert('Form submitted successfully!');
-            });
-
-
-
-
+            calculateMCO();
         });
     </script>
 
 
     <script>
+        document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
 
-        let button = document.getElementById('formsubmit')
+            let total_quoted = document.getElementById('total-quoted').value;
+            let mco_description = document.getElementById('mco_description').value;
+            let mco_calculated = document.getElementById('mco-calculated').value;
+            
+            // Get all airline data from localStorage
+            let airlinesData = JSON.parse(localStorage.getItem('airline_default') || '{}');
 
-        button.addEventListener('click', function (e) {
-            let total_quoted = document.getElementById('total-quoted').value
-            let mco_description = document.getElementById('mco_description').value
-            let airline_name = document.getElementById('airline_name').value
-            let airline_cost = document.getElementById('airline_cost').value
-
-            let newAirlineData = {
-                [airline_name]: airline_cost
-            };
-            let airData = localStorage.getItem("airlinesData");
-            let airlinesObject = airData ? JSON.parse(airData) : {};
-
-            let updatedAirlinesData = { ...newAirlineData, ...airlinesObject };
-
-            localStorage.setItem("airlinesData", JSON.stringify(updatedAirlinesData));
-
-            console.log("Updated airlinesData:", updatedAirlinesData);
+            // Create arrays for airline names and costs
+            let airline_names = [];
+            let airline_costs = [];
+            
+            // Convert airlinesData object to arrays
+            Object.entries(airlinesData).forEach(([name, cost]) => {
+                if (name && cost) {  // Only add if both name and cost exist
+                    airline_names.push(name);
+                    airline_costs.push(cost);
+                }
+            });
 
             $.ajax({
                 url: "/newBookingForm",
                 method: "post",
                 dataType: "json",
-                data: { total_amount: total_quoted },
+                data: { 
+                    total_amount: total_quoted,
+                    mco_description: mco_description,
+                    mco_calculated: mco_calculated,
+                    airline_names: airline_names,   
+                    airline_costs: airline_costs
+                },
                 success: function (res) {
-                    console.log(res);
+                    console.log("Success:", res);
+                    // Optionally redirect or show success message
+                    if (res.success) {
+                        alert('Form submitted successfully!');
+                        // window.location.href = '/success-page'; // Redirect if needed
+                    }
                 },
                 error: function (error) {
-                    console.log(error);
+                    console.log("Error:", error);
+                    alert('Error submitting form. Please try again.');
                 }
             });
         });
+    </script>   
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('multiStepForm');
+            const steps = form.querySelectorAll('.step');
+            const nextButtons = form.querySelectorAll('.next');
+            const prevButtons = form.querySelectorAll('.prev');
+            let currentStep = 0;
+
+            // Update step indicators
+            function updateStepIndicators() { 
+                const indicators = document.querySelectorAll('.step-indicator div');
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.remove('active', 'completed');
+                    if (index === currentStep) {
+                        indicator.classList.add('active');
+                    } else if (index < currentStep) {
+                        indicator.classList.add('completed');
+                    }
+                });
+            }
+
+            // Show current step
+            function showStep(stepIndex) {
+                steps.forEach((step, index) => {
+                    step.classList.remove('active');
+                    if (index === stepIndex) {  
+                        step.classList.add('active');
+                    }
+                });
+                updateStepIndicators();
+            }
+
+            // Next button click handler
+            nextButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (currentStep < steps.length - 1) {
+                        currentStep++;
+                        showStep(currentStep);
+                    }
+                });
+            });
+
+            // Previous button click handler
+            prevButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (currentStep > 0) {
+                        currentStep--;
+                        showStep(currentStep);
+                    }
+                });
+            });
+
+            // Initialize first step
+            showStep(currentStep);
+        });
     </script>
-
 
 </body>
 
