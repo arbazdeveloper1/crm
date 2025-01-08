@@ -36,7 +36,7 @@ export const sendOTP = async (req, res) => {
     await updateUserOTP(email, otp, otpExpiry);
 
     const mailOptions = {
-      from: process.env.EMA------IL_USER,
+      from: process.env.EMAIL_USER,
       to: email,
       subject: 'Your OTP for Password Reset',
       text: `Your OTP is ${otp}. It will expire in 15 minutes.`,
