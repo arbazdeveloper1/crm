@@ -120,7 +120,7 @@
                 <div id="step5-indicator">Itinerary</div>
             </div>
 
-            <form id="multiStepForm" action="/newBookingForm" method="POST">
+            <form id="multiStepForm">
                 <!-- Step 1 -->
                 <div class="step active" id="step1">
                     <div class="row">
@@ -324,7 +324,31 @@
                 <!-- Step 5 -->
                 <div class="step" id="step5">
                     <h3>Itinerary Details</h3>
-                    <div class="form-group">
+                    <div id="image">
+                        <div class="row image-row">
+                            <div class="col-6 form-group">
+                                <label>Image</label>
+                                <input type="file" id="itineraryImage" class="form-control" accept="image/*" required>
+                                <small class="form-text text-muted">Please upload a valid image file (e.g., PNG, JPG).</small>
+                            </div>
+                            <div class="col-2 form-group">
+                                <label></label>
+                                <button type="button" class="btn btn-danger remove-image"
+                                    style="margin-top: 31px;">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-link mb-2" id="addImage">Add Image</button>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
+                        <button type="submit" class="btn btn-success" id="formsubmit">Submit</button>
+                    </div>
+                    
+                    <!-- <h3>Itinerary Details</h3>
+                    <div class="form-group addimage">
                         <label for="itineraryImage">Upload Itinerary Image</label>
                         <input type="file" id="itineraryImage" class="form-control" accept="image/*" required>
                         <small class="form-text text-muted">Please upload a valid image file (e.g., PNG, JPG).</small>
@@ -332,11 +356,14 @@
                     <div class="preview mt-3">
                         <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 100%; display: none;">
                     </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-link mb-2" id="add-image">Add Image</button>
+                    </div>
 
                     <div class="d-flex justify-content-end mt-2">
                         <button type="button" class="btn btn-secondary prev mx-2">Previous</button>
                         <button type="submit" class="btn btn-success" id="formsubmit">Submit</button>
-                    </div>
+                    </div> -->
                 </div>
             </form>
         </div>
@@ -378,6 +405,37 @@
         // Attach event listener (if not using inline oninput)
         const cardNumberInput = document.getElementById('cardNumber');
         cardNumberInput.addEventListener('input', detectCardType);
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            const addImagedDetails = document.getElementsById('image');
+            const addImageButton = document.getElementById('addImage');
+
+            const newImageInputContainer = document.createElement('div');
+            newImageInputContainer.classList.add('image-input-container');
+            
+            const newImageInput = document.createElement('input');
+            newImageInput.type = 'file';
+            newImageInput.name = 'image';
+            newImageInput.accept = 'image/*';
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.classList.add('remove-image-button');
+            removeButton.textContent = 'Remove';
+            
+            // Append the file input and remove button to the container
+            newImageInputContainer.appendChild(newImageInput);
+            newImageInputContainer.appendChild(removeButton);
+
+            // Append the new input container to the image container
+            document.getElementById('image-container').appendChild(newImageInputContainer);
+
+            // Add event listener to remove button
+            removeButton.addEventListener('click', function() {
+                newImageInputContainer.remove();  // Remove the corresponding input field
+            });
+        })
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -625,6 +683,21 @@
             // Initialize first step
             showStep(currentStep);
         });
+    </script>
+    <script>
+        document.getElementById("multiStepForm").addEventListener("submit", async (e) => {
+            
+        });
+        async function callAjax (settings) {
+            try {
+                const response = await $.ajax(
+                    settings
+                )
+            } catch (error) {
+                console.log("Error Calling Ajax: " + error);
+                throw error;
+            }
+        }
     </script>
 
 </body>

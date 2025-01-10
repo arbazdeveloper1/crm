@@ -18,4 +18,5 @@ export const resetPassword = async (hashedPassword, email) => {
 
 export const findUserByUserId = async (id) => {
   return await query('SELECT * FROM users WHERE id = ?', [id]);
-} 
+}
+
