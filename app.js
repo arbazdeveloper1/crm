@@ -7,7 +7,9 @@ import multer from 'multer'
 
 import authRoutes from './routes/authRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
-import { checkAuth } from './middlewares/authMiddleware.js'; // Only import checkAuth since verifyToken is used in specific routes
+// import { checkAuth } from './middlewares/authMiddleware.js';
+ // Only import checkAuth since verifyToken is used in specific routes
+import newBooking from './routes/bookingRoutes.js';
 
 dotenv.config();
 
@@ -69,6 +71,7 @@ app.use('/', authRoutes);  // Correct route prefix for auth
 app.use('/auth', authRoutes);  // Correct route prefix for auth
 app.use('/', staffRoutes); // Correct route prefix for staff
 app.use('/staff', staffRoutes); // Correct route prefix for staff
+app.use('/', newBooking);
 
 
 // Add a 404 route handler for undefined routes

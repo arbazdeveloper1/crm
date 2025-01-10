@@ -1,8 +1,8 @@
-import { cardInformationFunc, Price_Description } from "../models/bookingModel";
+import { cardInformationFunc, Price_Description } from "../models/bookingModel.js";
 
-export const priceDescription = async (req,res) => {
+export const priceDescription = async (req,res,next) => {
     const { totalAmountQuoted, MCO_Description, AirlineName, TypeOfCharge, AirlineCost} = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const newTotalAmountQuoted =  totalAmountQuoted;
         const newMCO_Description =  MCO_Description;
@@ -11,14 +11,15 @@ export const priceDescription = async (req,res) => {
         const newAirlineCost =  AirlineCost;
         const sql = await Price_Description(newTotalAmountQuoted,newMCO_Description,newAirlineName,newTypeOfCharge,newAirlineCost);
         if (sql) {
-            res.status(201).json({
+            return res.status(201).json({
                 totalAmountQuoted: totalAmountQuoted,
                 MCO_Description: MCO_Description,
                 AirlineName: AirlineName,
                 TypeOfCharge: TypeOfCharge,
                 AirlineCost: AirlineCost
             });
-        }
+        }next()
+        return res.status(400).json({message: "Not able to insert record" ,status:false});
     } catch (error) {
         console.log("Error in Bookings Controller: " + error.message);
        return res.status(500).json({message: "Server Error"})

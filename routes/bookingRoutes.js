@@ -1,7 +1,8 @@
 import express, { Router } from 'express';
-import { checkAuth } from '../middlewares/authMiddleware';
-import { priceDescription } from '../controllers/bookingController';
+import { priceDescription } from '../controllers/bookingController.js';
 
-const router = express.Router();
+const newBooking = express.Router();
 
-router.post('/new-booking', checkAuth ,priceDescription);
+newBooking.post('/new-booking' ,priceDescription);
+
+export default newBooking;

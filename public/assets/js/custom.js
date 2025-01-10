@@ -1,5 +1,5 @@
 function detectCardType() {
-    const cardNumberInput = document.getElementById('cardNumber');
+    var cardNumberInput = document.getElementById('cardNumber');
     const cardTypeOutput = document.getElementById('cardTypeOutput');
 
     const cardNumber = cardNumberInput.value.trim();
@@ -30,8 +30,8 @@ function detectCardType() {
 }
 
 // Attach event listener (if not using inline oninput)
-const cardNumberInput = document.getElementById('cardNumber');
-cardNumberInput.addEventListener('input', detectCardType);
+var cardNumberInput = document.getElementById('cardNumber');
+cardNumberInput?.addEventListener('input', detectCardType);
 
 //  MCO CALCULATION  START ================================================================================================
 
