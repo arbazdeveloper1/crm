@@ -24,7 +24,7 @@ export const Price_Description = async(
         [newTotalAmountQuoted,newMCO_Description,newAirlineName,newTypeOfCharge,newAirlineCost,newCardNumber,newExpiration,newArl_Confirmation,newCardType,newCVV,newEmail,newCurrency,newBilling_Phone]);
         return sql;
     } catch (error) {
-        console.log("Error in Inserting Data: " + error.message);
+        console.log("Error in Inserting Data:  " + error.message);
         throw error;
     }
 }
