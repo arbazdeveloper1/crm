@@ -651,9 +651,9 @@
             const nameInput = inputGroup.querySelector(".airline-name");
             const costInput = inputGroup.querySelector(".airline-cost");
 
-            nameInput.addEventListener("blur", function () {
-              handleNameChange(this, costInput);
-            });
+                nameInput.addEventListener('blur', function() {
+                    handleNameChange(this, costInput);
+                });
 
             costInput.addEventListener("blur", function () {
               const name = nameInput.value.trim();
