@@ -770,21 +770,13 @@
             url: "/new-booking",
             method: "post",
             dataType: "json",
-            // processData: false,
             data: payload,
-            // data: {
-            //   total_amount: total_quoted,
-            //   mco_description: mco_description,
-            //   mco_calculated: mco_calculated,
-            //   airline_names: airline_names,
-            //   airline_costs: airline_costs,
-            // },
             success: function (res) {
               console.log("Success:", res);
               // Optionally redirect or show success message
               if (res.success) {
                 alert("Form submitted successfully!");
-                // window.location.href = '/success-page'; // Redirect if needed
+                 window.location.href = '/dashboard'; // Redirect if needed
               }
             },
             error: function (error) {
@@ -811,6 +803,7 @@
             if (index === currentStep) {
               indicator.classList.add("active");
             } else if (index < currentStep) {
+              
               indicator.classList.add("completed");
             }
           });

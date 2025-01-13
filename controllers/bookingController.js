@@ -6,7 +6,13 @@ export const priceDescription = async (req, res) => {
         const add_payload = req.body
         const insert_resp = await Price_Description(add_payload)
         if (insert_resp) {
-            return res.status(201).json(insert_resp)
+            return res.status(201).json({
+                success: true,
+                message: 'Form Submitted successfully',
+                data: insert_resp,
+                redirect: '/dashboard',
+                reload: true
+            })
         }
         return res.status(400).json({ message: 'Not able to insert record', status: false })
     } catch (error) {
