@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const addPassengerButton = document.getElementById('add-passenger');    
 
     // Add new passenger row
-    addPassengerButton.addEventListener('click', function () {
-        const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
-        newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // clear all the input fields
-        passengerDetailsContainer.appendChild(newPassengerRow);
-    });
+    // addPassengerButton.addEventListener('click', function () {
+    //     const newPassengerRow = document.querySelector('.passenger-row').cloneNode(true);
+    //     newPassengerRow.querySelectorAll('input, select').forEach(input => input.value = ''); // clear all the input fields
+    //     passengerDetailsContainer.appendChild(newPassengerRow);
+    // });
 
     // Remove passenger row
     passengerDetailsContainer.addEventListener('click', function (e) {

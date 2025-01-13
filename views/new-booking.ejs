@@ -254,7 +254,7 @@
                 <div class="form-group">
                   <label>Expiration (MM/YY)</label>
                   <input
-                    type="text"
+                    type="date"
                     class="form-control"
                     maxlength="5"
                     name="expiration"
@@ -345,15 +345,15 @@
               <div class="row passenger-row">
                 <div class="col-4 form-group">
                   <label>Full Name</label>
-                  <input type="text" name="fullName" class="form-control" required />
+                  <input type="text" name="fullName" class="form-control passenger-detail-inp" required />
                 </div>
                 <div class="col-2 form-group">
                   <label>DOB</label>
-                  <input type="date" name="dob" class="form-control" required />
+                  <input type="date" name="dob" class="form-control passenger-detail-inp" required />
                 </div>
                 <div class="col-2 form-group">
                   <label>Gender</label>
-                  <select name="gender" class="form-control" required>
+                  <select name="gender" class="form-control passenger-detail-inp" required>
                     <option value="" disabled selected>Choose an option</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -362,7 +362,7 @@
                 </div>
                 <div class="col-2 form-group">
                   <label>Ticket No.</label>
-                  <input type="text" name="ticketNo" class="form-control" />
+                  <input type="text" name="ticketNo" class="form-control passenger-detail-inp" />
                 </div>
                 <div class="col-2 form-group">
                   <label></label>
@@ -424,7 +424,7 @@
             </div>
 
             <div class="d-flex justify-content-end">
-              <button class="btn btn-link mb-2" id="addImage">Add Image</button>
+              <button class="btn btn-link mb-2" id="addImage" type="button">Add Image</button>
             </div>
             <div class="d-flex justify-content-end mt-2">
               <button type="button" class="btn btn-secondary prev mx-2">
@@ -507,6 +507,32 @@
           newImageInputContainer.remove(); // Remove the corresponding input field
         });
       });
+
+      //<!-- ! ----------- Trail
+        document?.getElementById("addImage").addEventListener("click", ()=>{
+          const appendDiv = document?.getElementById("image")
+          if(!appendDiv) return;
+          const image_clone_div = document.getElementsByClassName('image-row')[0].cloneNode(true)
+          appendDiv.appendChild(image_clone_div)
+          $(image_clone_div).find(".remove-image")[0].addEventListener("click", ()=>{
+            if($(".image-row").length < 2) return;
+            console.log("remove-image in ");
+            image_clone_div.remove();
+          })  
+        })
+
+        Array.from(document?.getElementsByClassName("remove-image")).forEach(ele=>{
+          ele.addEventListener("click", ()=>{
+            if($(".image-row").length < 2) return;
+            console.log("remove-image");
+            ele.parentElement.parentElement.remove();
+            console.log("remove-image", ele.parentElement.parentElement);
+          })  
+        })
+
+        // $(document).on("click", ".remove-image", ()=>{
+
+        // })
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -665,6 +691,40 @@
     </script>
 
     <script>
+
+      function getAirlineObj(){
+        const data = []
+        const ele = $("#airline-names input");
+        let i = 0;
+        while(i < ele.length){
+          const obj = {
+            airline_name: $(ele[i]).val(),
+            airline_cost: $(ele[i + 1]).val(),
+          }
+          data.push(obj)
+          i = i + 2;
+        }
+        console.log("data airline", data);
+        return data
+      }
+
+      function getPassengerDetailObj(){
+        const data = []
+        const ele = $(".passenger-row .passenger-detail-inp");
+        let i = 0;
+        while(i < ele.length){
+          const obj = {}
+          for(let j = i; j <= i + 4;j++){
+            if($(ele[j]).attr("name")?.trim() == undefined) continue;
+            obj[$(ele[j]).attr("name")?.trim()] = $(ele[j]).val();
+          }
+          data.push(obj)
+          i = i + 4;
+        }
+        console.log("data passenger", data);
+        return data
+      }
+
       document
         .getElementById("multiStepForm")
         .addEventListener("submit", function (e) {
@@ -696,20 +756,22 @@
           const payload = {};
           const formData = new FormData(e.target);
           for (var p of formData) {
+            const name = p[0];
+            const value = p[1];
             if(name=="image"){
                 continue
             }
-            let name = p[0];
-            let value = p[1];
             payload[name] =value;
-            console.log(name, value);
           }
-
+          payload['airline_info'] = JSON.stringify(getAirlineObj())
+          payload['passenger_details'] = JSON.stringify(getPassengerDetailObj())
+          // console.log("payload", payload);
           $.ajax({
             url: "/new-booking",
             method: "post",
             dataType: "json",
-            data:payload,
+            // processData: false,
+            data: payload,
             // data: {
             //   total_amount: total_quoted,
             //   mco_description: mco_description,
