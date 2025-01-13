@@ -25,7 +25,7 @@ export const Price_Description = async (payload) => {
         const insert_resp = await query(insert_query)
         console.log('insert_resp', insert_resp)
         if(!insert_resp.insertId){
-            return {status: false, data:[], c_msg: "Data not Inserted!", alert_status: "error"}
+            return {status: false, data:[], c_msg: "Data not Inserted", alert_status: "error"}
         }
         return { status: true, data:[{ id: insert_resp.insertId, payload }], c_msg: "Data Inserted!", alert_status: "success"}
     } catch (error) {
