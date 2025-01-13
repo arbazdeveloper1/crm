@@ -18,7 +18,7 @@ export const Price_Description = async (payload) => {
         '${typeOfCharge}', '${cardNumber}', '${moment(expiration).format("YYYY-MM-DD HH:mm:ss")}', 
         '${arlConfirmation}', '${cardType}', '${cvv}', '${email}', '${currency}', 
         '${billingPhone}', 10.0 , '${cardHolderName}','${airline_info}', '${passenger_details}',
-        ${GDS_PRN}, '${subjectLine}', '${TFN}', '${billingAddress}'); 
+        '${GDS_PRN}', '${subjectLine}', '${TFN}', '${billingAddress}'); 
         `
         console.log("Insert Query: " , insert_query);
         
