@@ -3,6 +3,8 @@ import { login, sendOTP, resetPasswordHandler, dashboard, logoutUser } from '../
 import { checkAuth, verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
+let a = 10
+console.log(a,'This is the 10')
 
 // Render login page
 router.get('/', checkAuth, (req, res) => {
