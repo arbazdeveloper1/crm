@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import transporter from '../config/mailConfig.js';
 import { findUserByEmail, findUserByUsername, updateUserOTP, resetPassword } from '../models/userModel.js';
 
+console.log("hello world")
+
 export const login = async (req, res) => {
   const { username, password } = req.body;
   const results = await findUserByUsername(username);
