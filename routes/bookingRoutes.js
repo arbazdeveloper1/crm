@@ -1,8 +1,11 @@
-import express, { Router } from 'express';
-import { priceDescription } from '../controllers/bookingController.js';
+import express, { Router } from "express";
+import { priceDescription } from "../controllers/bookingController.js";
+import upload from "../utils/multer.js";
+import multer from 'multer';
+const route = express.Router();
 
-const newBooking = express.Router();
 
-newBooking.post('/new-booking' ,priceDescription);
+// Request for booking
+route.post("/make_booking", upload.array('file',10), priceDescription);
 
-export default newBooking;
+export default route;
