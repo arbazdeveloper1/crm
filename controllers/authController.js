@@ -10,7 +10,7 @@ export const login = async (req, res) => {
     const user = results[0];
     const match = await bcrypt.compare(password, user.password);
     if (match) {
-      const token = jwt.sign({ id: user.id, role: user.userRole }, process.env.JWT_SECRET, { expiresIn: '12h' });
+      const token = jwt.sign({ id: user.id, role: user.userRole, full_name: user.full_name, username: user.username }, process.env.JWT_SECRET, { expiresIn: '12h' });
       res.cookie('token', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
       return res.redirect('/dashboard');
     } else {

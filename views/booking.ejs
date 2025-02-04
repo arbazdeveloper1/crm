@@ -42,7 +42,8 @@
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered table-md">
-                  <tbody><tr>
+                  <tbody>
+                    <tr>
                     <th>#</th>
                     <th>Customer</th>
                     <th>Price (USD)</th>
@@ -51,19 +52,22 @@
                     <th>Agent</th>
                     <th>Cust Id</th>
                   </tr>
+
+                  <% result.forEach((item, index) => { %>
                   <tr>
-                    <td>1</td>
-                    <td>Irwansyah Saputra</td>
-                    <td>2017-01-09</td>
+                    <td><%= index + 1 %></td>
+                    <td><%= item.card_holder_name %></td>
+                    <td><%= item.total_amount %></td>
                     <td>
-                      <div class="badge badge-success">Active</div>
+                      <div class="badge badge-success"><%= item.email_type %></div>
                     </td>
-                    <td><a href="#" class="btn btn-primary">Detail</a></td>
-                    <td><a href="#" class="btn btn-primary">Detail</a></td>
-                    <td><a href="#" class="btn btn-primary">Detail</a></td>
+                    <td><a href="#" class="btn btn-primary"><%= item.created_at %></a></td>
+                    <td><a href="#" class="btn btn-primary"><%= item.agent_name %></a></td>
+                    <td><a href="#" class="btn btn-primary"><%= item.customer_id %></a></td>
                   </tr>
-                  
-                </tbody></table>
+                  <% }) %>
+                </tbody>
+              </table>
               </div>
             </div>
             <div class="card-footer text-right">

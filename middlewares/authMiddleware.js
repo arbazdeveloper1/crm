@@ -20,6 +20,9 @@ export const verifyToken = (req, res, next) => {
     if (err) return res.status(403).json({ message: 'Failed to authenticate token' });
     req.userId = decoded.id;
     req.userRole = decoded.role;
+    req.full_name = decoded.full_name;
+    req.username = decoded.username;
+
     next();
   });
 };
