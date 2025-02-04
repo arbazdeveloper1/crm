@@ -19,3 +19,16 @@ export const priceDescription = async (req, res) => {
     }
 }
 
+
+export const booking_list = async (req, res) => {
+    const userRole = req.userRole;
+    res.render('booking', { userRole }); 
+};
+
+export const new_booking_draft = async (req, res) => {
+    const userRole = req.userRole;
+    res.render('new_booking_draft', { userRole }); 
+};
+
+
+
