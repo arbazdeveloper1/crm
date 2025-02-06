@@ -44,26 +44,24 @@
                 <table class="table table-bordered table-md">
                   <tbody>
                     <tr>
-                    <th>#</th>
                     <th>Customer</th>
                     <th>Price (USD)</th>
                     <th>Email Type</th>
                     <th>Date & Time</th>
                     <th>Agent</th>
                     <th>Cust Id</th>
+                    <th>Action</th>
                   </tr>
 
                   <% result.forEach((item, index) => { %>
                   <tr>
-                    <td><%= index + 1 %></td>
                     <td><%= item.card_holder_name %></td>
                     <td><%= item.total_amount %></td>
-                    <td>
-                      <div class="badge badge-success"><%= item.email_type %></div>
-                    </td>
-                    <td><a href="#" class="btn btn-primary"><%= item.created_at %></a></td>
-                    <td><a href="#" class="btn btn-primary"><%= item.agent_name %></a></td>
-                    <td><a href="#" class="btn btn-primary"><%= item.customer_id %></a></td>
+                    <td><%= item.email_type %></td>
+                    <td><%= item.created_at %></td>
+                    <td><%= item.agent_name %></td>
+                    <td><%= item.customer_id %></td>
+                    <td><a href="#" class="btn btn-primary">Details</a></td>
                   </tr>
                   <% }) %>
                 </tbody>
