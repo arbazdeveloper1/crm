@@ -7,7 +7,7 @@ const route = express.Router();
 
 
 // Request for booking
-route.post("/make_booking", upload.array('file',10), priceDescription);
+route.post("/make_booking",verifyToken, upload.array('file',10), priceDescription);
 route.get("/booking_list",verifyToken, booking_list)
 route.get("/new_booking_draft", verifyToken, new_booking_draft)
 

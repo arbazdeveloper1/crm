@@ -1,4 +1,6 @@
-import { Price_Description } from '../models/bookingModel.js'
+import { Price_Description } from '../models/bookingModel.js';
+import { query } from "../config/db.js";
+
 
 export const priceDescription = async (req, res) => {
     try {
@@ -7,7 +9,13 @@ export const priceDescription = async (req, res) => {
         });
 
         req.FileName = FileName.join(",");
-        const add_payload = req.body
+        const agentFullName = req.full_name || 'No Name';
+
+        const add_payload = {
+            ...req.body,
+            fullname: agentFullName  // Add the fullname to payload
+        };
+
         const insert_resp = await Price_Description(add_payload, FileName)
         if (insert_resp) {
             return res.status(201).json(insert_resp);
@@ -22,12 +30,34 @@ export const priceDescription = async (req, res) => {
 
 export const booking_list = async (req, res) => {
     const userRole = req.userRole;
-    res.render('booking', { userRole }); 
+
+    let qry = `
+        SELECT 
+            card_holder_name,
+            total_amount,
+            email_type,
+            created_at,
+            agent_name,
+            customer_id
+        FROM 
+            form_data 
+        WHERE 
+            agent_name = ?
+    `;
+
+    const result = await query(qry, [req.full_name])
+
+    if (result.length > 0) {
+        res.render('booking', { userRole, result });
+    } else {
+        res.render('booking', { userRole, result: [] });
+    }
+
 };
 
 export const new_booking_draft = async (req, res) => {
     const userRole = req.userRole;
-    res.render('new_booking_draft', { userRole }); 
+    res.render('new_booking_draft', { userRole });
 };
 
 
