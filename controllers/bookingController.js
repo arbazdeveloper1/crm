@@ -16,6 +16,8 @@ export const priceDescription = async (req, res) => {
             fullname: agentFullName  // Add the fullname to payload
         };
 
+        console.log(add_payload,'dssd')
+
         const insert_resp = await Price_Description(add_payload, FileName)
         if (insert_resp) {
             return res.status(201).json(insert_resp);
