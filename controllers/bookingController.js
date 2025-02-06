@@ -42,10 +42,10 @@ export const booking_list = async (req, res) => {
         FROM 
             form_data 
         WHERE 
-            agent_name = ?
+            agent_name = '${req.full_name}'
     `;
 
-    const result = await query(qry, [req.full_name])
+    const result = await query(qry)
 
     if (result.length > 0) {
         res.render('booking', { userRole, result });
