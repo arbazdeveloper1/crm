@@ -29,9 +29,10 @@ export const priceDescription = async (req, res) => {
 
 
 export const booking_list = async (req, res) => {
-    const userRole = req.userRole;
+    try {
+        const userRole = req.userRole;
 
-    let qry = `
+        let qry = `
         SELECT 
             card_holder_name,
             total_amount,
@@ -42,17 +43,20 @@ export const booking_list = async (req, res) => {
         FROM 
             form_data 
         WHERE 
-            agent_name = '${req.full_name}'
+            agent_name = '${req.full_name}' AND booking_type = 'new_booking'
     `;
 
-    const result = await query(qry)
+        const result = await query(qry)
 
-    if (result.length > 0) {
-        res.render('booking', { userRole, result });
-    } else {
-        res.render('booking', { userRole, result: [] });
+        if (result.length > 0) {
+            res.render('booking', { userRole, result });
+        } else {
+            res.render('booking', { userRole, result: [] });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, ErrorMsg: "Internal Server Error"})
     }
-
 };
 
 export const new_booking_draft = async (req, res) => {
@@ -61,4 +65,35 @@ export const new_booking_draft = async (req, res) => {
 };
 
 
+// for all booking list
+export const AllBooking = async (req, res) => {
+    try {
+        const userRole = req.userRole;
 
+        let qry = `
+            SELECT 
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id
+            FROM 
+                form_data 
+            WHERE 
+                agent_name = '${req.full_name}'
+            ORDER BY id DESC
+        `;
+
+        const result = await query(qry)
+
+        if (result.length > 0) {
+            res.render('all_booking', { userRole, result });
+        } else {
+            res.render('all_booking', { userRole, result: [] });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, ErrorMsg: "Internal Server Error" })
+    }
+}
