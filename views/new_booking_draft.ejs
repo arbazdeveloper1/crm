@@ -7,12 +7,12 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title> Admin Dashboard </title>
   <!-- General CSS Files -->
-  <link rel="stylesheet" href="assets/css/app.min.css">
+  <link rel="stylesheet" href="/assets/css/app.min.css">
   <!-- Template CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
   <!-- Custom style CSS -->
-  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
 </head>
 
 <body>
@@ -82,9 +82,9 @@
                   lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:="" 200;=""
                   letter-spacing:="" 2px;="" line-height:="" 48px;"="">
                   <h1 style="font-size: 18px; font-weight: 400; margin: 2;">
-                    <b>Dear Danny Savard , </b><br><br><span style="font-size:15px;">Greetings of the day! </span>
+                    <b>Dear <%- customername %> , </b><br><br><span style="font-size:15px;">Greetings of the day! </span>
                   </h1>
-                  <br><b>Subject: </b> Candian North Reissuence <br>
+                  <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
                 </td>
                 <td bgcolor="#ffffff" align="right" valign="top"
                   style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111; font-family: "
@@ -93,7 +93,11 @@
                   <a target="_blank"
                     href="https://crm.kingjourney.com/docusign/files/CFM01-74ccd4f3a72450604b7980e6126c7b4b.pdf">
                     <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
+                      <% if(result[0]?.Docusign_Verified != 'false') { %>
                       <i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified </b><br><br>
+                      <% }else{ %>
+                        <i style="color:red" class="fa fa-check-circle"></i><b style="color: red;"> Docusign Verified </b><br><br>
+                        <% } %>
                     </h1>
                   </a>
   
@@ -116,18 +120,20 @@
                     completely satisfied with the itinerary and price. As per our conversation and as agreed, we have
                     booked your itinerary as follows -
                     <br><br>
-                    Total price for all passenger(s) including taxes and fees: <b>$ 2,487.36 CAD</b> (Total for all
-                    passengers) and the same amount would be charged on your Visa card ending with XXXX1387
+                    Total price for all passenger(s) including taxes and fees: <b>$ <%- result[0]?.total_amount %> CAD</b> (Total for all
+                    passengers) and the same amount would be charged on your Visa card ending with <%- result[0].card_number.replace(/\d(?=\d{4})/g, "X") || "No card available" %>
                     <br>
-                    <br> On your bank statement there would be One charge, from My Fly Support for 2,487.36 CAD.
+                    <br> On your bank statement there would be One charge, from My Fly Support for CAD.
+
+                    <%- result[0]?.airline_info %>
                     <br><br>
-                    <b style="color:#024;">Confirmation : </b>CFM01211OI
+                    <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
                   </p>
                 </td>
               </tr>
               <tr>
                 <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: "
-                  lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
+lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
                   line-height:="" 25px;"="">
                   <p style="margin: 0;">
   
@@ -154,31 +160,49 @@
                       </tr>
                     </thead>
                     <tbody>
+
+                      <% result.forEach((row, index) => { 
+                        let passengers = JSON.parse(row.passenger_details); // Parse the JSON string
+                        passengers.forEach((passenger, pIndex) => { 
+                   %>
+                 
                       <tr bgcolor="#ffffff">
                         <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                           width="10% !important">
-                          1.
+                          <%= pIndex + 1 %>.
                         </td>
                         <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                           width="30% !important">
-                          Pio Merla (Male)
+                           <%= passenger.fullName %> (Ticket No: <%= passenger.ticketNo %>)
                         </td>
                         <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                           width="30% !important">
-                          08, Jan 1964
+                          <%= passenger.dob %>
                         </td>
   
   
   
                       </tr>
+                      <% }); }); %>
                     </tbody>
                   </table><br><br>
                   <br><br>
   
                   <b style="color:#024;">Trip Details –</b><br><br>
                   </p>
-                  <p><img style="width: 546px;" src="https://crm.kingjourney.com/editor/uploads/1738797612.png"><img
-                      style="width: 526px;" src="https://crm.kingjourney.com/editor/uploads/1738797619.png"><br></p>
+                  <p>
+
+                    <% const images = result[0].image.split(','); %>
+                    <% images.forEach(image => { %>
+                      <% if (image.trim()) { %>
+                        <img style="width: 546px; margin-bottom: 10px;" 
+                             src="/uploads/<%= image.trim() %>" 
+                             alt="Trip Details"><br>
+                      <% } %>
+                    <% }); %>
+                  
+                  
+                  </p>
                   <p></p>
   
                   <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Credit Card Authorization
@@ -222,14 +246,14 @@
                     <thead>
                       <tr>
                         <th class="tg-0lax"><b>BOOKING PNR:</b></th>
-                        <th class="tg-0lax"> </th>
+                        <th class="tg-0lax"><%- result[0].gds_pnr %></th>
                       </tr>
                     </thead>
                     <tbody>
   
                       <tr>
                         <td class="tg-0lax"><b>TOTAL CHARGES:</b></td>
-                        <td class="tg-0lax"> 2487.36 </td>
+                        <td class="tg-0lax"><%- result[0].total_amount %></td>
                       </tr>
                       <tr>
                         <td class="tg-0lax"><b>BASE FARE:</b></td>
@@ -245,32 +269,30 @@
                       </tr>
                       <tr>
                         <td class="tg-0lax"><b>AIRLINE REFERENCE (ARL):</b></td>
-                        <td class="tg-0lax"> </td>
+                        <td class="tg-0lax"><%- result[0].arl_confirmation %></td>
                       </tr>
                       <tr>
                         <td class="tg-0lax"><b>CARD HOLDER NAME:</b></td>
-                        <td class="tg-0lax">DANNY SAVARD </td>
+                        <td class="tg-0lax"><%- result[0].card_holder_name %></td>
                       </tr>
                       <tr>
                         <td class="tg-0lax"><b>CARD NUMBER:</b></td>
-                        <td class="tg-0lax">4520883033121387 (Visa)</td>
+                        <td class="tg-0lax"><%- result[0].card_number %> (<%- result[0].card_type %>)</td>
                       </tr>
                       <tr>
                         <td class="tg-0lax"><b>CARD EXPIRY / CVV:</b></td>
-                        <td class="tg-0lax">0128 &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; 471</td>
+                        <td class="tg-0lax"><%- result[0].expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%- result[0].cvv %></td>
                       </tr>
                       <tr>
                         <td class="tg-0lax"><b>BILLING PHONE:</b></td>
-                        <td class="tg-0lax">3063070959</td>
+                        <td class="tg-0lax"><%- result[0].billing_phone %></td>
                       </tr>
                       <tr>
                         <td class="tg-0lax"><b>BILLING EMAIL:</b></td>
-                        <td class="tg-0lax"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                            data-cfemail="0a696b786368657f696b68794a6d676b636624696567">[email&nbsp;protected]</a></td>
+                        <td class="tg-0lax"><%- result[0].email %></td>
                       </tr>
                       <tr>
-                        <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> 1087 Mivvik Street Iqaluit, NU X0A
-                          0A1, Canada </td>
+                        <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> <%- result[0].billing_address %></td>
                       </tr>
                     </tbody>
                   </table>
@@ -287,7 +309,7 @@
                   lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
                   line-height:="" 25px;"="">
                   <p style="margin: 0;"><b>Thanks &amp; Regards!</b> <br>
-                    <span style="color:green;font-size:20px;">Nathan</span> <br>
+                    <span style="color:green;font-size:20px;"><%- FullName %></span> <br>
                     (Reservations Desk)<br>
                   </p>
                   <hr>
