@@ -16,8 +16,6 @@ export const priceDescription = async (req, res) => {
             fullname: agentFullName  // Add the fullname to payload
         };
 
-        console.log(add_payload,'dssd')
-
         const insert_resp = await Price_Description(add_payload, FileName)
         if (insert_resp) {
             return res.status(201).json(insert_resp);
@@ -57,15 +55,9 @@ export const booking_list = async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, ErrorMsg: "Internal Server Error"})
+        return res.status(500).json({ success: false, ErrorMsg: "Internal Server Error" })
     }
 };
-
-export const new_booking_draft = async (req, res) => {
-    const userRole = req.userRole;
-    res.render('new_booking_draft', { userRole });
-};
-
 
 // for all booking list
 export const AllBooking = async (req, res) => {
@@ -79,7 +71,8 @@ export const AllBooking = async (req, res) => {
                 email_type,
                 created_at,
                 agent_name,
-                customer_id
+                customer_id,
+                booking_type
             FROM 
                 form_data 
             WHERE 
@@ -99,3 +92,49 @@ export const AllBooking = async (req, res) => {
         return res.status(500).json({ success: false, ErrorMsg: "Internal Server Error" })
     }
 }
+
+
+// Controller for Mail Draft
+export const new_booking_draft = async (req, res) => {
+    const userRole = req.userRole;
+    const { customername } = req.params;
+    const FullName = req.full_name
+
+    let qry = `
+            SELECT DISTINCT
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                card_number,
+                subject_line,
+                image,
+                passenger_details,
+                airline_info,
+                gds_pnr,
+                billing_address,
+                email,
+                billing_phone,
+                DATE_FORMAT(expiration,"%y-%m-%d") as expiration,
+                cvv,
+                card_type,
+                arl_confirmation,
+                Docusign_Verified
+            FROM 
+                form_data
+            WHERE 
+                card_holder_name = '${customername}'
+        `;
+
+    const result = await query(qry)
+
+    if (result.length > 0) {
+        res.render('new_booking_draft', { userRole, customername, result, FullName });
+    } else {
+        res.render('new_booking_draft', { userRole, customername, result: [], FullName });
+
+    }
+};
+
