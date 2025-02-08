@@ -26,7 +26,7 @@ export const Price_Description = async (payload, FileName) => {
         card_type , cvv, email, currency, 
         billing_phone, mco_calculated, card_holder_name, airline_info, passenger_details, gds_pnr,
         subject_line, tfn, billing_address,image,customer_id, agent_name,created_at, email_type, booking_type) VALUES
-        ('${parseFloat(totalAmountQuoted)}', '${mcoDescription}','${typeOfCharge}', '${cardNumber}', '${formatExpirationNative(expiration)}','${arlConfirmation}', '${cardType}', '${cvv}', '${email}', '${currency}', '${billingPhone}', '10.0', '${cardHolderName}','${airline_info}', '${passenger_details}','${GDS_PRN}', '${subjectLine}', '${TFN}', '${billingAddress}','${FileName}','${generateRandomAlphaNumeric()}','${fullname}','${getCurrentDateFormatted()}','supplier','New booking')`;
+        ('${parseFloat(totalAmountQuoted)}', '${mcoDescription}','${typeOfCharge}', '${cardNumber}', '${formatExpirationNative(expiration)}','${arlConfirmation}', '${cardType}', '${cvv}', '${email}', '${currency}', '${billingPhone}', '10.0', '${cardHolderName}','${airline_info}', '${passenger_details}','${GDS_PRN}', '${subjectLine}', '${TFN}', '${billingAddress}','${FileName}','${generateRandomAlphaNumeric()}','${fullname}','${getCurrentDateFormatted()}','supplier','new_booking')`;
         
     const insert_resp = await query(insert_query);
 
