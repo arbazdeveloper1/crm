@@ -55,7 +55,7 @@
 
                   <% result.forEach((item, index) => { %>
                   <tr>
-                    <td><%= item.card_holder_name %></td>
+                    <td><a href="/new_booking_draft/<%- encodeURIComponent(item.card_holder_name) %>"><%= item.card_holder_name %></a></td>
                     <td><%= item.total_amount %></td>
                     <td><%= item.email_type %></td>
                     <td><%= item.created_at %></td>
