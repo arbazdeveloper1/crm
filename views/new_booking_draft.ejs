@@ -18,7 +18,7 @@
   <body>
     <!-- <div class="loader"></div> -->
     <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
-      <a href="#" class="btn btn-success mx-2">Send Email Now</a>
+      <a href="#" class="btn btn-success mx-2" data-toggle="modal" data-target="#exampleModal">Send Email Now</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -43,11 +43,11 @@
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item mx-2">
-            <a href="/all_booking" class="btn btn-danger">Back to Home</a>
+            <a href="#" class="btn btn-danger">Back to Home</a>
           </li>
         </ul>
-      </div>
-    </nav>
+      </div>
+    </nav>
 
 
   <div class="container-fluid bg-primary">
@@ -415,16 +415,124 @@
 
 
 
+
+
+  <!-- Send email modal start  -->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="formModal">Send Details to Passenger</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline: none;">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class=" tabs-left" id="modal-tabs">
+                  <ul class="nav nav-tabs">
+                    <li class="active">
+                      <a href="#personal" data-toggle="tab">Send Email</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tab-content" id="tab-content">
+                  <div class="tab-pane active" id="personal">
+                    <form action="/" method="POST">
+                      <div class="row" style="margin-top:2%">
+                        <div class="col-sm-12" style="margin-bottom:3%">
+                          <label for="fromemail" class="col-form-label">From:</label>
+                          <select name="fromemail" id="fromemail" class="form-control">
+                            <option value="" disabled>Select</option>
+                            <option value="smtp">Offline- support@myflysupports.com</option>
+                            <option value="smtp2">Online- support@kingjourney.com</option>
+                          </select>
+                        </div><br>
+                        <div class="col-sm-12">
+                          <label for="recipient-name" class="col-form-label">Subject:</label>
+                          <input type="text" name="subject" class="form-control" id="subject" placeholder="Enter Subject..."
+                            autocomplete="off" value="" required="">
+            
+                        </div>
+            
+                        <div class="col-sm-12">
+                          <br>
+            
+                          <label for="recipient-name" class="col-form-label">Email Address:</label>
+                          <input type="email" name="to_email" class="form-control" id="email"
+                            placeholder="Enter Customer Email Id.." autocomplete="off" value="GENEV_B@HOTMAIL.COM"
+                            required="">
+                          <p id="error"></p>
+                          <input type="hidden" value="1032" name="id">
+                        </div>
+                        <div class="col-sm-12" style="margin-bottom:3%">
+                          <label for="eticketfile" class="col-form-label">Select E-Ticket:</label>
+                          <select name="eticketfile[]" id="eticketfile" class="form-control" multiple>
+                            <option value="" disabled selected>Select Attachments</option>
+                            <option value="Calm Air E ticket#https://crm.kingjourney.com/uploads/ItinUYFA5M_250207145231231-1.pdf">
+                              Calm Air E ticket
+                            </option>
+                            <option value="Calm Air E ticket#https://crm.kingjourney.com/uploads/ItinUYFA5M_250207145231231-1.pdf">
+                              E ticket
+                            </option>
+                          </select>
+                        </div>
+            
+                        <div class="col-sm-12">
+                          <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" value="email" name="emailtype" id="emailTypeAuth" checked>
+                              <label class="form-check-label" for="emailTypeAuth">
+                                Auth Email
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" value="ticket" name="emailtype" id="emailTypeTicket">
+                              <label class="form-check-label" for="emailTypeTicket">
+                                e-Ticket
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            
+                        <br><br>
+            
+                        <div class="col-sm-12 col-xl-12" style="text-align:right;margin-top:5%">
+                          <button type="button" class="btn btn-outline-secondary" style="text-align:right"
+                            data-dismiss="modal">Close</button>
+                          <!-- <button type="button" id="check_email" style="text-align:left" class="btn btn-warning">Check
+                            Email</button> -->
+                          <button type="submit" class="btn btn-primary" style="text-align:right">Send Now</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+  <!-- Send email start  -->
+
+
+
     <!-- General JS Scripts -->
-    <script src="assets/js/app.min.js"></script>
+    <script src="/assets/js/app.min.js"></script>
     <!-- JS Libraies -->
-    <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
+    <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
     <!-- Page Specific JS File -->
-    <script src="assets/js/page/index.js"></script>
+    <script src="/assets/js/page/index.js"></script>
     <!-- Template JS File -->
-    <script src="assets/js/scripts.js"></script>
+    <script src="/assets/js/scripts.js"></script>
+
     <!-- Custom JS File -->
-    <script src="assets/js/custom.js"></script>
+    <script src="/assets/js/custom.js"></script>
   </body>
 
 
