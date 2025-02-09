@@ -31,23 +31,15 @@ function formatExpirationNative(expiration) {
 }
 
 // Function to generate random alphanumeric string
-function generateRandomAlphaNumeric(length = 9) {
+function generateRandomAlphaNumeric(length = 10) {
   const numbers = '0123456789';
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let result = '';
+  let result = 'KJ';
   
-  // Add 6 random numbers
-  for(let i = 0; i < 6; i++) {
-    result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+  const chars = numbers + letters;
+  for(let i = 0; i < 8; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  
-  // Add 3 random letters
-  for(let i = 0; i < 3; i++) {
-    result += letters.charAt(Math.floor(Math.random() * letters.length));
-  }
-  
-  // Shuffle the string
-  result = result.split('').sort(() => Math.random() - 0.5).join('');
   
   return result;
 }

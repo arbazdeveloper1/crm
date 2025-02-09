@@ -168,7 +168,7 @@
               </div>
               <div class="form-group">
                 <label>MCO (auto calculated)</label>
-                <input type="text" class="form-control" id="mco-calculated" name="MCO" disabled />
+                <input type="text" class="form-control" id="mco_calculated" name="MCO" disabled />
               </div>
             </div>
           </div>
@@ -520,7 +520,7 @@
       localStorage.removeItem("airline_default");
 
       const totalQuotedInput = document.getElementById("total-quoted");
-      const mcoCalculatedInput = document.getElementById("mco-calculated");
+      const mcoCalculatedInput = document.getElementById("mco_calculated");
       let InputCount = 0;
 
       let airlinesData = {};
@@ -703,7 +703,7 @@
       let total_quoted = document.getElementById("total-quoted").value;
       let mco_description =
         document.getElementById("mco_description").value;
-      let mco_calculated = document.getElementById("mco-calculated").value;
+      let mco_calculated = document.getElementById("mco_calculated").value;
 
       // Get all airline data from localStorage
       let airlinesData = JSON.parse(
