@@ -675,26 +675,7 @@
       return data;
     }
 
-    // Test API
-    function testAPI() {
-      $.ajax({
-        url: "/test-route",
-        method: "post",
-        success: function (res) {
-          console.log("Test route success:", res);
-        },
-        error: function (err) {
-          console.log("Test route error:", err);
-        }
-      });
-    }
-
-    // Call it when page loads
-    $(document).ready(function () {
-      testAPI();
-    });
-
-    // End Test API
+   
 
     document.getElementById("multiStepForm").addEventListener("submit", function (e) {
       e.preventDefault(); 
@@ -705,6 +686,8 @@
       let mco_description =
         document.getElementById("mco_description").value;
       let mco_calculated = document.getElementById("mco_calculated").value;
+
+      formData.append("mco_calculated", mco_calculated);
 
       // Get all airline data from localStorage
       let airlinesData = JSON.parse(

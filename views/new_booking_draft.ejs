@@ -15,505 +15,417 @@
     <link rel="stylesheet" href="/assets/css/custom.css">
   </head>
 
-<body>
-  <!-- <div class="loader"></div> -->
-  <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
-    <a href="#" class="btn btn-success mx-2">Send Email Now</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item  mx-2 active">
-          <a href="#" class="btn btn-warning">Attechments</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a href="#" class="btn btn-warning">Last Status: Charged</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a href="#" class="btn btn-info">Booking Remarks</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a href="#" class="btn btn-warning">Change Currency</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a href="#" class="btn btn-success">Fetch Score</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item mx-2">
-          <a href="#" class="btn btn-danger">Back to Home</a>
-        </li>
-      </ul>
+  <body>
+    <!-- <div class="loader"></div> -->
+    <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
+      <a href="#" class="btn btn-success mx-2">Send Email Now</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item  mx-2 active">
+            <a href="#" class="btn btn-warning">Attechments</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a href="#" class="btn btn-warning">Last Status: Charged</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a href="#" class="btn btn-info">Booking Remarks</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a href="#" class="btn btn-warning">Change Currency</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a href="#" class="btn btn-success">Fetch Score</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item mx-2">
+            <a href="#" class="btn btn-danger">Back to Home</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+  <div class="container-fluid bg-primary">
+    <div  class="w-100 " style="height: 300px">
+
     </div>
-  </nav>
-
-
-<div class="container-fluid bg-primary">
-  <div  class="w-100 " style="height: 300px">
-
   </div>
-</div>
 
 
-<div class="container-fluid justify-content-center d-flex " style="margin-top: -10%;">
-<div class="row ">
-  <div class="col-12 ">
-    <tbody>
-      <tr>
-        <td bgcolor="#2b0495" align="center">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
-            <tbody>
-              <tr>
-                <td align="center" valign="top" style="padding: 0px 10px 40px 10px;"> </td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td bgcolor="#2b0495" align="center" style="padding: 0px 10px 0px 10px;">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
-            <tbody>
-              <tr>
-                <td bgcolor="#ffffff" align="left" valign="top"
-                  style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: "
-                  lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:="" 200;=""
-                  letter-spacing:="" 2px;="" line-height:="" 48px;"="">
-                  <h1 style="font-size: 18px; font-weight: 400; margin: 2;">
-                    <b>Dear <%- customername %> , </b><br><br><span style="font-size:15px;">Greetings of the day! </span>
-                  </h1>
-                  <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
-                </td>
-                <td bgcolor="#ffffff" align="right" valign="top"
-                  style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111; font-family: "
-                  lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:="" 200;=""
-                  letter-spacing:="" 2px;="" line-height:="" 48px;"="">
-                  <a target="_blank"
-                    href="https://crm.kingjourney.com/docusign/files/CFM01-74ccd4f3a72450604b7980e6126c7b4b.pdf">
-                    <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
-                      <% if(result[0]?.Docusign_Verified != 'false') { %>
-                      <i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified </b><br><br>
-                      <% }else{ %>
-                        <i style="color:red" class="fa fa-check-circle"></i><b style="color: red;"> Docusign Verified </b><br><br>
-                        <% } %>
+  <div class="container-fluid justify-content-center d-flex " style="margin-top: -10%;">
+  <div class="row ">
+    <div class="col-12 ">
+      <tbody>
+        <tr>
+          <td bgcolor="#2b0495" align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
+              <tbody>
+                <tr>
+                  <td align="center" valign="top" style="padding: 0px 10px 40px 10px;"> </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#2b0495" align="center" style="padding: 0px 10px 0px 10px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
+              <tbody>
+                <tr>
+                  <td bgcolor="#ffffff" align="left" valign="top"
+                    style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: "
+                    lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:="" 200;=""
+                    letter-spacing:="" 2px;="" line-height:="" 48px;"="">
+                    <h1 style="font-size: 18px; font-weight: 400; margin: 2;">
+                      <b>Dear <%- result[0]?.card_holder_name %> , </b><br><br><span style="font-size:15px;">Greetings of the day! </span>
                     </h1>
-                  </a>
-  
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td bgcolor="#ededed" align="center" style="padding: 0px 10px 0px 10px;">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
-            <tbody>
-              <tr>
-                <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: "
-                  lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
-                  line-height:="" 25px;"="">
-                  <p style="margin: 0;">We would like you to go through your itinerary carefully. Please reply to this
-                    email as "I Authorize or I Agree" only when you have checked all the information and you are
-                    completely satisfied with the itinerary and price. As per our conversation and as agreed, we have
-                    booked your itinerary as follows -
-                    <br><br>
-                    Total price for all passenger(s) including taxes and fees: <b>$ <%- result[0]?.total_amount %> CAD</b> (Total for all
-                    passengers) and the same amount would be charged on your Visa card ending with <%- result[0].card_number.replace(/\d(?=\d{4})/g, "X") || "No card available" %>
-                    <br>
-                    <br> On your bank statement there would be One charge, from My Fly Support for CAD.
+                    <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
+                  </td>
+                  <td bgcolor="#ffffff" align="right" valign="top"
+                    style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111; font-family: "
+                    lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:="" 200;=""
+                    letter-spacing:="" 2px;="" line-height:="" 48px;"="">
+                    <a target="_blank"
+                      href="https://crm.kingjourney.com/docusign/files/CFM01-74ccd4f3a72450604b7980e6126c7b4b.pdf">
+                      <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
+                        <% if(result[0]?.Docusign_Verified != 'false') { %>
+                        <i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified </b><br><br>
+                        <% }else{ %>
+                          <i style="color:red" class="fa fa-check-circle"></i><b style="color: red;"> Docusign Verified </b><br><br>
+                          <% } %>
+                      </h1>
+                    </a>
+    
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#ededed" align="center" style="padding: 0px 10px 0px 10px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
+              <tbody>
+                <tr>
+                  <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: "
+                    lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
+                    line-height:="" 25px;"="">
+                    <p style="margin: 0;">We would like you to go through your itinerary carefully. Please reply to this
+                      email as "I Authorize or I Agree" only when you have checked all the information and you are
+                      completely satisfied with the itinerary and price. As per our conversation and as agreed, we have
+                      booked your itinerary as follows -
+                      <br><br>
+                      Total price for all passenger(s) including taxes and fees: <b>$ <%- result[0]?.total_amount %> <%- result[0]?.currency %></b> (Total for all
+                      passengers) and the same amount would be charged on your Visa card ending with <%- result[0]?.card_number.replace(/\d(?=\d{4})/g, "X") || "No card available" %>
+                      <br>
 
-                    <%- result[0]?.airline_info %>
-                    <br><br>
-                    <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: "
-lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
-                  line-height:="" 25px;"="">
-                  <p style="margin: 0;">
-  
-                    <b style="color:#024;">Passenger(s) information –</b><br><br>
-                  <table style="background: #d2d2d2; border: solid 1px #d2d2d2;" width="100%" cellspacing="0"
-                    cellpadding="0" border="0">
-                    <thead>
-                      <tr style="color: #000;font-weight:600">
-                        <td style="font-size: 14px; line-height: 25px;  border-right: solid 1px #ffffff;padding:10px;"
-                          width="10%">
-                          Sr. No.
-  
-                        </td>
-                        <td style="font-size: 14px; line-height: 25px;  border-right: solid 1px #ffffff;padding:10px;"
-                          width="20%">
-                          Full Name
-  
-                        </td>
-                        <td style="font-size: 14px; line-height: 25px;  border-right: solid 1px #ffffff;padding:10px;"
-                          width="20%">
-                          DOB (D,M Y)
-                        </td>
-  
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <% result.forEach((row, index) => { 
-                        let passengers = JSON.parse(row.passenger_details); // Parse the JSON string
-                        passengers.forEach((passenger, pIndex) => { 
-                   %>
-                 
-                      <tr bgcolor="#ffffff">
-                        <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
-                          width="10% !important">
-                          <%= pIndex + 1 %>.
-                        </td>
-                        <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
-                          width="30% !important">
-                           <%= passenger.fullName %> (Ticket No: <%= passenger.ticketNo %>)
-                        </td>
-                        <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
-                          width="30% !important">
-                          <%= passenger.dob %>
-                        </td>
-  
-  
-  
-                      </tr>
-                      <% }); }); %>
-                    </tbody>
-                  </table><br><br>
-                  <br><br>
-  
-                  <b style="color:#024;">Trip Details –</b><br><br>
-                  </p>
-                  <p>
-
-                    <% const images = result[0].image.split(','); %>
-                    <% images.forEach(image => { %>
-                      <% if (image.trim()) { %>
-                        <img style="width: 546px; margin-bottom: 10px;" 
-                             src="/uploads/<%= image.trim() %>" 
-                             alt="Trip Details"><br>
-                      <% } %>
-                    <% }); %>
-                  
-                  
-                  </p>
-                  <p></p>
-  
-                  <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Credit Card Authorization
-                    :</span><br><br>
-  
-                  <style type="text/css">
-                    .tg {
-                      border-collapse: collapse;
-                      border-spacing: 0;
-                    }
-  
-                    .tg td {
-                      border-color: black;
-                      border-style: solid;
-                      border-width: 1px;
-                      font-family: Arial, sans-serif;
-                      font-size: 14px;
-                      overflow: hidden;
-                      padding: 10px 5px;
-                      word-break: normal;
-                    }
-  
-                    .tg th {
-                      border-color: black;
-                      border-style: solid;
-                      border-width: 1px;
-                      font-family: Arial, sans-serif;
-                      font-size: 14px;
-                      font-weight: normal;
-                      overflow: hidden;
-                      padding: 10px 5px;
-                      word-break: normal;
-                    }
-  
-                    .tg .tg-0lax {
-                      text-align: left;
-                      vertical-align: top
-                    }
-                  </style>
-                  <table class="tg">
-                    <thead>
-                      <tr>
-                        <th class="tg-0lax"><b>BOOKING PNR:</b></th>
-                        <th class="tg-0lax"><%- result[0].gds_pnr %></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-  
-                      <tr>
-                        <td class="tg-0lax"><b>TOTAL CHARGES:</b></td>
-                        <td class="tg-0lax"><%- result[0].total_amount %></td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>BASE FARE:</b></td>
-                        <td class="tg-0lax">0</td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>TAXES &amp; FEES:</b></td>
-                        <td class="tg-0lax">2487.36</td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>REASON OF BOOKING:</b></td>
-                        <td class="tg-0lax">New Booking</td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>AIRLINE REFERENCE (ARL):</b></td>
-                        <td class="tg-0lax"><%- result[0].arl_confirmation %></td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>CARD HOLDER NAME:</b></td>
-                        <td class="tg-0lax"><%- result[0].card_holder_name %></td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>CARD NUMBER:</b></td>
-                        <td class="tg-0lax"><%- result[0].card_number %> (<%- result[0].card_type %>)</td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>CARD EXPIRY / CVV:</b></td>
-                        <td class="tg-0lax"><%- result[0].expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%- result[0].cvv %></td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>BILLING PHONE:</b></td>
-                        <td class="tg-0lax"><%- result[0].billing_phone %></td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax"><b>BILLING EMAIL:</b></td>
-                        <td class="tg-0lax"><%- result[0].email %></td>
-                      </tr>
-                      <tr>
-                        <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> <%- result[0].billing_address %></td>
-                      </tr>
-                    </tbody>
-                  </table>
-  
-                  <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Terms And Conditions:</span><br>
-                  <span style="font-size:12px;"> Reservations are non-transferable and non-refundable. </span>
-  
-                </td>
-              </tr>
-  
-              <tr>
-                <td bgcolor="#ffffff" align="left"
-                  style="padding: 10px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: "
-                  lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
-                  line-height:="" 25px;"="">
-                  <p style="margin: 0;"><b>Thanks &amp; Regards!</b> <br>
-                    <span style="color:green;font-size:20px;"><%- FullName %></span> <br>
-                    (Reservations Desk)<br>
-                  </p>
-                  <hr>
-  
-                  ☎ <b>Toll-free (24/7) :</b>&nbsp;&nbsp; <a href="#" style="font-weight:bold;">1-855-515-1040</a><br><br>
-                  <a href="#"
-                    style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
-                    Acknowledge</a>
-                  &nbsp;&nbsp;<a href="#"
-                    style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">Upload
-                    Files</a>
-                  <p></p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td bgcolor="#ededed" align="center" style="padding: 30px 10px 0px 10px;">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
-            <tbody>
-              <tr>
-                <td bgcolor="#FFECD1" align="center"
-                  style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: "
-                  lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
-                  line-height:="" 25px;"="">
-                  <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">CHANGES / CANCELLATION </h2>
-                  <p style="margin: 0;font-size: 12px;">
-                    <b>Terms &amp; Conditions</b>
-                    Acknowledgment of these terms and conditions is a condition of booking. Acceptance by you on this
-                    booking is your acceptance that you have read, understood and agreed to be bound by these terms and
-                    conditions.
-                    <br><br>
-                    <b>Reconfirmation</b>
-                    We recommend that you confirm your flight with the local airline office at least 72 hours prior to
-                    departure. Failure to reconfirm may result in the cancellation of some reservations. For Special
-                    request (hotel confirmation, meal and seat preference, special assistance, wheel chair request) are
-                    subject to airline confirmation and need to reconfirm from agency at least 72 hours prior to
-                    departure.
-                    <br><br>
-                    <b>CHANGES / CANCELLATION</b>
-                    Reservations are non-transferable and non-refundable. Some tickets, depending on fare rules, can be
-                    refunded and/or used (for a limited time) towards future travel or can be refunded; however, all
-                    applicable penalties will apply (airline charges and service fees). Travelers Name – Traveller's First
-                    name and Last name must be entered during the time of reservation exactly as it appears on your
-                    government-issued identification, be it your passport, Driving License or other acceptable forms of
-                    identification depending on your type of journey (Domestic/International). Travel agency refund (once
-                    the refund is processed by the airline, we wont be taking any chargeback for the same). The name once
-                    entered will not be changed. Some Typo Error (Name Correction) however, is allowed, depending on
-                    Airline Terms of Use, &amp; charges would be applied according to airline policy. We are a travel
-                    agency and not the airlines. This email has been sent on behalf of My Fly Support LLC. We are happy to
-                    help you with any questions or concerns you may have. All customers are advised to verify travel
-                    documents (transit visa/entry visa) for the country through which they are transiting and/or entering.
-                    We will not be responsible if proper travel documents are not available and you are denied entry or
-                    transit into a Country. We request you to consult the embassy of the country(s) you are visiting or
-                    transiting through. In the booking made by the agency or any third party , once the refund is
-                    processed by the airline, you have to contact to your travel agency for the refund amount as refund
-                    amount is being sent to the Travel Agency , we wont be taking any chargeback in case of Third Party
-                    Booking refund.<br><br> <span style="color:red;">If you have any query or dispute call on and we will
-                      give our best resolution to the dispute hence we will not cater any direct dispute from bank!</span>
-                    <br><br>
-                    <b>DECLARATION</b>
-                    If My Fly Support LLC takes any action to enforce the Terms and Conditions, it will be entitled to
-                    recover from you, and you agree to pay, all legal fees and expenses and any cost of litigation, in
-                    addition to any other relief, at law or in equity, to which such parties may be entitled. I agree that
-                    the above dates and time are correct. My name is as it appears on the passport. I am aware of all fare
-                    rules and conditions. I must reconfirm my flights 72 hours prior to departure.
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-  </div>
-</div>
-</div>
-
-
-
-
-
-
-  <!-- Send email modal start  -->
-
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="formModal">Send Details to Passenger</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline: none;">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class=" tabs-left" id="modal-tabs">
-                  <ul class="nav nav-tabs">
-                    <li class="active">
-                      <a href="#personal" data-toggle="tab">Send Email</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="tab-content" id="tab-content">
-                  <div class="tab-pane active" id="personal">
-                    <form action="/" method="POST">
-                      <div class="row" style="margin-top:2%">
-                        <div class="col-sm-12" style="margin-bottom:3%">
-                          <label for="fromemail" class="col-form-label">From:</label>
-                          <select name="fromemail" id="fromemail" class="form-control">
-                            <option value="" disabled>Select</option>
-                            <option value="smtp">Offline- support@myflysupports.com</option>
-                            <option value="smtp2">Online- support@kingjourney.com</option>
-                          </select>
-                        </div><br>
-                        <div class="col-sm-12">
-                          <label for="recipient-name" class="col-form-label">Subject:</label>
-                          <input type="text" name="subject" class="form-control" id="subject" placeholder="Enter Subject..."
-                            autocomplete="off" value="" required="">
-            
-                        </div>
-            
-                        <div class="col-sm-12">
-                          <br>
-            
-                          <label for="recipient-name" class="col-form-label">Email Address:</label>
-                          <input type="email" name="to_email" class="form-control" id="email"
-                            placeholder="Enter Customer Email Id.." autocomplete="off" value="GENEV_B@HOTMAIL.COM"
-                            required="">
-                          <p id="error"></p>
-                          <input type="hidden" value="1032" name="id">
-                        </div>
-                        <div class="col-sm-12" style="margin-bottom:3%">
-                          <label for="eticketfile" class="col-form-label">Select E-Ticket:</label>
-                          <select name="eticketfile[]" id="eticketfile" class="form-control" multiple>
-                            <option value="" disabled selected>Select Attachments</option>
-                            <option value="Calm Air E ticket#https://crm.kingjourney.com/uploads/ItinUYFA5M_250207145231231-1.pdf">
-                              Calm Air E ticket
-                            </option>
-                            <option value="Calm Air E ticket#https://crm.kingjourney.com/uploads/ItinUYFA5M_250207145231231-1.pdf">
-                              E ticket
-                            </option>
-                          </select>
-                        </div>
-            
-                        <div class="col-sm-12">
-                          <div class="row">
-                          <div class="col-sm-4">
-                            <div class="form-check">
-                              <input class="form-check-input" type="radio" value="email" name="emailtype" id="emailTypeAuth" checked>
-                              <label class="form-check-label" for="emailTypeAuth">
-                                Auth Email
-                              </label>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-check">
-                              <input class="form-check-input" type="radio" value="ticket" name="emailtype" id="emailTypeTicket">
-                              <label class="form-check-label" for="emailTypeTicket">
-                                e-Ticket
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-            
+                      <% result?.forEach((row, index) => { 
+                        let airline_data;
+                        try {
+                            airline_data = JSON.parse(row.airline_info)
+                        } catch (error) {
+                            airline_data = [];
+                        }
+                    
+                        let chargeCount = airline_data.length;
+                    %>
+                    
+                        <br> On your bank statement, there would be 
+                        <%= chargeCount === 1 ? "one charge" : chargeCount + " charges" %>,
+                        
+                        <% airline_data.forEach((airline, pIndex) => { %>
+                            <%= pIndex === 0 ? "one from" : ", one from" %> <%= airline.airline_name %> for <%= row.currency %> <%= airline.airline_cost %> 
+                        <% }); %>
+                        would be shown under <%- result[0]?.mco_description %>.
                         <br><br>
-            
-                        <div class="col-sm-12 col-xl-12" style="text-align:right;margin-top:5%">
-                          <button type="button" class="btn btn-outline-secondary" style="text-align:right"
-                            data-dismiss="modal">Close</button>
-                          <!-- <button type="button" id="check_email" style="text-align:left" class="btn btn-warning">Check
-                            Email</button> -->
-                          <button type="submit" class="btn btn-primary" style="text-align:right">Send Now</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                    
+                    <% }); %>
+                    
+                      <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: "
+  lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
+                    line-height:="" 25px;"="">
+                    <p style="margin: 0;">
+    
+                      <b style="color:#024;">Passenger(s) information –</b><br><br>
+                    <table style="background: #d2d2d2; border: solid 1px #d2d2d2;" width="100%" cellspacing="0"
+                      cellpadding="0" border="0">
+                      <thead>
+                        <tr style="color: #000;font-weight:600">
+                          <td style="font-size: 14px; line-height: 25px;  border-right: solid 1px #ffffff;padding:10px;"
+                            width="10%">
+                            Sr. No.
+    
+                          </td>
+                          <td style="font-size: 14px; line-height: 25px;  border-right: solid 1px #ffffff;padding:10px;"
+                            width="20%">
+                            Full Name
+    
+                          </td>
+                          <td style="font-size: 14px; line-height: 25px;  border-right: solid 1px #ffffff;padding:10px;"
+                            width="20%">
+                            DOB (D,M Y)
+                          </td>
+    
+                        </tr>
+                      </thead>
+                      <tbody>
 
-  <!-- Send email start  -->
+                        <% result?.forEach((row, index) => { 
+                          let passengers = JSON.parse(row.passenger_details); // Parse the JSON string
+                          passengers.forEach((passenger, pIndex) => { 
+                    %>
+                  
+                        <tr bgcolor="#ffffff">
+                          <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
+                            width="10% !important">
+                            <%= pIndex + 1 %>.
+                          </td>
+                          <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
+                            width="30% !important">
+                            <%= passenger.fullName %> (Ticket No: <%= passenger.ticketNo %>)
+                          </td>
+                          <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
+                            width="30% !important">
+                            <%= new Date(passenger.dob).toLocaleDateString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric'
+                            }).replace(/\//g, '-') %>
+                          </td>
+    
+    
+    
+                        </tr>
+                        <% }); }); %>
+                      </tbody>
+                    </table><br><br>
+                    <br><br>
+    
+                    <b style="color:#024;">Trip Details –</b><br><br>
+                    </p>
+                    <p>
+
+                      <% const images = result[0]?.image.split(','); %>
+                      <% images?.forEach(image => { %>
+                        <% if (image.trim()) { %>
+                          <img style="width: 546px; margin-bottom: 10px;" 
+                              src="/uploads/<%= image.trim() %>" 
+                              alt="Trip Details"><br>
+                        <% } %>
+                      <% }); %>
+                    
+                    
+                    </p>
+                    <p></p>
+    
+                    <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Credit Card Authorization
+                      :</span><br><br>
+    
+                    <style type="text/css">
+                      .tg {
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                      }
+    
+                      .tg td {
+                        border-color: black;
+                        border-style: solid;
+                        border-width: 1px;
+                        font-family: Arial, sans-serif;
+                        font-size: 14px;
+                        overflow: hidden;
+                        padding: 10px 5px;
+                        word-break: normal;
+                      }
+    
+                      .tg th {
+                        border-color: black;
+                        border-style: solid;
+                        border-width: 1px;
+                        font-family: Arial, sans-serif;
+                        font-size: 14px;
+                        font-weight: normal;
+                        overflow: hidden;
+                        padding: 10px 5px;
+                        word-break: normal;
+                      }
+    
+                      .tg .tg-0lax {
+                        text-align: left;
+                        vertical-align: top
+                      }
+                    </style>
+                    <table class="tg">
+                      <thead>
+                        <tr>
+                          <th class="tg-0lax"><b>BOOKING PNR:</b></th>
+                          <th class="tg-0lax"><%- result[0]?.gds_pnr %></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+    
+                        <tr>
+                          <td class="tg-0lax"><b>TOTAL CHARGES:</b></td>
+                          <td class="tg-0lax"><%- result[0]?.total_amount %></td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>BASE FARE:</b></td>
+                          <td class="tg-0lax">0</td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>TAXES &amp; FEES:</b></td>
+                          <td class="tg-0lax">2487.36</td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>REASON OF BOOKING:</b></td>
+                          <td class="tg-0lax">New Booking</td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>AIRLINE REFERENCE (ARL):</b></td>
+                          <td class="tg-0lax"><%- result[0]?.arl_confirmation %></td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>CARD HOLDER NAME:</b></td>
+                          <td class="tg-0lax"><%- result[0]?.card_holder_name %></td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>CARD NUMBER:</b></td>
+                          <td class="tg-0lax"><%- result[0]?.card_number %> (<%- result[0]?.card_type %>)</td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>CARD EXPIRY / CVV:</b></td>
+                          <td class="tg-0lax"><%- result[0]?.expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%- result[0]?.cvv %></td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>BILLING PHONE:</b></td>
+                          <td class="tg-0lax"><%- result[0]?.billing_phone %></td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax"><b>BILLING EMAIL:</b></td>
+                          <td class="tg-0lax"><%- result[0]?.email %></td>
+                        </tr>
+                        <tr>
+                          <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> <%- result[0]?.billing_address %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+    
+                    <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Terms And Conditions:</span><br>
+                    <span style="font-size:12px;"> Reservations are non-transferable and non-refundable. </span>
+    
+                  </td>
+                </tr>
+    
+                <tr>
+                  <td bgcolor="#ffffff" align="left"
+                    style="padding: 10px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: "
+                    lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
+                    line-height:="" 25px;"="">
+                    <p style="margin: 0;"><b>Thanks &amp; Regards!</b> <br>
+                      <span style="color:green;font-size:20px;"><%- FullName %></span> <br>
+                      (Reservations Desk)<br>
+                    </p>
+                    <hr>
+    
+                    ☎ <b>Toll-free (24/7) :</b>&nbsp;&nbsp; <a href="#" style="font-weight:bold;">1-855-515-1040</a><br><br>
+                    <a href="#"
+                      style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
+                      Acknowledge</a>
+                    &nbsp;&nbsp;<a href="#"
+                      style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">Upload
+                      Files</a>
+                    <p></p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#ededed" align="center" style="padding: 30px 10px 0px 10px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
+              <tbody>
+                <tr>
+                  <td bgcolor="#FFECD1" align="center"
+                    style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: "
+                    lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
+                    line-height:="" 25px;"="">
+                    <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">CHANGES / CANCELLATION </h2>
+                    <p style="margin: 0;font-size: 12px;">
+                      <b>Terms &amp; Conditions</b>
+                      Acknowledgment of these terms and conditions is a condition of booking. Acceptance by you on this
+                      booking is your acceptance that you have read, understood and agreed to be bound by these terms and
+                      conditions.
+                      <br><br>
+                      <b>Reconfirmation</b>
+                      We recommend that you confirm your flight with the local airline office at least 72 hours prior to
+                      departure. Failure to reconfirm may result in the cancellation of some reservations. For Special
+                      request (hotel confirmation, meal and seat preference, special assistance, wheel chair request) are
+                      subject to airline confirmation and need to reconfirm from agency at least 72 hours prior to
+                      departure.
+                      <br><br>
+                      <b>CHANGES / CANCELLATION</b>
+                      Reservations are non-transferable and non-refundable. Some tickets, depending on fare rules, can be
+                      refunded and/or used (for a limited time) towards future travel or can be refunded; however, all
+                      applicable penalties will apply (airline charges and service fees). Travelers Name – Traveller's First
+                      name and Last name must be entered during the time of reservation exactly as it appears on your
+                      government-issued identification, be it your passport, Driving License or other acceptable forms of
+                      identification depending on your type of journey (Domestic/International). Travel agency refund (once
+                      the refund is processed by the airline, we wont be taking any chargeback for the same). The name once
+                      entered will not be changed. Some Typo Error (Name Correction) however, is allowed, depending on
+                      Airline Terms of Use, &amp; charges would be applied according to airline policy. We are a travel
+                      agency and not the airlines. This email has been sent on behalf of My Fly Support LLC. We are happy to
+                      help you with any questions or concerns you may have. All customers are advised to verify travel
+                      documents (transit visa/entry visa) for the country through which they are transiting and/or entering.
+                      We will not be responsible if proper travel documents are not available and you are denied entry or
+                      transit into a Country. We request you to consult the embassy of the country(s) you are visiting or
+                      transiting through. In the booking made by the agency or any third party , once the refund is
+                      processed by the airline, you have to contact to your travel agency for the refund amount as refund
+                      amount is being sent to the Travel Agency , we wont be taking any chargeback in case of Third Party
+                      Booking refund.<br><br> <span style="color:red;">If you have any query or dispute call on and we will
+                        give our best resolution to the dispute hence we will not cater any direct dispute from bank!</span>
+                      <br><br>
+                      <b>DECLARATION</b>
+                      If My Fly Support LLC takes any action to enforce the Terms and Conditions, it will be entitled to
+                      recover from you, and you agree to pay, all legal fees and expenses and any cost of litigation, in
+                      addition to any other relief, at law or in equity, to which such parties may be entitled. I agree that
+                      the above dates and time are correct. My name is as it appears on the passport. I am aware of all fare
+                      rules and conditions. I must reconfirm my flights 72 hours prior to departure.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </div>
+  </div>
+  </div>
 
 
-  
 
-
-
-  <!-- General JS Scripts -->
-  <script src="assets/js/app.min.js"></script>
-  <!-- JS Libraies -->
-  <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
-  <!-- Page Specific JS File -->
-  <script src="assets/js/page/index.js"></script>
-  <!-- Template JS File -->
-  <script src="assets/js/scripts.js"></script>
-  <!-- Custom JS File -->
-  <script src="assets/js/custom.js"></script>
-</body>
+    <!-- General JS Scripts -->
+    <script src="assets/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="assets/js/page/index.js"></script>
+    <!-- Template JS File -->
+    <script src="assets/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="assets/js/custom.js"></script>
+  </body>
 
 
   <!-- index.html  21 Nov 2019 03:47:04 GMT -->
