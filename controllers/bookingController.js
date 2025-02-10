@@ -5,10 +5,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import transporter from "../config/mailConfig.js";
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 export const priceDescription = async (req, res) => {
   try {
@@ -130,12 +128,13 @@ export const new_booking_draft = async (req, res) => {
                 billing_address,
                 email,
                 billing_phone,
-                DATE_FORMAT(expiration,"%d-%m-%y") as expiration,
+                expiration,
                 cvv,
                 card_type,
                 arl_confirmation,
                 currency,
                 mco_description,
+                mco_calculated,
                 Docusign_Verified
             FROM 
                 form_data
@@ -144,10 +143,32 @@ export const new_booking_draft = async (req, res) => {
         `;
 
     const result = await query(qry);
+
+    // Calculate Base Fare
+    let BaseFare = 0;
+    let FlightDetails = result[0]?.airline_info;
+    FlightDetails = JSON.parse(FlightDetails);
+
+    FlightDetails.reduce((acc, item) => {
+      return (BaseFare = acc + parseFloat(item.airline_cost));
+    }, 0);
+
     if (result.length > 0) {
-      res.render("new_booking_draft", { userRole, result, FullName, email });
+      res.render("new_booking_draft", {
+        userRole,
+        result,
+        FullName,
+        email,
+        BaseFare,
+      });
     } else {
-      res.render("new_booking_draft", { userRole, result: [], FullName, email });
+      res.render("new_booking_draft", {
+        userRole,
+        result: [],
+        FullName,
+        email,
+        BaseFare,
+      });
     }
   } catch (error) {
     console.error(error);
@@ -157,15 +178,13 @@ export const new_booking_draft = async (req, res) => {
   }
 };
 
-
-
 // Email Acknowledge
-export const EmailAcknowledge = async(req, res) =>{
+export const EmailAcknowledge = async (req, res) => {
   try {
-    const { fromEmail, subject, toEmail, emailTypeAuth, customer_id } = req.body;
-    console.log(fromEmail)
+    const { fromEmail, subject, toEmail, emailTypeAuth, customer_id } =
+      req.body;
+    console.log(fromEmail);
     const FullName = req.full_name;
-
 
     if (!fromEmail || !subject || !toEmail || !emailTypeAuth) {
       return res
@@ -174,8 +193,7 @@ export const EmailAcknowledge = async(req, res) =>{
     }
 
     if (emailTypeAuth === "email") {
-        
-        let qry = `SELECT DISTINCT
+      let qry = `SELECT DISTINCT
         card_holder_name,
         total_amount,
         email_type,
@@ -191,7 +209,7 @@ export const EmailAcknowledge = async(req, res) =>{
         billing_address,
         email,
         billing_phone,
-        DATE_FORMAT(expiration,"%d-%m-%y") as expiration,
+        expiration,
         cvv,
         card_type,
         arl_confirmation,
@@ -203,16 +221,33 @@ export const EmailAcknowledge = async(req, res) =>{
                   WHERE 
                   customer_id = '${customer_id}'
                   `;
-                  
-       const result = await query(qry);
-                  if (!result) {
-                      return res
+
+      const result = await query(qry);
+
+      let BaseFare = 0;
+      let FlightDetails = result[0]?.airline_info;
+      FlightDetails = JSON.parse(FlightDetails);
+
+      FlightDetails.reduce((acc, item) => {
+        return (BaseFare = acc + parseFloat(item.airline_cost));
+      }, 0);
+
+      if (!result) {
+        return res
           .status(404)
           .json({ success: false, ErrorMsg: "User not found" });
       }
       const emailHtml = await ejs.renderFile(
         path.join(__dirname, "../views", "new_booking_draft.ejs"),
-        { fromEmail, subject, toEmail, result, FullName:FullName, email:'false' }
+        {
+          fromEmail,
+          subject,
+          toEmail,
+          result,
+          FullName: FullName,
+          email: "false",
+          BaseFare,
+        }
       );
 
       // Email options
@@ -232,4 +267,4 @@ export const EmailAcknowledge = async(req, res) =>{
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
-}
+};

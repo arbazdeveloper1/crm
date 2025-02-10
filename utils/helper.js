@@ -21,9 +21,7 @@ function formatExpirationNative(expiration) {
     const date = new Date(year, month - 1, 1);
 
     const pad = (num) => num?.toString()?.padStart(2, "0");
-    const formattedDate = `${date.getFullYear()}-${pad(
-      date.getMonth() + 1
-    )}-${pad(date.getDate())} 00:00:00`;
+    const formattedDate = `${pad(date.getMonth() + 1)}-${date.getFullYear()}`;
     return formattedDate;
   } catch (error) {
     console.error(error);

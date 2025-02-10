@@ -61,7 +61,7 @@
                     <td><%= item.created_at %></td>
                     <td><%= item.agent_name %></td>
                     <td><%= item.customer_id %></td>
-                    <td><a href="#" class="btn btn-primary">Details</a></td>
+                    <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true" class="btn btn-primary">Details</a></td>
                   </tr>
                   <% }) %>
                 </tbody>
