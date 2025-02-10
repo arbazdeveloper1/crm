@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <!-- <div class="loader"></div> -->
+    <div class="loader"></div>
      <% if(email === 'true') { %>
     <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
       <a href="#" class="btn btn-success mx-2" data-toggle="modal" data-target="#exampleModal">Send Email Now</a>
@@ -36,7 +36,7 @@
             <a href="#" class="btn btn-info">Booking Remarks</a>
           </li>
           <li class="nav-item mx-2">
-            <a href="#" class="btn btn-warning">Change Currency</a>
+            <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal2">Change Currency</a>
           </li>
           <li class="nav-item mx-2">
             <a href="#" class="btn btn-success">Fetch Score</a>
@@ -47,8 +47,8 @@
             <a href="/all_booking" class="btn btn-danger">Back to Home</a>
           </li>
         </ul>
-      </div>
-    </nav>
+      </div>
+    </nav>
 
   
   
@@ -90,7 +90,7 @@
                     <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
                   </td> 
                   <td bgcolor="#ffffff" align="right" valign="top"
-                    style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111; font-family: "
+                    style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111;"
                     lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:="" 200;=""
                     letter-spacing:="" 2px;="" line-height:="" 48px;"="">
                     <a target="_blank"
@@ -349,7 +349,7 @@
                     
                       <form action="http://localhost:3000/api/acknowledge_booking" method="POST">
                         <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
-                        <button type="submit" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
+                        <button type="submit" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">  
                           Acknowledge
                         </button>
                         
@@ -533,8 +533,42 @@
           </div>
         </div>
 
-  <!-- Send email start  -->
+  <!-- Send email start -->
   <% } %>
+
+
+  <!-- Currency change modal start -->
+  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="formModal2"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="formModal2">Change Currency</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="outline: none;">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="currency">Select Currency</label>
+            <select class="form-control" id="currency" name="currency">
+              <option value="USD">USD - US Dollar</option>
+              <option value="EUR">EUR - Euro</option>
+              <option value="GBP">GBP - British Pound</option>
+              <option value="CAD">CAD - Canadian Dollar</option>
+              <!-- Add more currency options as needed -->
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="changeCurrencyBtn">Update Currency</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Currency change modal end -->
 
 
 
