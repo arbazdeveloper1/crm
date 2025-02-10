@@ -96,10 +96,12 @@
                     <a target="_blank"
                       href="https://crm.kingjourney.com/docusign/files/CFM01-74ccd4f3a72450604b7980e6126c7b4b.pdf">
                       <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
+                        <% if(email === 'true') { %>
                         <% if(result[0]?.Docusign_Verified != 'false') { %>
                         <i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified </b><br><br>
                         <% }else{ %>
                           <i style="color:red" class="fa fa-check-circle"></i><b style="color: red;"> Docusign Verified </b><br><br>
+                          <% } %>
                           <% } %>
                       </h1>
                     </a>
@@ -196,7 +198,7 @@
                           </td>
                           <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                             width="30% !important">
-                            <%= passenger.fullName %> <%= passenger.ticketNo != 'null' ? `(Ticket No: ${passenger.ticketNo})` : '' %> 
+                            <%= passenger.fullName %> <%= passenger.ticketNo != "" ? `(Ticket No: ${passenger.ticketNo})` : '' %> 
                           </td>
                           <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                             width="30% !important">
@@ -284,11 +286,11 @@
                         </tr>
                         <tr>
                           <td class="tg-0lax"><b>BASE FARE:</b></td>
-                          <td class="tg-0lax">0</td>
+                          <td class="tg-0lax"><%- BaseFare %></td>
                         </tr>
                         <tr>
                           <td class="tg-0lax"><b>TAXES &amp; FEES:</b></td>
-                          <td class="tg-0lax">2487.36</td>
+                          <td class="tg-0lax"><%- result[0]?.mco_calculated %></td>
                         </tr>
                         <tr>
                           <td class="tg-0lax"><b>REASON OF BOOKING:</b></td>
