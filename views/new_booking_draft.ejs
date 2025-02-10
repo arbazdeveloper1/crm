@@ -88,7 +88,7 @@
                       <b>Dear <%- result[0]?.card_holder_name %> , </b><br><br><span style="font-size:15px;">Greetings of the day! </span>
                     </h1>
                     <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
-                  </td>
+                  </td> 
                   <td bgcolor="#ffffff" align="right" valign="top"
                     style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111; font-family: "
                     lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:="" 200;=""
@@ -100,7 +100,7 @@
                         <% if(result[0]?.Docusign_Verified != 'false') { %>
                         <i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified </b><br><br>
                         <% }else{ %>
-                          <i style="color:red" class="fa fa-check-circle"></i><b style="color: red;"> Docusign Verified </b><br><br>
+                          <i style="color:red" class="fa fa-times-circle"></i><b style="color: red;"> Docusign Verified </b><br><br>
                           <% } %>
                           <% } %>
                       </h1>
