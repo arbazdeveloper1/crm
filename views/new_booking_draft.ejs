@@ -17,6 +17,7 @@
 
   <body>
     <!-- <div class="loader"></div> -->
+     <% if(email === 'true') { %>
     <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
       <a href="#" class="btn btn-success mx-2" data-toggle="modal" data-target="#exampleModal">Send Email Now</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -49,7 +50,8 @@
       </div>
     </nav>
 
-
+  
+  
   <div class="container-fluid bg-primary">
     <div  class="w-100 " style="height: 300px">
 
@@ -73,6 +75,7 @@
           </td>
         </tr>
         <tr>
+          <% } %>
           <td bgcolor="#2b0495" align="center" style="padding: 0px 10px 0px 10px;">
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
               <tbody>
@@ -139,14 +142,15 @@
                         <%= chargeCount === 1 ? "one charge" : chargeCount + " charges" %>,
                         
                         <% airline_data.forEach((airline, pIndex) => { %>
-                            <%= pIndex === 0 ? "one from" : ", one from" %> <%= airline.airline_name %> for <%= row.currency %> <%= airline.airline_cost %> 
+                            <%= pIndex === 0 ? "one from" : ", one from" %> <%= airline.airline_name %> for <%= airline.airline_cost %> <%= row.currency %> 
                         <% }); %>
-                        would be shown under <%- result[0]?.mco_description %>.
+                        would be shown under <%- result[0]?.mco_description == 'my_fly_support' ? 'My Fly Support' : result[0]?.mco_description %>.
                         <br><br>
                     
                     <% }); %>
                     
                       <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
+                      <input type="hidden" name="customer_id" id="customer_id" value="<%- result[0]?.customer_id %>">
                     </p>
                   </td>
                 </tr>
@@ -192,7 +196,7 @@
                           </td>
                           <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                             width="30% !important">
-                            <%= passenger.fullName %> (Ticket No: <%= passenger.ticketNo %>)
+                            <%= passenger.fullName %> <%= passenger.ticketNo != 'null' ? `(Ticket No: ${passenger.ticketNo})` : '' %> 
                           </td>
                           <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                             width="30% !important">
@@ -219,7 +223,7 @@
                       <% images?.forEach(image => { %>
                         <% if (image.trim()) { %>
                           <img style="width: 546px; margin-bottom: 10px;" 
-                              src="/uploads/<%= image.trim() %>" 
+                              src="http://localhost:3000/uploads/<%= image.trim() %>" 
                               alt="Trip Details"><br>
                         <% } %>
                       <% }); %>
@@ -338,13 +342,23 @@
                     <hr>
     
                     ☎ <b>Toll-free (24/7) :</b>&nbsp;&nbsp; <a href="#" style="font-weight:bold;">1-855-515-1040</a><br><br>
-                    <a href="#"
-                      style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
-                      Acknowledge</a>
-                    &nbsp;&nbsp;<a href="#"
-                      style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">Upload
-                      Files</a>
-                    <p></p>
+                    <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
+                      Acknowledge</a> -->
+                    
+                      <form action="http://localhost:3000/api/acknowledge_booking" method="POST">
+                        <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
+                        <button type="submit" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
+                          Acknowledge
+                        </button>
+                        
+                        
+
+                      &nbsp;&nbsp;
+                      <!-- <a href="#" style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">Upload Files</a> -->
+                       <button style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">Upload Files</button>
+                      </form>
+                    
+                      <p></p>
                   </td>
                 </tr>
               </tbody>
@@ -418,7 +432,7 @@
 
 
   <!-- Send email modal start  -->
-
+  <% if(email === 'true') { %>
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -439,20 +453,19 @@
                 </div>
                 <div class="tab-content" id="tab-content">
                   <div class="tab-pane active" id="personal">
-                    <form action="/" method="POST">
+                    <!-- <form action="/" method="POST"> -->
                       <div class="row" style="margin-top:2%">
                         <div class="col-sm-12" style="margin-bottom:3%">
                           <label for="fromemail" class="col-form-label">From:</label>
                           <select name="fromemail" id="fromemail" class="form-control">
                             <option value="" disabled>Select</option>
-                            <option value="smtp">Offline- support@myflysupports.com</option>
-                            <option value="smtp2">Online- support@kingjourney.com</option>
+                            <option value="ravi.vermaa120@gmail.com">Offline- support@myflysupports.com</option>
+                            <option value="support@kingjourney.com">Online- support@kingjourney.com</option>
                           </select>
                         </div><br>
                         <div class="col-sm-12">
                           <label for="recipient-name" class="col-form-label">Subject:</label>
-                          <input type="text" name="subject" class="form-control" id="subject" placeholder="Enter Subject..."
-                            autocomplete="off" value="" required="">
+                          <input type="text" name="subject" class="form-control" id="mailsubject" placeholder="Enter Subject..." autocomplete="off" required="">
             
                         </div>
             
@@ -461,7 +474,7 @@
             
                           <label for="recipient-name" class="col-form-label">Email Address:</label>
                           <input type="email" name="to_email" class="form-control" id="email"
-                            placeholder="Enter Customer Email Id.." autocomplete="off" value="GENEV_B@HOTMAIL.COM"
+                            placeholder="Enter Customer Email Id.." autocomplete="off" value="<%- result[0]?.email %>"
                             required="">
                           <p id="error"></p>
                           <input type="hidden" value="1032" name="id">
@@ -507,10 +520,10 @@
                             data-dismiss="modal">Close</button>
                           <!-- <button type="button" id="check_email" style="text-align:left" class="btn btn-warning">Check
                             Email</button> -->
-                          <button type="submit" class="btn btn-primary" style="text-align:right">Send Now</button>
+                          <button type="submit" class="btn btn-primary" style="text-align:right" id="MailSendButton">Send Now</button>
                         </div>
                       </div>
-                    </form>
+                    <!-- </form> -->
                   </div>
                 </div>
               </div>
@@ -519,6 +532,44 @@
         </div>
 
   <!-- Send email start  -->
+  <% } %>
+
+
+
+  <!-- ----- ----------------------- Function to Send the Mail ----------------------- -->
+
+  <script>
+    let MailSendButton = document.getElementById('MailSendButton');
+
+    MailSendButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      let fromEmail = document.getElementById('fromemail').value;
+    let Emailsubject = document.getElementById('mailsubject').value;
+    let toEmail = document.getElementById('email').value;
+    let emailTypeAuth = document.getElementById('emailTypeAuth').value;
+    let customer_id = document.getElementById('customer_id').value;
+
+    $.ajax({
+      url: '/api/send_email',
+      method: 'POST',
+      data: {
+        fromEmail: fromEmail,
+        subject: Emailsubject,
+        toEmail: toEmail,
+        emailTypeAuth: emailTypeAuth,
+        customer_id: customer_id
+      },
+      success: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  });
+  </script>
+
+
 
 
 

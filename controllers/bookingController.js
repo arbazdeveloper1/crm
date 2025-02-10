@@ -1,5 +1,14 @@
 import { Price_Description } from "../models/bookingModel.js";
 import { query } from "../config/db.js";
+import ejs from "ejs";
+import path from "path";
+import { fileURLToPath } from "url";
+import transporter from "../config/mailConfig.js";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 export const priceDescription = async (req, res) => {
   try {
@@ -103,7 +112,7 @@ export const new_booking_draft = async (req, res) => {
     const userRole = req.userRole;
     const { customer_id } = req.params;
     const FullName = req.full_name;
-
+    const { email } = req.query;
     let qry = `
             SELECT DISTINCT
                 card_holder_name,
@@ -136,9 +145,9 @@ export const new_booking_draft = async (req, res) => {
 
     const result = await query(qry);
     if (result.length > 0) {
-      res.render("new_booking_draft", { userRole, result, FullName });
+      res.render("new_booking_draft", { userRole, result, FullName, email });
     } else {
-      res.render("new_booking_draft", { userRole, result: [], FullName });
+      res.render("new_booking_draft", { userRole, result: [], FullName, email });
     }
   } catch (error) {
     console.error(error);
@@ -147,3 +156,80 @@ export const new_booking_draft = async (req, res) => {
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
+
+
+
+// Email Acknowledge
+export const EmailAcknowledge = async(req, res) =>{
+  try {
+    const { fromEmail, subject, toEmail, emailTypeAuth, customer_id } = req.body;
+    console.log(fromEmail)
+    const FullName = req.full_name;
+
+
+    if (!fromEmail || !subject || !toEmail || !emailTypeAuth) {
+      return res
+        .status(400)
+        .json({ success: false, ErrorMsg: "All fields are required" });
+    }
+
+    if (emailTypeAuth === "email") {
+        
+        let qry = `SELECT DISTINCT
+        card_holder_name,
+        total_amount,
+        email_type,
+        created_at,
+        agent_name,
+        customer_id,
+        card_number,
+        subject_line,
+        image,
+        passenger_details,
+        airline_info,
+        gds_pnr,
+        billing_address,
+        email,
+        billing_phone,
+        DATE_FORMAT(expiration,"%d-%m-%y") as expiration,
+        cvv,
+        card_type,
+        arl_confirmation,
+        currency,
+        mco_description,
+        Docusign_Verified
+              FROM 
+                  form_data
+                  WHERE 
+                  customer_id = '${customer_id}'
+                  `;
+                  
+       const result = await query(qry);
+                  if (!result) {
+                      return res
+          .status(404)
+          .json({ success: false, ErrorMsg: "User not found" });
+      }
+      const emailHtml = await ejs.renderFile(
+        path.join(__dirname, "../views", "new_booking_draft.ejs"),
+        { fromEmail, subject, toEmail, result, FullName:FullName, email:'false' }
+      );
+
+      // Email options
+      const mailOptions = {
+        from: fromEmail,
+        to: toEmail,
+        subject: subject,
+        html: emailHtml,
+      };
+
+      const info = await transporter.sendMail(mailOptions);
+      console.log("Email sent: " + info.response);
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+}
