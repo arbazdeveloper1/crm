@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const emailAccounts = {
-  "support@myflysupports.com": process.env.EMAIL_PASS1,
+  "ravi.vermaa@gmail.com": process.env.EMAIL_PASS1,
   "support@kingjourney.com": process.env.EMAIL_PASS2,
 }
 
