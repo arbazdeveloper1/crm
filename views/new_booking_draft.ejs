@@ -461,7 +461,7 @@
                           <label for="fromemail" class="col-form-label">From:</label>
                           <select name="fromemail" id="fromemail" class="form-control">
                             <option value="" disabled>Select</option>
-                            <option value="ravi.vermaa120@gmail.com">Offline- support@myflysupports.com</option>
+                            <option value="support@myflysupports.com">Offline- support@myflysupports.com</option>
                             <option value="support@kingjourney.com">Online- support@kingjourney.com</option>
                           </select>
                         </div><br>
@@ -576,7 +576,6 @@
 
   <script>
     let MailSendButton = document.getElementById('MailSendButton');
-
     MailSendButton.addEventListener('click', (e) => {
       e.preventDefault();
       let fromEmail = document.getElementById('fromemail').value;
@@ -603,6 +602,32 @@
       }
     });
   });
+
+// update currency
+let UpdateCurrencyBtn = document.getElementById('changeCurrencyBtn');
+UpdateCurrencyBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+let customer_id = document.getElementById('customer_id').value;
+let currency = document.getElementById('currency').value;
+
+$.ajax({
+  url: '/api/update_currency',
+  method: 'POST',
+  data: {
+    customer_id: customer_id,
+    currency: currency
+  },
+  success: (response) => {
+    if(response.success){
+      window.location.reload();
+    }
+  },
+  error: (error) => {
+    console.log(error);
+  }
+});
+});
+
   </script>
 
 

@@ -3,7 +3,7 @@ import { query } from "../config/db.js";
 import ejs from "ejs";
 import path from "path";
 import { fileURLToPath } from "url";
-import transporter from "../config/mailConfig.js";
+import createTransporter from "../config/mailConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -227,7 +227,6 @@ export const EmailAcknowledge = async (req, res) => {
       let BaseFare = 0;
       let FlightDetails = result[0]?.airline_info;
       FlightDetails = JSON.parse(FlightDetails);
-
       FlightDetails.reduce((acc, item) => {
         return (BaseFare = acc + parseFloat(item.airline_cost));
       }, 0);
@@ -249,7 +248,9 @@ export const EmailAcknowledge = async (req, res) => {
           BaseFare,
         }
       );
+      
 
+      const transporter = createTransporter(fromEmail);
       // Email options
       const mailOptions = {
         from: fromEmail,
@@ -266,5 +267,25 @@ export const EmailAcknowledge = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+};
+
+export const UpdateCurrency = async (req, res) => {
+  try {
+    const { customer_id, currency } = req.body;
+
+    let qry = `UPDATE form_data SET currency = '${currency}' WHERE customer_id = '${customer_id}'`;
+    const result = await query(qry);
+    if (result) {
+      return res
+        .status(200)
+        .json({ success: true, message: "Currency updated" });
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, message: "Currency not updated" });
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
