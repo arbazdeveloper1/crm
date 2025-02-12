@@ -345,7 +345,7 @@ export const TrackIp = async (req, res) => {
     }
 
     // Insert the data store user system configuration
-    let qry1 = `insert into user_device_config (customer_id, browser, browser_version, operating_system, operating_system_version, device_type, c_date, device_ip, user_ip) values ('${customer_id}', '${DeviceInfo?.browser}', '${DeviceInfo?.browserVersion}', '${DeviceInfo?.os}', '${DeviceInfo?.osVersion}', '${DeviceInfo?.deviceType}', '${CurrentDate}', '${DeviceInfo?.systemIp}', '${DeviceInfo?.userIp}')`;
+    let qry1 = `insert into user_device_config (customer_id, browser, browser_version, operating_system, operating_system_version, device_type, record_date, system_ip, user_ip) values ('${customer_id}', '${DeviceInfo?.browser}', '${DeviceInfo?.browserVersion}', '${DeviceInfo?.os}', '${DeviceInfo?.osVersion}', '${DeviceInfo?.deviceType}', '${Date.now()}', '${DeviceInfo?.systemIp}', '${DeviceInfo?.userIp}')`;
     const result1 = await query(qry1);
     if (!result1) {
       return res
