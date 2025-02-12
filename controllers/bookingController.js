@@ -360,3 +360,11 @@ export const TrackIp = async (req, res) => {
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
+
+export const docusignPdf = async (req, res) => {
+  try {
+    res.render("docusign_pdf");
+  } catch (error) {
+    return res.status(500).json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+};

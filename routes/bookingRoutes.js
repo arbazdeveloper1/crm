@@ -6,7 +6,8 @@ import {
   AllBooking,
   EmailAcknowledge,
   UpdateCurrency,
-  TrackIp
+  TrackIp,
+  docusignPdf
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -27,5 +28,7 @@ route.post("/api/update_currency", verifyToken,UpdateCurrency)
 
 
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
+
+route.get("/docusign_pdf", verifyToken, docusignPdf)
 
 export default route;

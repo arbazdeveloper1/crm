@@ -8,11 +8,13 @@
   <title> Admin Dashboard </title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="/assets/css/app.min.css">
+  <link rel="stylesheet" href="/assets/bundles/izitoast/css/iziToast.min.css">
   <!-- Template CSS -->
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/components.css">
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="/assets/css/custom.css">
+  <script src="/assets/bundles/izitoast/js/iziToast.min.js"></script>
 </head>
 
 <body>
@@ -81,7 +83,7 @@
                     <tbody>
                       <tr>
                         <td bgcolor="#ffffff" align="left" valign="top"
-                          style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif;">
+                          style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif;">
                           <h1 style="font-size: 18px; font-weight: 400; margin: 2;">
                             <b>Dear <%- result[0]?.card_holder_name %> , </b><br><br><span
                               style="font-size:15px;">Greetings of the day! </span>
@@ -559,151 +561,25 @@
                         </div>
                       </div>
                     </div>
-                  </div>
 
-
-
-                  </div>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary"  id="MailSendButton">Send Email</button>
-                </div>
-              </div>
-            </div></div></div>
                     <br><br>
 
-                      <% const images = result[0]?.image.split(','); %>
-                      <% images?.forEach(image => { %>
-                        <% if (image.trim()) { %>
-                          <img style="width: 546px; margin-bottom: 10px;" 
-                              src="http://localhost:3000/uploads/<%= image.trim() %>" 
-                              alt="Trip Details"><br>
-                        <% } %>
-                      <% }); %>
-                    
-                    
-                    </p>
-                    <p></p>
-    
-                    <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Credit Card Authorization
-                      :</span><br><br>
-    
-                    <style type="text/css">
-                      .tg {
-                        border-collapse: collapse;
-                        border-spacing: 0;
-                      }
-    
-                      .tg td {
-                        border-color: black;
-                        border-style: solid;
-                        border-width: 1px;
-                        font-family: Arial, sans-serif;
-                        font-size: 14px;
-                        overflow: hidden;
-                        padding: 10px 5px;
-                        word-break: normal;
-                      }
-    
-                      .tg th {
-                        border-color: black;
-                        border-style: solid;
-                        border-width: 1px;
-                        font-family: Arial, sans-serif;
-                        font-size: 14px;
-                        font-weight: normal;
-                        overflow: hidden;
-                        padding: 10px 5px;
-                        word-break: normal;
-                      }
-    
-                      .tg .tg-0lax {
-                        text-align: left;
-                        vertical-align: top
-                      }
-                    </style>
-                    <table class="tg">
-                      <thead>
-                        <tr>
-                          <th class="tg-0lax"><b>BOOKING PNR:</b></th>
-                          <th class="tg-0lax"><%- result[0]?.gds_pnr %></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-    
-                        <tr>
-                          <td class="tg-0lax"><b>TOTAL CHARGES:</b></td>
-                          <td class="tg-0lax"><%- result[0]?.total_amount %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>BASE FARE:</b></td>
-                          <td class="tg-0lax"><%- BaseFare %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>TAXES &amp; FEES:</b></td>
-                          <td class="tg-0lax"><%- result[0]?.mco_calculated %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>REASON OF BOOKING:</b></td>
-                          <td class="tg-0lax">New Booking</td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>AIRLINE REFERENCE (ARL):</b></td>
-                          <td class="tg-0lax"><%- result[0]?.arl_confirmation %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>CARD HOLDER NAME:</b></td>
-                          <td class="tg-0lax"><%- result[0]?.card_holder_name %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>CARD NUMBER:</b></td>
-                          <td class="tg-0lax"><%- result[0]?.card_number %> (<%- result[0]?.card_type %>)</td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>CARD EXPIRY / CVV:</b></td>
-                          <td class="tg-0lax"><%- result[0]?.expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%- result[0]?.cvv %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>BILLING PHONE:</b></td>
-                          <td class="tg-0lax"><%- result[0]?.billing_phone %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax"><b>BILLING EMAIL:</b></td>
-                          <td class="tg-0lax"><%- result[0]?.email %></td>
-                        </tr>
-                        <tr>
-                          <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> <%- result[0]?.billing_address %></td>
-                        </tr>
-                      </tbody>
-                    </table>
-    
-                    <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Terms And Conditions:</span><br>
-                    <span style="font-size:12px;"> Reservations are non-transferable and non-refundable. </span>
-    
-                  </td>
-                </tr>
-    
-                <tr>
-                  <td bgcolor="#ffffff" align="left"
-                    style="padding: 10px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: "
-                    lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 18px;="" font-weight:="" 400;=""
-                    line-height:="" 25px;"="">
-                    <p style="margin: 0;"><b>Thanks &amp; Regards!</b> <br>
-                      <span style="color:green;font-size:20px;"><%- FullName %></span> <br>
-                      (Reservations Desk)<br>
-                    </p>
-                    <hr>
-    
-                    ☎ <b>Toll-free (24/7) :</b>&nbsp;&nbsp; <a href="#" style="font-weight:bold;">1-855-515-1040</a><br><br>
-                    <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
-                      Acknowledge</a> -->
-                    
-                      <form action="http://localhost:3000/api/TrackIp/<%= result[0]?.customer_id %>" method="POST">
-                        <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
-                        <button type="submit" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">  
-                          Acknowledge
-                        </button>
-                        
-                        
+                    <div class="col-sm-12 col-xl-12" style="text-align:right;margin-top:5%">
+                      <button type="button" class="btn btn-outline-secondary" style="text-align:right"
+                        data-dismiss="modal">Close</button>
+                      <!-- <button type="button" id="check_email" style="text-align:left" class="btn btn-warning">Check
+                            Email</button> -->
+                      <button type="submit" class="btn btn-primary" style="text-align:right" id="MailSendButton">Send
+                        Now</button>
+                    </div>
+                  </div>
+                  <!-- </form> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Send email start -->
       <% } %>
@@ -745,7 +621,8 @@
 
 
         <!-- Attachments modal -->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="attachmentsModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="attachmentsModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header bg-primary text-white">
@@ -754,7 +631,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              
+
               <div class="modal-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
@@ -776,7 +653,7 @@
                         <div class="list-group-item">
                           <div class="d-flex justify-content-between align-items-center">
                             <div>
-                              <b>Filename:</b> 
+                              <b>Filename:</b>
                               <a href="#" target="_blank">Document1.pdf</a>
                               <small class="text-muted d-block">(2024-03-15)</small>
                             </div>
@@ -785,7 +662,7 @@
                         <div class="list-group-item">
                           <div class="d-flex justify-content-between align-items-center">
                             <div>
-                              <b>Filename:</b> 
+                              <b>Filename:</b>
                               <a href="#" target="_blank">Document2.pdf</a>
                               <small class="text-muted d-block">(2024-03-14)</small>
                             </div>
@@ -870,11 +747,12 @@
                       <input type="hidden" name="booking_id" value="123">
                       <input type="hidden" name="agent" value="John Doe">
                       <input type="hidden" name="booking_type" value="1">
-                      
+
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-6">
-                            <input type="text" class="form-control" name="filname" placeholder="Enter File Name" required>
+                            <input type="text" class="form-control" name="filname" placeholder="Enter File Name"
+                              required>
                           </div>
                           <div class="col-md-6">
                             <input type="file" class="form-control" name="fileinput" required>
@@ -905,6 +783,7 @@
             let toEmail = document.getElementById('email').value;
             let emailTypeAuth = document.getElementById('emailTypeAuth').value;
             let customer_id = document.getElementById('customer_id').value;
+
             $.ajax({
               url: '/api/send_email',
               method: 'POST',
@@ -925,28 +804,44 @@
           });
 
           // update currency
-          let UpdateCurrencyBtn = document.getElementById('changeCurrencyBtn');
-          UpdateCurrencyBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            let customer_id = document.getElementById('customer_id').value;
-            let currency = document.getElementById('currency').value;
+          document.addEventListener("DOMContentLoaded", function () {
+            let updateCurrencyBtn = document.getElementById('changeCurrencyBtn');
 
-            $.ajax({
-              url: '/api/update_currency',
-              method: 'POST',
-              data: {
-                customer_id: customer_id,
-                currency: currency
-              },
-              success: (response) => {
-                if (response.success) {
-                  window.location.reload();
-                }
-              },
-              error: (error) => {
-                console.log(error);
-              }
-            });
+            if (updateCurrencyBtn) {
+              updateCurrencyBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                let customer_id = document.getElementById('customer_id')?.value;
+                let currency = document.getElementById('currency')?.value;
+
+
+                $.ajax({
+                  url: '/api/update_currency',
+                  method: 'POST',
+                  data: { customer_id, currency },
+                  success: (response) => {
+                    if (response.success) {
+                      iziToast.success({
+                        title: "Success",
+                        message: "Currency updated successfully!",
+                        position: "topRight"
+                      });
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 500);
+                    } else {
+                      iziToast.warning({ title: "Warning", message: "Currency update failed. Try again." });
+                    }
+                  },
+                  error: (error) => {
+                    iziToast.error({ title: "Error", message: "Something went wrong! Please try again." });
+                    console.log(error);
+                  }
+                });
+              });
+            } else {
+              console.error("Button with ID 'changeCurrencyBtn' not found.");
+            }
           });
 
         </script>
@@ -966,9 +861,9 @@
 
         <!-- Custom JS File -->
         <script src="/assets/js/custom.js"></script>
+        <!-- JS Libraies -->
+        
 </body>
 
-
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
 
 </html>

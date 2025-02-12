@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Thank You</title>
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+  <link rel="stylesheet" href="/assets/bundles/bootstrap-social/bootstrap-social.css">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
 </head>
 <body>
-    <h1>Device Info</h1>
-    <p>Browser: <%= DeviceInfo.browser %></p>
-    <p>Browser Version: <%= DeviceInfo.browserVersion %></p>
-    <p>OS: <%= DeviceInfo.os %></p>
-    <p>OS Version: <%= DeviceInfo.osVersion %></p>
-    <p>Device Type: <%= DeviceInfo.deviceType %></p>
-    <p>Current Date: <%= DeviceInfo.CurrentDate %></p>
-    <p>System IP: <%= DeviceInfo.systemIp %></p>
-    <p>User IP: <%= DeviceInfo.userIp %></p>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="fas fa-check-circle text-success" style="font-size: 64px;"></i>
+                </div>
+                <h1 class="card-title mb-4">Thank You!</h1>
+                <p class="card-text mb-4"><b>Please check your email</b> for further instructions.</p>  
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 </body>
 </html>
