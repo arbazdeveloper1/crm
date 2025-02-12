@@ -16,7 +16,6 @@ export const query = async (sql, params) => {
 
   // Execute the query
   const [results] = await connection.execute(sql, params);
-  
   // Close the connection
   await connection.end();
 

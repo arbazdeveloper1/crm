@@ -347,7 +347,7 @@
                     <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
                       Acknowledge</a> -->
                     
-                      <form action="http://localhost:3000/api/acknowledge_booking" method="POST">
+                      <form action="http://localhost:3000/api/TrackIp/<%= result[0]?.customer_id %>" method="POST">
                         <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
                         <button type="submit" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">  
                           Acknowledge

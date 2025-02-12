@@ -5,7 +5,8 @@ import {
   new_booking_draft,
   AllBooking,
   EmailAcknowledge,
-  UpdateCurrency
+  UpdateCurrency,
+  TrackIp
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -24,5 +25,7 @@ route.get("/all_booking", verifyToken, AllBooking);
 route.post("/api/send_email", verifyToken,EmailAcknowledge)
 route.post("/api/update_currency", verifyToken,UpdateCurrency)
 
+
+route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
 
 export default route;

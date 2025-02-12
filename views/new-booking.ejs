@@ -104,6 +104,11 @@
       color: white;
       padding: 5px 25px 5px 25px;
     }
+
+    .error {
+    border: 1px solid red;
+    /* background-color: #f9e8e8; */
+  }
   </style>
 </head>
 
@@ -128,14 +133,14 @@
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label>Total Amount Quoted</label>
+                <label>Total Amount Quoted<span class="text-danger">*</span></label>
                 <input type="text" name="totalAmountQuoted" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                   class="form-control" id="total-quoted" placeholder="Enter the amount" required />
               </div>
               <div class="form-group">
-                <label>MCO Description</label>
-                <select name="mcoDescription" class="form-control" required id="mco_description">
-                  <option value="" disabled selected>Choose an option</option>
+                <label>MCO Description<span class="text-danger">*</span></label>
+                <select name="mcoDescription" class="form-control" id="mco_description" required>
+                  <option selected disabled>Choose an option</option>
                   <option value="my_fly_support">My Fly Support</option>
                   <option value="Second_Merchant">Second Merchant</option>
                 </select>
@@ -148,7 +153,7 @@
                       placeholder="Airline Name" />
                     <input type="text" name="airlineCost" id="airline_cost"
                       oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control airline-cost"
-                      placeholder="Cost" />
+                      placeholder="Cost"/>
                   </div>
                 </div>
                 <div class="d-flex justify-content-end">
@@ -160,9 +165,9 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label>Type of Charge</label>
+                <label>Type of Charge<span class="text-danger">*</span></label>
                 <select name="typeOfCharge" class="form-control" required>
-                  <option value="" disabled selected>Choose an option</option>
+                  <option selected disabled>Choose an option</option>
                   <option value="single">Single</option>
                   <option value="split">Split</option>
                 </select>
@@ -183,13 +188,13 @@
           <div class="row">
             <div class="col-4">
               <div class="form-group">
-                <label>Card Number</label>
+                <label>Card Number<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" maxlength="16" id="cardNumber" name="cardNumber" required
                   oninput="this.value = this.value.replace(/[^0-9]/g, ''); detectCardType();" />
                 <p id="cardTypeOutput"></p>
               </div>
               <div class="form-group">
-                <label>Card Type</label>
+                <label>Card Type<span class="text-danger">*</span></label>
                 <select name="cardType" class="form-control" required>
                   <option value="" disabled selected>Choose an option</option>
                   <option value="Amex">Amex</option>
@@ -199,9 +204,10 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>Currency</label>
+                <label>Currency<span class="text-danger">*</span></label>
                 <select name="currency" class="form-control" required>
-                  <option value="USD" selected>USD</option>
+                  <option selected disabled>Select Currency</option>
+                  <option value="USD">USD</option>
                   <option value="CAD">CAD</option>
                   <option value="GBP">GBP</option>
                   <option value="EUR">EUR</option>
@@ -212,12 +218,12 @@
             </div>
             <div class="col-4">
               <div class="form-group">
-                <label>Expiration (MM/YY)</label>
+                <label>Expiration (MM/YY)<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" maxlength="5" name="expiration" placeholder="MM/YY"
                   pattern="(0[1-9]|1[0-2])\/([0-9]{2})" required oninput="formatExpiration(this)" />
               </div>
               <div class="form-group">
-                <label>CVV</label>
+                <label>CVV<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" maxlength="4" name="cvv" pattern="[0-9]{3,4}" placeholder="CVV"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" required />
               </div>
@@ -228,15 +234,15 @@
             </div>
             <div class="col-4">
               <div class="form-group">
-                <label>ARL/Confirmation</label>
-                <input type="text" class="form-control" name="arlConfirmation" maxlength="6" />
+                <label>ARL/Confirmation<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="arlConfirmation" maxlength="6" required />
               </div>
               <div class="form-group">
-                <label>Email</label>
+                <label>Email<span class="text-danger">*</span></label>
                 <input type="email" name="email" class="form-control" required />
               </div>
               <div class="form-group">
-                <label>Billing Phone</label>
+                <label>Billing Phone<span class="text-danger">*</span></label>
                 <input type="text" name="billingPhone" class="form-control" maxlength="13" pattern="[0-9]+"
                   placeholder="Enter phone number"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 13);" required />
@@ -256,14 +262,14 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
-                <label>Subject Line</label>
-                <input type="text" name="subjectLine" class="form-control" required />
+                <label>Subject Line<span class="text-danger">*</span></label>
+                <input type="text" name="subjectLine" class="form-control" required placeholder="Enter Subject Line"/>
               </div>
             </div>
             <div class="col-8">
               <div class="form-group">
-                <label>Card Holder Name</label>
-                <input type="text" class="form-control" name="cardHolderName" required />
+                <label>Card Holder Name<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="cardHolderName" required placeholder="Enter Card Holder Name"/>
               </div>
             </div>
             <div class="col-4">
@@ -277,8 +283,8 @@
             </div>
             <div class="col-12">
               <div class="form-group">
-                <label>Billing Address </label>
-                <input type="text" name="billingAddress" class="form-control" required />
+                <label>Billing Address <span class="text-danger">*</span></label>
+                <input type="text" name="billingAddress" class="form-control" required placeholder="Enter Billing Address"/>
               </div>
             </div>
           </div>
@@ -779,14 +785,43 @@
       }
 
       // Next button click handler
-      nextButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          if (currentStep < steps.length - 1) {
-            currentStep++;
-            showStep(currentStep);
-          }
-        });
+      // Validate inputs in the current step
+      function validateStep() {
+  const inputs = steps[currentStep].querySelectorAll("input[required], select[required]");
+  let isValid = true;
+
+  inputs.forEach((input) => {
+    if (input.tagName === "SELECT") {
+      // Ensure the user selects an option (not the disabled one)
+      if (input.value === "" || input.selectedIndex === 0) {
+        isValid = false;
+        input.classList.add("error");
+      } else {
+        input.classList.remove("error");
+      }
+    } else {
+      if (input.value.trim() === "") {
+        isValid = false;
+        input.classList.add("error");
+      } else {
+        input.classList.remove("error");
+      }
+    }
+  });
+
+  return isValid;
+}
+
+
+    // Next button click handler
+    nextButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (validateStep() && currentStep < steps.length - 1) {
+          currentStep++;
+          showStep(currentStep);
+        }
       });
+    });
 
       // Previous button click handler
       prevButtons.forEach((button) => {

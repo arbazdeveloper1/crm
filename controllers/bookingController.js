@@ -7,6 +7,11 @@ import createTransporter from "../config/mailConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import requestIp from "request-ip";
+// import * as UAParser from "ua-parser-js";
+import { UAParser } from "ua-parser-js";
+import { getCurrentDateFormatted } from "../utils/helper.js";
+import os from "os";
 
 export const priceDescription = async (req, res) => {
   try {
@@ -248,7 +253,6 @@ export const EmailAcknowledge = async (req, res) => {
           BaseFare,
         }
       );
-      
 
       const transporter = createTransporter(fromEmail);
       // Email options
@@ -287,5 +291,72 @@ export const UpdateCurrency = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+// Controller for Track the User IP
+export const TrackIp = async (req, res) => {
+  try {
+    const { customer_id } = req.params;
+    if (!customer_id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Customer ID is required" });
+    }
+
+    const userAgent = req.headers["user-agent"];
+    const parser = new UAParser(userAgent);
+    const deviceInfo = parser.getResult();
+
+    const userIp = requestIp.getClientIp(req);
+
+    const networkInterfaces = os.networkInterfaces();
+    let systemIp = "Not Found";
+
+    Object.values(networkInterfaces).forEach((interfaces) => {
+      interfaces?.forEach((iface) => {
+        if (!iface.internal && iface.family === "IPv4") {
+          systemIp = iface.address;
+        }
+      });
+    });
+
+    let CurrentDate = getCurrentDateFormatted();
+
+    let DeviceInfo = {
+      browser: deviceInfo.browser.name || "Unknown",
+      browserVersion: deviceInfo.browser.version || "Unknown",
+      os: deviceInfo.os.name || "Unknown",
+      osVersion: deviceInfo.os.version || "Unknown",
+      deviceType: deviceInfo.device.type || "Desktop",
+      CurrentDate: CurrentDate || "Null",
+      systemIp: systemIp || "Null",
+      userIp: userIp || "Null",
+    };
+    console.log(DeviceInfo);
+
+    // update the form_data table with the docusign_verified status
+    let qry = `update form_data set docusign_verified = 'true' where customer_id = '${customer_id}'`;
+    const result = await query(qry);
+    if (!result) {
+      return res
+        .status(400)
+        .json({ success: false, message: "IP Address not updated" });
+    }
+
+    // Insert the data store user system configuration
+    let qry1 = `insert into user_device_config (customer_id, browser, browser_version, operating_system, operating_system_version, device_type, c_date, device_ip, user_ip) values ('${customer_id}', '${DeviceInfo?.browser}', '${DeviceInfo?.browserVersion}', '${DeviceInfo?.os}', '${DeviceInfo?.osVersion}', '${DeviceInfo?.deviceType}', '${CurrentDate}', '${DeviceInfo?.systemIp}', '${DeviceInfo?.userIp}')`;
+    const result1 = await query(qry1);
+    if (!result1) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Data not inserted" });
+    }
+    res.render("iptrackingsuccess", { DeviceInfo });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
