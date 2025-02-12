@@ -559,7 +559,16 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
+
+
+                  </div>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary"  id="MailSendButton">Send Email</button>
+                </div>
+              </div>
+            </div></div></div>
                     <br><br>
 
                       <% const images = result[0]?.image.split(','); %>
@@ -896,7 +905,6 @@
             let toEmail = document.getElementById('email').value;
             let emailTypeAuth = document.getElementById('emailTypeAuth').value;
             let customer_id = document.getElementById('customer_id').value;
-
             $.ajax({
               url: '/api/send_email',
               method: 'POST',
