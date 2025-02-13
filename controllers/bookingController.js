@@ -10,7 +10,11 @@ const __dirname = path.dirname(__filename);
 import requestIp from "request-ip";
 // import * as UAParser from "ua-parser-js";
 import { UAParser } from "ua-parser-js";
-import { getCurrentDateFormatted } from "../utils/helper.js";
+import {
+  getCurrentDateFormatted,
+  getPublicIP,
+  GeneratePDF,
+} from "../utils/helper.js";
 import os from "os";
 
 export const priceDescription = async (req, res) => {
@@ -140,7 +144,8 @@ export const new_booking_draft = async (req, res) => {
                 currency,
                 mco_description,
                 mco_calculated,
-                Docusign_Verified
+                Docusign_Verified,
+                signed_document
             FROM 
                 form_data
             WHERE 
@@ -298,6 +303,7 @@ export const UpdateCurrency = async (req, res) => {
 export const TrackIp = async (req, res) => {
   try {
     const { customer_id } = req.params;
+    const FullName = req.full_name;
     if (!customer_id) {
       return res
         .status(400)
@@ -308,20 +314,20 @@ export const TrackIp = async (req, res) => {
     const parser = new UAParser(userAgent);
     const deviceInfo = parser.getResult();
 
-    const userIp = requestIp.getClientIp(req);
-
     const networkInterfaces = os.networkInterfaces();
-    let systemIp = "Not Found";
+    let userIp = "Not Found";
 
     Object.values(networkInterfaces).forEach((interfaces) => {
       interfaces?.forEach((iface) => {
         if (!iface.internal && iface.family === "IPv4") {
-          systemIp = iface.address;
+          userIp = iface.address;
         }
       });
     });
 
     let CurrentDate = getCurrentDateFormatted();
+
+    let publicIP = await getPublicIP();
 
     let DeviceInfo = {
       browser: deviceInfo.browser.name || "Unknown",
@@ -330,10 +336,9 @@ export const TrackIp = async (req, res) => {
       osVersion: deviceInfo.os.version || "Unknown",
       deviceType: deviceInfo.device.type || "Desktop",
       CurrentDate: CurrentDate || "Null",
-      systemIp: systemIp || "Null",
+      systemIp: publicIP || "Null",
       userIp: userIp || "Null",
     };
-    console.log(DeviceInfo);
 
     // update the form_data table with the docusign_verified status
     let qry = `update form_data set docusign_verified = 'true' where customer_id = '${customer_id}'`;
@@ -345,8 +350,21 @@ export const TrackIp = async (req, res) => {
     }
 
     // Insert the data store user system configuration
-    let qry1 = `insert into user_device_config (customer_id, browser, browser_version, operating_system, operating_system_version, device_type, record_date, system_ip, user_ip) values ('${customer_id}', '${DeviceInfo?.browser}', '${DeviceInfo?.browserVersion}', '${DeviceInfo?.os}', '${DeviceInfo?.osVersion}', '${DeviceInfo?.deviceType}', '${Date.now()}', '${DeviceInfo?.systemIp}', '${DeviceInfo?.userIp}')`;
+    let qry1 = `insert into user_device_config (customer_id, browser, browser_version, operating_system, operating_system_version, device_type, system_ip, user_ip) values ('${customer_id}', '${DeviceInfo?.browser}', '${DeviceInfo?.browserVersion}', '${DeviceInfo?.os}', '${DeviceInfo?.osVersion}', '${DeviceInfo?.deviceType}', '${DeviceInfo?.systemIp}', '${DeviceInfo?.userIp}')`;
     const result1 = await query(qry1);
+
+    // Function to generate the PDF
+    const fileName = await GeneratePDF(req, res, customer_id, FullName);
+    if (!fileName) {
+      return res
+        .status(400)
+        .json({ success: false, message: "PDF not generated" });
+    }
+
+    await query(
+      `update form_data set signed_document = '${fileName}' where customer_id = '${customer_id || 'no file avaiable'}'`
+    );
+
     if (!result1) {
       return res
         .status(400)
@@ -363,8 +381,77 @@ export const TrackIp = async (req, res) => {
 
 export const docusignPdf = async (req, res) => {
   try {
-    res.render("docusign_pdf");
+    const userRole = req.userRole;
+    const { customer_id } = req.params;
+    console.log(customer_id);
+    const FullName = req.full_name;
+    let qry = `
+            SELECT DISTINCT
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                card_number,
+                subject_line,
+                image,
+                passenger_details,
+                airline_info,
+                gds_pnr,
+                billing_address,
+                email,
+                billing_phone,
+                expiration,
+                cvv,
+                card_type,
+                arl_confirmation,
+                currency,
+                mco_description,
+                mco_calculated,
+                Docusign_Verified
+            FROM 
+                form_data
+            WHERE 
+                customer_id = '${customer_id}'
+        `;
+
+    const result = await query(qry);
+
+    // Calculate Base Fare
+    let BaseFare = 0;
+    let FlightDetails = result[0]?.airline_info;
+    FlightDetails = JSON.parse(FlightDetails);
+
+    FlightDetails.reduce((acc, item) => {
+      return (BaseFare = acc + parseFloat(item.airline_cost));
+    }, 0);
+
+    // Query to get the user device configuration
+    let qry1 = `select * from user_device_config where customer_id = '${customer_id}'`;
+    const SystemConfig = await query(qry1);
+
+    if (result.length > 0 && SystemConfig.length > 0) {
+      res.render("docusign_pdf", {
+        userRole,
+        result,
+        FullName,
+        BaseFare,
+        SystemConfig,
+      });
+    } else {
+      res.render("docusign_pdf", {
+        userRole,
+        result: [],
+        FullName,
+        BaseFare,
+        SystemConfig,
+      });
+    }
   } catch (error) {
-    return res.status(500).json({ success: false, ErrorMsg: "Internal Server Error" });
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };

@@ -99,8 +99,8 @@
                             <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
                               <% if(email==='true' ) { %>
                                 <% if(result[0]?.Docusign_Verified !='false' ) { %>
-                                  <i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
-                                  </b><br><br>
+                                <a href="/pdfupload/<%- result[0]?.signed_document %>" target="_blank" ><i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
+                                  </b></a>  <br><br>
                                   <% }else{ %>
                                     <i style="color:red" class="fa fa-times-circle"></i><b style="color: red;"> Docusign
                                       Verified </b><br><br>
@@ -359,7 +359,7 @@
                         <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
                       Acknowledge</a> -->
 
-                        <form action="http://localhost:3000/api/acknowledge_booking" method="POST">
+                        <form action="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" method="get">
                           <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
                           <button type="submit"
                             style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
@@ -503,7 +503,7 @@
                       <label for="fromemail" class="col-form-label">From:</label>
                       <select name="fromemail" id="fromemail" class="form-control">
                         <option value="" disabled>Select</option>
-                        <option value="ravi.vermaa@gmail.com">support@myflysupports.com</option>
+                        <option value="ravi.vermaa120@gmail.com">support@myflysupports.com</option>
                         <option value="support@kingjourney.com">support@kingjourney.com</option>
                       </select>
                     </div><br>
@@ -783,6 +783,11 @@
             let toEmail = document.getElementById('email').value;
             let emailTypeAuth = document.getElementById('emailTypeAuth').value;
             let customer_id = document.getElementById('customer_id').value;
+
+            if(Emailsubject?.trim() === ''){
+              alert('Subject is required');
+              return;
+            }
 
             $.ajax({
               url: '/api/send_email',

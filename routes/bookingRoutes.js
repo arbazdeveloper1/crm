@@ -26,9 +26,8 @@ route.get("/all_booking", verifyToken, AllBooking);
 route.post("/api/send_email", verifyToken,EmailAcknowledge)
 route.post("/api/update_currency", verifyToken,UpdateCurrency)
 
-
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
 
-route.get("/docusign_pdf", verifyToken, docusignPdf)
+route.get("/docusign_pdf/:customer_id", verifyToken, docusignPdf)
 
 export default route;

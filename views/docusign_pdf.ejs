@@ -55,22 +55,12 @@
 <body>
 
 
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
         <!-- LOGO -->
         <tbody>
+          
             <tr>
-                <td class="bg-primary" align="center">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 80%;">
-                        <tbody>
-                            <tr>
-                                <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td class="bg-primary" align="center" style="padding: 0px 10px 0px 10px;">
+                <td align="center" style="padding: 0px 10px 0px 10px;">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 80%;">
                         <tbody>
                             <tr>
@@ -79,10 +69,10 @@
                                     lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;=""
                                     font-weight:="" 200;="" letter-spacing:="" 2px;="" line-height:="" 48px;"="">
                                     <h1 style="font-size: 18px; font-weight: 400; margin: 2;">
-                                        <b>Dear Emilia Greco, </b><br><br><span style="font-size:15px;">Greetings of the
+                                        <b>Dear <%- result[0]?.card_holder_name %>, </b><br><br><span style="font-size:15px;">Greetings of the
                                             day! </span>
                                     </h1>
-                                    <br><b>Subject: </b> Air Canada Changes Confirmation <br>
+                                    <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
                                 </td>
                                
                             </tr>
@@ -103,14 +93,38 @@
                                         and price. As per our conversation and as agreed, we have booked your itinerary
                                         as follows -
                                         <br><br>
-                                        Total price for all passenger(s) including taxes and fees: <b>$ 530.04 CAD</b>
-                                        (Total for all passengers) and the same amount would be charged on your Master
-                                        card ending with XXXX9581
-                                        <br>
-                                        <br> On your bank statement there would be One charge, from My Fly Support for
-                                        530.04 CAD.
-                                        <br><br>
-                                        <b style="color:#024;">Confirmation : </b>CFM01252AZ
+                                        Total price for all passenger(s) including taxes and fees: <b>$ <%- result[0]?.total_amount %>
+                                            <%- result[0]?.currency %></b> (Total for all
+                                        passengers) and the same amount would be charged on your Visa card ending with <%-
+                                          result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
+                                          <br>
+              
+                                          <% result?.forEach((row, index)=> {
+                                            let airline_data;
+                                            try {
+                                            airline_data = JSON.parse(row.airline_info)
+                                            } catch (error) {
+                                            airline_data = [];
+                                            }
+              
+                                            let chargeCount = airline_data.length;
+                                            %>
+              
+                                            <br> On your bank statement, there would be
+                                            <%= chargeCount===1 ? "one charge" : chargeCount + " charges" %>,
+              
+                                              <% airline_data.forEach((airline, pIndex)=> { %>
+                                                <%= pIndex===0 ? "one from" : ", one from" %>
+                                                  <%= airline.airline_name %> for <%= airline.airline_cost %>
+                                                      <%= row.currency %>
+                                                        <% }); %>
+                                                          would be shown under <%- result[0]?.mco_description=='my_fly_support'
+                                                            ? 'My Fly Support' : result[0]?.mco_description %>.
+                                                            <br><br>
+              
+                                                            <% }); %>
+                                    
+                                        <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
                                     </p>
                                 </td>
                             </tr>
@@ -144,31 +158,49 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr bgcolor="#ffffff">
-                                                <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
+                                            <% result?.forEach((row, index)=> {
+                                                let passengers = JSON.parse(row.passenger_details); // Parse the JSON string
+                                                passengers.forEach((passenger, pIndex) => {
+                                                %>
+                  
+                                                <tr bgcolor="#ffffff">
+                                                  <td
+                                                    style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                                                     width="10% !important">
-                                                    1.
-                                                </td>
-                                                <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
+                                                    <%= pIndex + 1 %>.
+                                                  </td>
+                                                  <td
+                                                    style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                                                     width="30% !important">
-                                                    Dennis John Maruk (Male)
-                                                </td>
-                                                <td style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
+                                                    <%= passenger.fullName %>
+                                                      <%= passenger.ticketNo !="" ? `(Ticket No: ${passenger.ticketNo})` : '' %>
+                                                  </td>
+                                                  <td
+                                                    style="font-size: 13px; line-height: 25px;  border-right: solid 1px #d3d2d2;padding:10px;"
                                                     width="30% !important">
-                                                    17, Nov 1955
-                                                </td>
-
-
-
-                                            </tr>
+                                                    <%= new Date(passenger.dob).toLocaleDateString('en-GB', { day: '2-digit' ,
+                                                      month: '2-digit' , year: 'numeric' }).replace(/\//g, '-' ) %>
+                                                  </td>
+                  
+                  
+                  
+                                                </tr>
+                                                <% }); }); %>
                                         </tbody>
                                     </table><br><br>
                                     <br><br>
 
                                     <b style="color:#024;">Trip Details –</b><br><br>
                                     </p>
-                                    <p><img style="width: 568px;"
-                                            src="https://crm.kingjourney.com/editor/uploads/1739385236.png"><br></p>
+                                    <p>
+                                        <% const images=result[0]?.image.split(','); %>
+                            <% images?.forEach(image=> { %>
+                              <% if (image.trim()) { %>
+                                <img style="width: 546px; margin-bottom: 10px;"
+                                  src="http://localhost:3000/uploads/<%= image.trim() %>" alt="Trip Details"><br>
+                                <% } %>
+                                  <% }); %>
+                                        <br></p>
                                     <p></p>
 
                                     <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Credit Card
@@ -179,22 +211,22 @@
                                         <thead>
                                             <tr>
                                                 <th class="tg-0lax"><b>BOOKING PNR:</b></th>
-                                                <th class="tg-0lax">4kcvy5</th>
+                                                <th class="tg-0lax"><%- result[0]?.gds_pnr %></th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
                                             <tr>
                                                 <td class="tg-0lax"><b>TOTAL CHARGES:</b></td>
-                                                <td class="tg-0lax"> 530.04 </td>
+                                                <td class="tg-0lax"> <%- result[0]?.total_amount %> </td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>BASE FARE:</b></td>
-                                                <td class="tg-0lax">0</td>
+                                                <td class="tg-0lax"><%- BaseFare %></td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>TAXES &amp; FEES:</b></td>
-                                                <td class="tg-0lax">530.04</td>
+                                                <td class="tg-0lax"><%- result[0]?.mco_calculated %></td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>REASON OF BOOKING:</b></td>
@@ -202,31 +234,31 @@
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>AIRLINE REFERENCE (ARL):</b></td>
-                                                <td class="tg-0lax">4KCVY5</td>
+                                                <td class="tg-0lax"><%- result[0]?.arl_confirmation %></td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>CARD HOLDER NAME:</b></td>
-                                                <td class="tg-0lax">Emilia Greco</td>
+                                                <td class="tg-0lax"><%- result[0]?.card_holder_name %></td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>CARD NUMBER:</b></td>
-                                                <td class="tg-0lax">5191230222439581 (Master)</td>
+                                                <td class="tg-0lax"><%- result[0]?.card_number %> (<%- result[0]?.card_type %>)</td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>CARD EXPIRY / CVV:</b></td>
-                                                <td class="tg-0lax">0127 &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; 936</td>
+                                                <td class="tg-0lax"><%- result[0]?.expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%-
+                                                    result[0]?.cvv %></td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>BILLING PHONE:</b></td>
-                                                <td class="tg-0lax">519) 661-2111</td>
+                                                <td class="tg-0lax"><%- result[0]?.billing_phone %></td>
                                             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>BILLING EMAIL:</b></td>
-                                                <td class="tg-0lax">emilia.greco@uwo.ca</td>
+                                                <td class="tg-0lax"><%- result[0]?.email %></td>
                                             </tr>
                                             <tr>
-                                                <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> 42-124 n
-                                                    center rd london canada ontario N5X4R3 </td>
+                                                <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> <%- result[0]?.billing_address %></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -245,7 +277,7 @@
                                         <div class="col-6">
                                             <div style="float: left;">
                                                 <p style="margin: 0;"><b>Thanks &amp; Regards!</b> <br>
-                                                    <span style="color:green;font-size:20px;">Nathan</span> <br>
+                                                    <span style="color:green;font-size:20px;"><%- FullName %></span> <br>
                                                     (Reservations Desk)<br>
                                                 </p>
                                                 ☎ <b>Toll-free (24/7) :</b>&nbsp;&nbsp; <a href="#"
@@ -256,10 +288,10 @@
                                             <div style="float: right;">
                                                 <p style="margin: 0;"><b>Signed by</b></p>
                                                 <div style="border: 1px solid #ccc; min-width: 300px; max-width: fit-content; height: 100px; margin: 10px 0; padding: 5px 20px; display: flex; justify-content: center; align-items: center;">
-                                                    <span style="font-family: 'Dancing Script', cursive; font-size: 48px; white-space: nowrap;">Marry Joseph </span>
+                                                    <span style="font-family: 'Dancing Script', cursive; font-size: 48px; white-space: nowrap;"><%- result[0]?.card_holder_name %></span>
                                                 </div>
                                                 <p style="margin: 0;">I agree to the mentioned charges</p>
-                                                (February 5, 2025 01:52 EST)
+                                                (<%= new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %> <%= new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'America/New_York' }) %> EST)
                                             </div>
                                         </div>
                                     </div>
@@ -347,34 +379,35 @@
                             <tr>
                                 <td align="left" style="padding: 20px 30px;">
                                     <span style="font-weight: bold; font-size: 20px; color: rgb(255, 255, 255); display: block; margin-bottom: 15px;" class="bg-primary d-flex justify-content-center rounded-pill">DocuSign Information</span>
-                                    <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse;">
+                                    <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse: collapse; border: 1px solid #ddd; font-family: Arial, sans-serif; font-size: 14px;">
                                         <tbody>
-                                            <tr>
-                                                <td><b>Device IP:</b></td>
-                                                <td>2605:59c8:2605:4110:17a3:daf:ac0c:1cda, 162.158.159.118</td>
-                                                <td><b>Subject:</b></td>
-                                                <td>Candian North Reissuence</td>
-                                                <td><b>Email ID:</b></td>
-                                                <td>cariboucabs@gmail.com</td>
+                                            <tr style="background-color: #f2f2f2; text-align: left;">
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Device IP:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><%- SystemConfig[0]?.system_ip %>, <%- SystemConfig[0]?.user_ip %></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Subject:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><%- result[0]?.subject_line %></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Email ID:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><%- result[0]?.email %></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Document Originator:</b></td>
-                                                <td>crm.kingjourney.com</td>
-                                                <td><b>Signer:</b></td>
-                                                <td>DANNY SAVARD</td>
-                                                <td><b>Security Level:</b></td>
-                                                <td>Email, Account Authentication (None)</td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Document Originator:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;">crm.kingjourney.com</td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Signer:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><%- result[0]?.card_holder_name %></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Security Level:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;">Email, Account Authentication (None)</td>
                                             </tr>
-                                            <tr>
-                                                <td><b>Booking Type:</b></td>
-                                                <td>New Booking</td>
-                                                <td><b>Device Used:</b></td>
-                                                <td>Desktop</td>
-                                                <td><b>Signature Event:</b></td>
-                                                <td>Pre Selected Style</td>
+                                            <tr style="background-color: #f9f9f9;">
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Booking Type:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;">New Booking</td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Device Used:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><%- SystemConfig[0]?.device_type %></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;"><b>Signature Event:</b></td>
+                                                <td style="border: 1px solid #ddd; padding: 10px;">Pre Selected Style</td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    
                                 </td>
                             </tr>
                         </tbody>
