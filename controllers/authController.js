@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import transporter from '../config/mailConfig.js';
-import { findUserByEmail, findUserByUsername, updateUserOTP, resetPassword } from '../models/userModel.js';
+import { findUserByEmail, findUserByUsername, updateUserOTP, resetPassword , allBooking } from '../models/userModel.js';
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
@@ -22,8 +22,15 @@ export const login = async (req, res) => {
 };
 
 export const dashboard = async (req, res) => {
-  const userRole = req.userRole;
-  res.render('dashboard', { userRole }); 
+  try {
+    const userRole = req.userRole;
+    const bookings = await allBooking();
+    // Render the dashboard and pass the retrieved data
+    res.render('dashboard', { userRole, bookings });
+  } catch (error) {
+    console.error('Error fetching dashboard data:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 
