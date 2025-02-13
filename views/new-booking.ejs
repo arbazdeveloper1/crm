@@ -208,7 +208,8 @@
               <div class="form-group">
                 <label>Currency<span class="text-danger">*</span></label>
                 <select name="currency" class="form-control" required>
-                  <option value="USD" selected>USD</option>
+                  <option value="Select currency">Select Currency</option>
+                  <option value="USD">USD</option>
                   <option value="CAD">CAD</option>
                   <option value="GBP">GBP</option>
                   <option value="EUR">EUR</option>
@@ -737,8 +738,14 @@
         success: function (res) {
           console.log("Success:", res);
           if (res.status) {
-            alert("Form submitted successfully!");
-            window.location.href = "/all_booking";
+            iziToast.success({
+              title: "Success",
+              message: "Form Submission successful!",
+              position: "topCenter",
+            })
+            setTimeout(() => {
+              window.location.href = "/all_booking";
+            },500)
           }
         },
         error: function (error) {
