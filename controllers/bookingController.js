@@ -269,7 +269,12 @@ export const EmailAcknowledge = async (req, res) => {
       };
 
       const info = await transporter.sendMail(mailOptions);
-      console.log("Email sent: " + info.response);
+      
+      if(info.accepted.length > 0){
+        return res.status(200).json({success: true, message: "Email sent successfully!"});
+      }else{
+        return res.status(400).json({success: false, message: "Email not sent!"});
+      }
     }
   } catch (error) {
     console.error(error);

@@ -94,8 +94,7 @@
                           style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111;"
                           lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:=""
                           200;="" letter-spacing:="" 2px;="" line-height:="" 48px;"="">
-                          <a target="_blank"
-                            href="https://crm.kingjourney.com/docusign/files/CFM01-74ccd4f3a72450604b7980e6126c7b4b.pdf">
+                          
                             <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
                               <% if(email==='true' ) { %>
                                 <% if(result[0]?.Docusign_Verified !='false' ) { %>
@@ -586,6 +585,7 @@
 
 
         <!-- Currency change modal start -->
+        <% if(email==='true' ) { %>
         <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="formModal2"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -616,11 +616,13 @@
             </div>
           </div>
         </div>
+        <% } %>
 
         <!-- Currency change modal end -->
 
 
         <!-- Attachments modal -->
+        <% if(email==='true' ) { %>
         <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="attachmentsModalLabel"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -771,6 +773,7 @@
             </div>
           </div>
         </div>
+        <% } %>
 
         <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
 
@@ -785,7 +788,11 @@
             let customer_id = document.getElementById('customer_id').value;
 
             if(Emailsubject?.trim() === ''){
-              alert('Subject is required');
+              iziToast.error({
+                title: "Error",
+                message: "Subject is required",
+                position: "topRight"
+              });
               return;
             }
 
@@ -801,9 +808,31 @@
               },
               success: (response) => {
                 console.log(response);
+                console.log(response.success);
+                if(response.success){
+                  iziToast.success({
+                    title: "Success",
+                    message: "Email sent successfully!",
+                    position: "topRight"
+                  });
+
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 2000);
+                }else{
+                  iziToast.error({
+                    title: "Error",
+                    message: "Email not sent!",
+                    position: "topRight"
+                  });
+                }
               },
               error: (error) => {
-                console.log(error);
+                iziToast.error({
+                  title: "Error",
+                  message: "Something went wrong! Please try again.",
+                  position: "topRight"
+                });
               }
             });
           });
