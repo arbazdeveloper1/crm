@@ -25,7 +25,7 @@ export const dashboard = async (req, res) => {
   try {
     const userRole = req.userRole;
     const bookings = await allBooking();
-    // Render the dashboard and pass the retrieved data
+    
     res.render('dashboard', { userRole, bookings });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);

@@ -23,16 +23,5 @@ export const findUserByUserId = async (id) => {
 export const allBooking = async () => {
   return await query('SELECT * FROM form_data');
 }
-// export const exchange = async (booking_type) => {
-//   return await query('SELECT * FROM form_data WHERE booking_type = ?', [booking_type]);
-// };
-// export const refund = async () => {
-//   return await query('SELECT * FROM form_data');
-// }
-// export const futureCredit = async () => {
-//   return await query('SELECT * FROM form_data');
-// }
-// export const seatUpgrade = async () => {
-//   return await query('SELECT * FROM form_data');
-// }
+
 
