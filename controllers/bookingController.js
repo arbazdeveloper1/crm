@@ -460,3 +460,27 @@ export const docusignPdf = async (req, res) => {
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
+
+
+export const customer_doc_upload = async (req, res) => {
+  try{
+    res.render('customer_doc_upload');
+  }catch(error){
+    console.log(error,"Server error")
+  }
+}
+export const thankyou = async (req, res) => {
+  try{
+    res.render('thankyou');
+  }catch(error){
+    console.log(error,"Server error")
+  }
+}
+export const e_ticket = async (req, res) => {
+  try{
+    res.render('e_ticket');
+  }catch(error){
+    console.log(error,"Server error")
+  }
+}
+

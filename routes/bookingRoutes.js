@@ -7,7 +7,10 @@ import {
   EmailAcknowledge,
   UpdateCurrency,
   TrackIp,
-  docusignPdf
+  docusignPdf,
+  customer_doc_upload,
+  thankyou,
+  e_ticket
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -29,5 +32,7 @@ route.post("/api/update_currency", verifyToken,UpdateCurrency)
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
 
 route.get("/docusign_pdf/:customer_id", verifyToken, docusignPdf)
-
+route.get('/customer_doc_upload', customer_doc_upload);
+route.get('/thankyou', thankyou);
+route.get('/e_ticket',e_ticket);
 export default route;
