@@ -23,7 +23,7 @@ route.get("/booking_list", verifyToken, booking_list);
 route.get("/new_booking_draft/:customer_id", verifyToken, new_booking_draft);
 route.get("/all_booking", verifyToken, AllBooking);
 
-route.post("/api/send_email", verifyToken,EmailAcknowledge)
+route.post("/api/send_email",upload.array('selectedFiles',10), verifyToken,EmailAcknowledge)
 route.post("/api/update_currency", verifyToken,UpdateCurrency)
 
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
