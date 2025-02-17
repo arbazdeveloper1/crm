@@ -358,22 +358,24 @@
                         <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
                       Acknowledge</a> -->
 
-                        <form action="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" method="get">
+                      <div style="display: flex; align-items: center; gap: 15px;">
+                        <form action="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" method="get" style="display: inline-block; margin: 0;">
                           <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
                           <button type="submit"
                             style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
                             Acknowledge
                           </button>
-
-
-
-                          &nbsp;&nbsp;
-                          <!-- <a href="#" style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">Upload Files</a> -->
-                          <button
-                            style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">Upload
-                            Files</button>
                         </form>
+                      <form action="http://localhost:3000/customer_doc_upload/<%- result[0]?.customer_id %>" method="get">
+                        <button type="submit"
+                          style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">
+                          Upload Files
+                        </button>
+                      <form action="">
 
+                      </div>
+                      
+                          
                         <p></p>
                       </td>
                     </tr>
@@ -655,7 +657,7 @@
                     </div>
         
                     <!-- Upload form -->
-                    <form id="uploadForm">
+                    <!-- <form id="uploadForm"> -->
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-6">
@@ -669,9 +671,9 @@
         
                       <div class="text-right">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Upload</button>
+                        <button type="submit" class="btn btn-primary" id="uploadForm">Upload</button>
                       </div>
-                    </form>
+                    <!-- </form> -->
                   </div>
                 </div>
               </div>
@@ -686,10 +688,9 @@
 
 let uploadedFiles = {};
 
-// Clear the select options except the disabled default option
 function clearSelectOptions() {
   const select = document.getElementById("eticketfile");
-  while (select.options.length > 1) { // Keep the first disabled option
+  while (select.options.length > 1) {
     select.remove(1);
   }
 }
@@ -711,8 +712,7 @@ function addUploadedFile(fileName, file) {
   });
 }
 
-// When files are uploaded
-document.getElementById("uploadForm").addEventListener("submit", function (event) {
+document.getElementById("uploadForm").addEventListener("click", function (event) {
   event.preventDefault();
 
   let fileInput = document.getElementById("fileInput");
@@ -756,7 +756,7 @@ document.getElementById("uploadForm").addEventListener("submit", function (event
   fileNameInput.value = "";
 });
 
-// Updated removeItem function to also remove from select
+
 function removeItem(element, fileName) {
   // Remove the visual elements
   element.parentElement.parentElement.remove();
@@ -782,15 +782,7 @@ function removeItem(element, fileName) {
           let MailSendButton = document.getElementById('MailSendButton');
           MailSendButton.addEventListener('click', async (e) => {
             e.preventDefault();
-            
-            if (!document.getElementById('mailsubject').value.trim()) {
-              iziToast.error({
-                title: "Error",
-                message: "Please enter email subject",
-                position: "topRight"
-              });
-              return;
-            }
+            MailSendButton.disabled = true
             
             let selectedEmailType = document.querySelector('input[name="emailtype"]:checked').value;
             let fromEmail = document.getElementById('fromemail').value;
@@ -798,89 +790,78 @@ function removeItem(element, fileName) {
             let toEmail = document.getElementById('email').value;
             let customer_id = document.getElementById('customer_id').value;
             
-            // Create FormData object
-            const formData = new FormData();
-            formData.append('fromEmail', fromEmail);
-            formData.append('subject', Emailsubject);
-            formData.append('toEmail', toEmail);
-            formData.append('emailtype', selectedEmailType);
-            formData.append('customer_id', customer_id);
-
-            // Get selected files if email type is "ticket"
             if (selectedEmailType === 'ticket') {
+              const formData = new FormData();
+              formData.append('fromEmail', fromEmail);
+              formData.append('subject', Emailsubject);
+              formData.append('toEmail', toEmail);
+              formData.append('emailtype', selectedEmailType);
+              formData.append('customer_id', customer_id);
+
               let eticketSelect = document.getElementById('eticketfile');
               let selectedFiles = Array.from(eticketSelect.selectedOptions);
               
-              if (selectedFiles.length === 0) {
-                iziToast.error({
-                  title: "Error",
-                  message: "Please select at least one file to send",
-                  position: "topRight"
-                });
-                return;
-              }
-
-              // Create an array to store file information
-              let fileInfoArray = [];
-              
-              selectedFiles.forEach((option) => {
+              selectedFiles.forEach(option => {
                 if (uploadedFiles[option.value]) {
-                  // Add file to FormData
-                  formData.append('attachments', uploadedFiles[option.value]);
-                  
-                  // Add file info to array
-                  fileInfoArray.push({
-                    filename: option.value,
-                    originalname: uploadedFiles[option.value].name,
-                    mimetype: uploadedFiles[option.value].type,
-                    size: uploadedFiles[option.value].size
-                  });
+                  formData.append('files', uploadedFiles[option.value]);
                 }
               });
 
-              // Add file info array as a JSON string
-              formData.append('fileInfo', JSON.stringify(fileInfoArray));
+              // Send FormData AJAX request
+              $.ajax({
+                url: '/api/send_email',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: handleResponse,
+                error: handleError
+              });
+            } else {
+              $.ajax({
+                url: '/api/send_email',
+                type: 'POST',
+                data: {
+                  fromEmail,
+                  subject: Emailsubject,
+                  toEmail,
+                  emailtype: selectedEmailType,
+                  customer_id
+                },
+                success: handleResponse,
+                error: handleError
+              });
             }
-
-            console.log('Sending form data...');
-            for(let [key, value] of formData.entries()) {
-              console.log(`${key}:`, value);
-            }
-
-            // Send the AJAX request
-            $.ajax({
-              url: '/api/send_email',
-              method: 'POST',
-              data: formData,
-              processData: false,
-              contentType: false,
-              success: (response) => {
-                console.log('Response:', response);
-                if (response.success) {
-                  iziToast.success({
-                    title: "Success",
-                    message: response.message,
-                    position: "topRight"
-                  });
-                  $('#exampleModal').modal('hide');
-                } else {
-                  iziToast.error({
-                    title: "Error",
-                    message: response.message || "Email not sent!",
-                    position: "topRight"
-                  });
-                }
-              },
-              error: (error) => {
-                console.log('Error:', error);
-                iziToast.error({
-                  title: "Error",
-                  message: "Something went wrong! Please try again.",
-                  position: "topRight"
-                });
-              }
-            });
           });
+
+          // Success handler
+          function handleResponse(response) {
+            if (response.success) {
+              iziToast.success({
+                title: "Success",
+                message: "Email Sent Succesfully !!",
+                position: "topRight"
+              });
+            } else {
+              iziToast.error({
+                title: "Error",
+                message: response.message || "Email not sent!",
+                position: "topRight"
+              });
+            }
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+
+          // Error handler
+          function handleError(error) {
+            iziToast.error({
+              title: "Error",
+              message: "Something went wrong! Please try again.",
+              position: "topRight"
+            });
+          }
 
           // Show/hide e-ticket file selection based on email type
           document.querySelectorAll('input[name="emailtype"]').forEach(radio => {

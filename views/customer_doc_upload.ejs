@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+      name="viewport"
+    />
+    <title>Document Uploads</title>
+
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="/assets/css/app.min.css" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="/assets/css/custom.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+    />
+    <!-- Toastr -->
+    <link
+      rel="stylesheet"
+      href="/assets/bundles/izitoast/css/iziToast.min.css"
+    />
+    <script src="/assets/bundles/izitoast/js/iziToast.min.js"></script>
+
+    <style>
+      body {
+        background: #ebebeb;
+      }
+      .upload-form {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Centered Form -->
+    <div class="d-flex justify-content-center align-items-center vh-100">
+      <form class="upload-form" id="uploadForm">
+        <!-- <div class="upload-form"> -->
+        <h4 class="text-center mb-4">Upload Your Documents</h4>
+
+        <!-- File Upload Fields -->
+        <div id="fileUploadContainer">
+          <div class="form-group">
+            <label>File 1</label>
+            <input
+              type="file"
+              class="form-control file-input"
+              accept="image/*,.pdf"
+              name="documents"
+            />
+            <small class="text-muted">Accept: Images or PDF files</small>
+          </div>
+          <div class="form-group">
+            <label>File 2</label>
+            <input
+              type="file"
+              class="form-control file-input"
+              accept="image/*,.pdf"
+              name="documents"
+            />
+            <small class="text-muted">Accept: Images or PDF files</small>
+          </div>
+          <div class="form-group">
+            <label>File 3</label>
+            <input
+              type="file"
+              class="form-control file-input"
+              accept="image/*,.pdf"
+              name="documents"
+            />
+            <small class="text-muted">Accept: Images or PDF files</small>
+          </div>
+          <div class="form-group">
+            <label>File 4</label>
+            <input
+              type="file"
+              class="form-control file-input"
+              accept="image/*,.pdf"
+              name="documents"
+            />
+            <small class="text-muted">Accept: Images or PDF files</small>
+          </div>
+          <div class="form-group">
+            <label>File 5</label>
+            <input
+              type="file"
+              class="form-control file-input"
+              accept="image/*,.pdf"
+              name="documents"
+            />
+            <small class="text-muted">Accept: Images or PDF files</small>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+      </form>
+    <!-- </div> -->
+    </div>
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+      const uploadForm = document.getElementById("uploadForm"); // Corrected ID
+
+      uploadForm.addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent form refresh
+
+          const formData = new FormData();
+          const fileInputs = document.querySelectorAll(".file-input");
+          let hasFiles = false;
+
+          fileInputs.forEach((input) => {
+              if (input.files.length > 0) {
+                  formData.append("documents", input.files[0]); // Use array format
+                  hasFiles = true;
+              }
+          });
+
+          if (!hasFiles) {
+              iziToast.warning({
+                  title: "Warning",
+                  message: "Please select at least one file to upload",
+                  position: "topRight",
+              });
+              return;
+          }
+
+          $.ajax({
+              url: "/api/upload_documents",
+              method: "post",
+              dataType: "json",
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function (response) {
+                  if (response.success) {
+                      iziToast.success({
+                          title: "Success",
+                          message: "File Uploaded",
+                          position: "topRight",
+                      });
+                      setTimeout(() => {
+                          window.location.href = "/thankyou";
+                      }, 2000);
+                  } else {
+                      iziToast.error({
+                          title: "Error",
+                          message: "something went wrong",
+                          position: "topRight",
+                      });
+                  }
+              },
+              error: function (error) {
+                  iziToast.error({
+                      title: "Error",
+                      message: "Something went wrong!",
+                      position: "topRight",
+                  });
+              }
+          });
+      });
+  });
+    </script>
+
+    <!-- General JS Scripts -->
+    <script src="/assets/js/app.min.js"></script>
+    <!-- JS Libraries -->
+    <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="/assets/js/page/index.js"></script>
+    <!-- Template JS File -->
+    <script src="/assets/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="/assets/js/custom.js"></script>
+  </body>
+</html>

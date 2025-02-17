@@ -20,3 +20,8 @@ export const findUserByUserId = async (id) => {
   return await query('SELECT * FROM users WHERE id = ?', [id]);
 }
 
+export const allBooking = async () => {
+  return await query('SELECT * FROM form_data');
+}
+
+

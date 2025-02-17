@@ -191,23 +191,17 @@ export const new_booking_draft = async (req, res) => {
 
 // Email Acknowledge
 export const EmailAcknowledge = async (req, res) => {
-    try {
-      const {
-        fromEmail,
-        subject,
-        toEmail,
-        emailTypeAuth,
-        customer_id,
-        selectedFiles,
-      } = req.body;
-      const FullName = req.full_name;
-      if (!fromEmail || !subject || !toEmail || !emailTypeAuth) {
-        return res
-          .status(400)
-          .json({ success: false, ErrorMsg: "All fields are required" });
-      }
-      if (emailTypeAuth === "email") {
-        let qry = `SELECT DISTINCT
+  try {
+    const { fromEmail, subject, toEmail, emailtype, customer_id } = req.body;
+    console.log(req.body)
+    const FullName = req.full_name;
+    if (!fromEmail || !subject || !toEmail || !emailtype) {
+      return res
+        .status(400)
+        .json({ success: false, ErrorMsg: "All fields are required" });
+    }
+    if (emailtype === "email") {
+      let qry = `SELECT DISTINCT
         card_holder_name,
         total_amount,
         email_type,
@@ -236,83 +230,141 @@ export const EmailAcknowledge = async (req, res) => {
                   customer_id = '${customer_id}'
                   `;
 
-        const result = await query(qry);
+      const result = await query(qry);
 
-        let BaseFare = 0;
-        let FlightDetails = result[0]?.airline_info;
-        FlightDetails = JSON.parse(FlightDetails);
-        FlightDetails.reduce((acc, item) => {
-          return (BaseFare = acc + parseFloat(item.airline_cost));
-        }, 0);
+      let BaseFare = 0;
+      let FlightDetails = result[0]?.airline_info;
+      FlightDetails = JSON.parse(FlightDetails);
+      FlightDetails.reduce((acc, item) => {
+        return (BaseFare = acc + parseFloat(item.airline_cost));
+      }, 0);
 
-        if (!result) {
-          return res
-            .status(404)
-            .json({ success: false, ErrorMsg: "User not found" });
-        }
-        const emailHtml = await ejs.renderFile(
-          path.join(__dirname, "../views", "new_booking_draft.ejs"),
-          {
-            fromEmail,
-            subject,
-            toEmail,
-            result,
-            FullName: FullName,
-            email: "false",
-            BaseFare,
-          }
-        );
-
-        const transporter = createTransporter(fromEmail);
-        // Email options
-        const mailOptions = {
-          from: fromEmail,
-          to: toEmail,
-          subject: subject,
-          html: emailHtml,
-        };
-
-        const info = await transporter.sendMail(mailOptions);
-
-        if (info.accepted.length > 0) {
-          return res
-            .status(200)
-            .json({ success: true, message: "Email sent successfully!" });
-        } else {
-          return res
-            .status(400)
-            .json({ success: false, message: "Email not sent!" });
-        }
-      } else {
-        // const transporter = createTransporter(fromEmail);
-
-        // const mailOptions = {
-        //   from: fromEmail,
-        //   to: toEmail,
-        //   subject: subject,
-        //   text: "Please find attached your e-tickets.",
-        //   attachments: req.files.map(file => ({
-        //     filename: file.originalname,
-        //     path: file.path
-        //   }))
-        // };
-        console.log(req.body, "request body with selected files");
-        console.log(req.files, "request files");
-        // const info = await transporter.sendMail(mailOptions);
-
-        // if(info.accepted.length > 0){
-        //   return res.status(200).json({success: true, message: "E-tickets sent successfully!"});
-        // }else{
-        //   return res.status(400).json({success: false, message: "E-tickets not sent!"});
-        // }
+      if (!result) {
+        return res
+          .status(404)
+          .json({ success: false, ErrorMsg: "User not found" });
       }
-    } catch (error) {
-      console.error(error);
-      return res
-        .status(500)
-        .json({ success: false, ErrorMsg: "Internal Server Error" });
+      const emailHtml = await ejs.renderFile(
+        path.join(__dirname, "../views", "new_booking_draft.ejs"),
+        {
+          fromEmail,
+          subject,
+          toEmail,
+          result,
+          FullName: FullName,
+          email: "false",
+          BaseFare,
+        }
+      );
+
+      const transporter = createTransporter(fromEmail);
+      // Email options
+      const mailOptions = {
+        from: fromEmail,
+        to: toEmail,
+        subject: subject,
+        html: emailHtml,
+      };
+
+      const info = await transporter.sendMail(mailOptions);
+
+      if (info.accepted.length > 0) {
+        return res
+          .status(200)
+          .json({ success: true, message: "Email sent successfully!" });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "Email not sent!" });
+      }
+    } else {
+      let qry = `SELECT DISTINCT
+        card_holder_name,
+        total_amount,
+        email_type,
+        created_at,
+        agent_name,
+        customer_id,
+        card_number,
+        subject_line,
+        image,
+        passenger_details,
+        airline_info,
+        gds_pnr,
+        billing_address,
+        email,
+        billing_phone,
+        expiration,
+        cvv,
+        card_type,
+        arl_confirmation,
+        currency,
+        mco_description,
+        Docusign_Verified
+              FROM 
+                  form_data
+                  WHERE 
+                  customer_id = '${customer_id}'
+                  `;
+
+      const result = await query(qry);
+
+      let BaseFare = 0;
+      let FlightDetails = result[0]?.airline_info;
+      FlightDetails = JSON.parse(FlightDetails);
+      FlightDetails.reduce((acc, item) => {
+        return (BaseFare = acc + parseFloat(item.airline_cost));
+      }, 0);
+
+      if (!result) {
+        return res
+          .status(404)
+          .json({ success: false, ErrorMsg: "User not found" });
+      }
+      const emailHtml = await ejs.renderFile(
+        path.join(__dirname, "../views", "e_ticket.ejs"),
+        {
+          fromEmail,
+          subject,
+          toEmail,
+          result,
+          FullName: FullName,
+          email: "false",
+          BaseFare,
+        }
+      );
+      const transporter = createTransporter(fromEmail);
+
+      const mailOptions = {
+        from: fromEmail,
+        to: toEmail,
+        subject: subject,
+        html: emailHtml,
+        text: "Please find attached your e-tickets.",
+        attachments: req.files.map((file) => ({
+          filename: file.originalname,
+          path: file.path,
+        })),
+      };
+      const info = await transporter.sendMail(mailOptions);
+
+      if (info.accepted.length > 0) {
+        return res
+          .status(200)
+          .json({ success: true, message: "E-tickets sent successfully!" });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "E-tickets not sent!" });
+      }
     }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
+};
 
 export const UpdateCurrency = async (req, res) => {
   try {
@@ -420,7 +472,6 @@ export const docusignPdf = async (req, res) => {
   try {
     const userRole = req.userRole;
     const { customer_id } = req.params;
-    console.log(customer_id);
     const FullName = req.full_name;
     let qry = `
             SELECT DISTINCT
@@ -490,5 +541,111 @@ export const docusignPdf = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+};
+
+export const customer_doc_upload = async (req, res) => {
+  try {
+    res.render("customer_doc_upload");
+  } catch (error) {
+    console.log(error, "Server error");
+  }
+};
+export const thankyou = async (req, res) => {
+  try {
+    res.render("thankyou");
+  } catch (error) {
+    console.log(error, "Server error");
+  }
+};
+
+export const e_ticket = async (req, res) => {
+  try {
+    const userRole = req.userRole;
+    const { customer_id } = req.params;
+    const FullName = req.full_name;
+    const { email } = req.query;
+    let qry = `
+            SELECT DISTINCT
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                card_number,
+                subject_line,
+                image,
+                passenger_details,
+                airline_info,
+                gds_pnr,
+                billing_address,
+                email,
+                billing_phone,
+                expiration,
+                cvv,
+                card_type,
+                arl_confirmation,
+                currency,
+                mco_description,
+                mco_calculated,
+                Docusign_Verified,
+                signed_document
+            FROM 
+                form_data
+            WHERE 
+                customer_id = '${customer_id}'
+        `;
+
+    const result = await query(qry);
+
+    // Calculate Base Fare
+    let BaseFare = 0;
+    let FlightDetails = result[0]?.airline_info;
+    FlightDetails = JSON.parse(FlightDetails);
+
+    FlightDetails.reduce((acc, item) => {
+      return (BaseFare = acc + parseFloat(item.airline_cost));
+    }, 0);
+
+    if (result.length > 0) {
+      res.render("e_ticket", {
+        userRole,
+        result,
+        FullName,
+        email,
+        BaseFare,
+      });
+    } else {
+      res.render("e_ticket", {
+        userRole,
+        result: [],
+        FullName,
+        email,
+        BaseFare,
+      });
+    }
+  } catch (error) {
+    console.log(error, "Server error");
+  }
+};
+
+export const uploadDocuments = async (req, res) => {
+  try {
+    const { customer_id } = req.params;
+
+    if (!req.files || req.files.length == 0) {
+      return res.status(401).json({ ErrorMsg: "no file uploaded" });
+    }
+
+    let documents = req.files.map((item) => item.filename).join(",");
+    console.log(documents);
+
+    let qry = `update form_data set uploaded_document='${documents}' where customer_id='${customer_id}'`;
+    let result = await query(qry);
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error, "Server error");
   }
 };
