@@ -100,7 +100,7 @@
                                             <%- result[0]?.currency %></b> (Total for all
                                         passengers) and the same amount would be charged on your Visa card ending with <%-
                                           result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
-                                          <br>
+                                          <br><br><br>
                                           <span style="color: #6777ef;">Your e-Ticket is confirmed.</span>
                                     </p>
                                 </td>
@@ -157,9 +157,6 @@
                                                     <%= new Date(passenger.dob).toLocaleDateString('en-GB', { day: '2-digit' ,
                                                       month: '2-digit' , year: 'numeric' }).replace(/\//g, '-' ) %>
                                                   </td>
-                  
-                  
-                  
                                                 </tr>
                                                 <% }); }); %>
                                         </tbody>
@@ -219,7 +216,7 @@
                                             <tr>
                                                 <td class="tg-0lax"><b>CARD NUMBER:</b></td>
                                                 <td class="tg-0lax"><%- result[0]?.card_number %> (<%- result[0]?.card_type %>)</td>
-                                            </tr>
+                               `             </tr>
                                             <tr>
                                                 <td class="tg-0lax"><b>CARD EXPIRY / CVV:</b></td>
                                                 <td class="tg-0lax"><%- result[0]?.expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%-
@@ -239,9 +236,7 @@
                                         </tbody>
                                     </table>
 
-                                    <br><br><span style="font-weight: bolder; color: #6777ef;">Please download your e-ticket and other related documents:</span><br>
-                                    <span style="font-size:12px;">E-ticket: <a href="#" style="background: #6777ef;">Click Here</a>
-                                    </span>
+                                    <br><br><span style="font-weight: bolder; color: #6777ef;">Please find your e-ticket and other related documents attached below.</span><br>
 
 
                                     <br><br><span style="font-weight: bolder; color: rgb(255, 87, 51);">Terms And
