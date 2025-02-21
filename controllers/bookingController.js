@@ -51,6 +51,7 @@ export const booking_list = async (req, res) => {
 
     let qry = `
         SELECT 
+           id,
             card_holder_name,
             total_amount,
             email_type,
@@ -61,6 +62,7 @@ export const booking_list = async (req, res) => {
             form_data 
         WHERE 
             agent_name = '${req.full_name}' AND booking_type = 'new_booking'
+        ORDER BY id DESC
     `;
 
     const result = await query(qry);
