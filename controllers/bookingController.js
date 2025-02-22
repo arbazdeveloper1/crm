@@ -148,7 +148,9 @@ export const new_booking_draft = async (req, res) => {
                 mco_description,
                 mco_calculated,
                 Docusign_Verified,
-                signed_document
+                signed_document,
+                uploaded_document,
+                status
             FROM 
                 form_data
             WHERE 
@@ -637,7 +639,6 @@ export const e_ticket = async (req, res) => {
 export const uploadDocuments = async (req, res) => {
   try {
     const { customer_id } = req.params;
-    console.log(customer_id, "customer id ");
 
     if (!req.files || req.files.length == 0) {
       return res.status(401).json({ ErrorMsg: "no file uploaded" });
@@ -655,5 +656,22 @@ export const uploadDocuments = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error, "Server error");
+  }
+};
+
+export const ChangeStatus = async (req, res) => {
+  try {
+    let { customer_id } = req.body;
+
+    let UpdateStatus = await query(
+      `update form_data set status='sent_for_issuance' where customer_id='${customer_id}'`
+    );
+    if (UpdateStatus.affectedRows == 0) {
+      return res.status(401).json({ success: false });
+    }
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error(error);
   }
 };

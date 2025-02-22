@@ -11,7 +11,8 @@ import {
   customer_doc_upload,
   thankyou,
   e_ticket,
-  uploadDocuments
+  uploadDocuments,
+  ChangeStatus
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -39,5 +40,8 @@ route.get('/e_ticket/:customer_id',e_ticket);
 
 
 route.post('/api/upload_documents/:customer_id', verifyToken, upload.array('documents',5) ,uploadDocuments)
+
+
+route.post('/api/change_status', verifyToken, ChangeStatus)
 
 export default route;
