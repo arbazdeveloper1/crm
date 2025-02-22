@@ -38,6 +38,6 @@ route.get('/thankyou', thankyou);
 route.get('/e_ticket/:customer_id',e_ticket);
 
 
-route.post('/api/upload_documents', verifyToken, upload.array('documents',5) ,uploadDocuments)
+route.post('/api/upload_documents/:customer_id', verifyToken, upload.array('documents',5) ,uploadDocuments)
 
 export default route;

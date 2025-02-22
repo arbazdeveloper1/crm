@@ -366,7 +366,7 @@
                             Acknowledge
                           </button>
                         </form>
-                      <form action="http://localhost:3000/customer_doc_upload/<%- result[0]?.customer_id %>" method="get">
+                      <form action="http://localhost:3000/customer_doc_upload/<%- encodeURIComponent(result[0]?.customer_id) %>" method="get">
                         <button type="submit"
                           style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">
                           Upload Files

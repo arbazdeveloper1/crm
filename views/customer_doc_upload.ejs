@@ -105,6 +105,8 @@
         <button type="submit" class="btn btn-primary btn-block">Upload</button>
       </form>
     <!-- </div> -->
+
+    <input type="hidden" id="customer_id" value="<%- customer_id %>">
     </div>
 
     <script>
@@ -116,6 +118,7 @@
 
           const formData = new FormData();
           const fileInputs = document.querySelectorAll(".file-input");
+          let CustomerId = document.getElementById("customer_id").value;
           let hasFiles = false;
 
           fileInputs.forEach((input) => {
@@ -135,7 +138,7 @@
           }
 
           $.ajax({
-              url: "/api/upload_documents",
+              url: `/api/upload_documents/${CustomerId}`,
               method: "post",
               dataType: "json",
               data: formData,
