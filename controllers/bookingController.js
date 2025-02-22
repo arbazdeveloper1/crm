@@ -51,6 +51,7 @@ export const booking_list = async (req, res) => {
 
     let qry = `
         SELECT 
+           id,
             card_holder_name,
             total_amount,
             email_type,
@@ -61,6 +62,7 @@ export const booking_list = async (req, res) => {
             form_data 
         WHERE 
             agent_name = '${req.full_name}' AND booking_type = 'new_booking'
+        ORDER BY id DESC
     `;
 
     const result = await query(qry);
@@ -146,7 +148,9 @@ export const new_booking_draft = async (req, res) => {
                 mco_description,
                 mco_calculated,
                 Docusign_Verified,
-                signed_document
+                signed_document,
+                uploaded_document,
+                status
             FROM 
                 form_data
             WHERE 
@@ -193,7 +197,7 @@ export const new_booking_draft = async (req, res) => {
 export const EmailAcknowledge = async (req, res) => {
   try {
     const { fromEmail, subject, toEmail, emailtype, customer_id } = req.body;
-    console.log(req.body)
+    console.log(req.body);
     const FullName = req.full_name;
     if (!fromEmail || !subject || !toEmail || !emailtype) {
       return res
@@ -546,7 +550,9 @@ export const docusignPdf = async (req, res) => {
 
 export const customer_doc_upload = async (req, res) => {
   try {
-    res.render("customer_doc_upload");
+    const { customer_id } = req.params;
+
+    res.render("customer_doc_upload", { customer_id });
   } catch (error) {
     console.log(error, "Server error");
   }
@@ -639,13 +645,33 @@ export const uploadDocuments = async (req, res) => {
     }
 
     let documents = req.files.map((item) => item.filename).join(",");
-    console.log(documents);
 
     let qry = `update form_data set uploaded_document='${documents}' where customer_id='${customer_id}'`;
     let result = await query(qry);
 
+    if (result.affectedRows == 0) {
+      res.status(401).json({ success: false });
+    }
+
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error, "Server error");
+  }
+};
+
+export const ChangeStatus = async (req, res) => {
+  try {
+    let { customer_id } = req.body;
+
+    let UpdateStatus = await query(
+      `update form_data set status='sent_for_issuance' where customer_id='${customer_id}'`
+    );
+    if (UpdateStatus.affectedRows == 0) {
+      return res.status(401).json({ success: false });
+    }
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error(error);
   }
 };

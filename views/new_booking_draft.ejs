@@ -18,7 +18,7 @@
 </head>
 
 <body>
-  <!-- <div class="loader"></div> -->
+  <div class="loader"></div>
   <% if(email==='true' ) { %>
     <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
       <a href="#" class="btn btn-success mx-2" data-toggle="modal" data-target="#exampleModal">Send Email Now</a>
@@ -32,7 +32,11 @@
             <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal3">Attechments</a>
           </li>
           <li class="nav-item mx-2">
-            <a href="#" class="btn btn-warning">Last Status: Charged</a>
+            <% if(result[0].Docusign_Verified == 'true') { %>
+            <a href="#" class="btn btn-warning" id="change_status"><i class="fas fa-<%= result[0].status === 'sent_for_issuance' ? 'unlock' : 'lock' %>"></i>&nbsp;&nbsp;Last Status: <%- result[0].status === 'sent_for_issuance' ? "Send for Issuance" : "Working" %></a>
+            <% } else { %>
+              <a href="#" class="btn btn-warning" id="alert_for_verfication"><i class="fas fa-lock"></i> Last Status: Working</a>
+            <% } %>
           </li>
           <li class="nav-item mx-2">
             <a href="#" class="btn btn-info">Booking Remarks</a>
@@ -97,7 +101,7 @@
                           
                             <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
                               <% if(email==='true' ) { %>
-                                <% if(result[0]?.Docusign_Verified !='false' ) { %>
+                                <% if(result[0]?.Docusign_Verified !='false') { %>
                                 <a href="/pdfupload/<%- result[0]?.signed_document %>" target="_blank" ><i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
                                   </b></a>  <br><br>
                                   <% }else{ %>
@@ -357,8 +361,9 @@
                           style="font-weight:bold;">1-855-515-1040</a><br><br>
                         <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
                       Acknowledge</a> -->
-
+                      <% if(email == 'false') { %>
                       <div style="display: flex; align-items: center; gap: 15px;">
+<<<<<<< HEAD
                         <form action="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" method="get" style="display: inline-block; margin: 0;">
                           <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
                           <button type="submit"
@@ -372,8 +377,21 @@
                           Upload Files
                         </button>
                       <form action="">
+=======
+                        <a href="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" 
+                          style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
+                         I Acknowledge
+                       </a>
+                       
+                       <a href="http://localhost:3000/customer_doc_upload/<%- encodeURIComponent(result[0]?.customer_id) %>" 
+                        style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;padding:8px;">
+                        Upload Files
+                     </a>
+                     
+>>>>>>> ff303f4f8007eae9f1ddca6015587f809cc17065
 
                       </div>
+                      <% } %>
                       
                           
                         <p></p>
@@ -648,6 +666,31 @@
                       <h6 class="font-weight-bold">Attachments by Agent</h6>
                       <div class="list-group" id="attachmentsList"></div>
                     </div>
+
+                    <% if (result[0] && result[0].uploaded_document) { 
+                      let documents = result[0].uploaded_document.split(',').map(doc => doc.trim()).filter(doc => doc);
+                      if (documents.length > 0) { 
+                  %>
+                      <h6 class="font-weight-bold" style="margin-bottom: 10px;">📎 Attachments by User</h6>
+                      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                          <% documents.forEach(doc => { 
+                              let filePath = `/uploads/${doc}`; // Assuming files are in 'uploads' folder
+                              let fileName = doc.split('/').pop(); // Get actual file name
+                              let fileExtension = fileName.split('.').pop().toLowerCase();
+                              let isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                          %>
+                              <!-- Stylish Button for Image or PDF -->
+                              <a href="<%= filePath %>" target="_blank" 
+                                 style="display: flex; align-items: center; justify-content: center; 
+                                        padding: 4px 8px; border-radius: 5px; text-decoration: none; 
+                                        background-color: <%= isImage ? '#007bff' : '#28a745' %>; 
+                                        color: white; font-weight: bold; border: none; cursor: pointer;font-size: 12px;">
+                                  <%= isImage ? '🖼️ ' : '📄 ' %> <%= fileName %>
+                              </a>
+                          <% }); %>
+                      </div>
+                  <% } } %>
+                  
                   </div>
         
                   <!-- E-Tickets tab -->
@@ -776,6 +819,16 @@ function removeItem(element, fileName) {
 }
 
 // email
+
+
+let button = document.getElementById('alert_for_verfication');
+button.addEventListener('click', () => {
+  iziToast.error({
+                title: "Error",
+           message: "Verify the Document First",
+                position: "topRight"
+              });
+})
 
 </script>
         <script>
@@ -921,6 +974,39 @@ function removeItem(element, fileName) {
           });
 
         </script>
+
+
+<script>
+
+let change_status = document.getElementById('change_status')
+
+change_status.addEventListener('click', () => {
+  let customer_id = document.getElementById('customer_id').value;
+
+  $.ajax({
+    url: '/api/change_status',
+    type: 'POST',
+    dataType: 'json',
+    data: { customer_id },
+     success: function(res) {
+      if(res.success) {
+      iziToast.success({
+                title: "Success",
+                message: "Status changed successfully !!",
+                position: "topRight"
+              });
+              let changeStatusBtn = document.getElementById("change_status");
+    if (changeStatusBtn) {
+        changeStatusBtn.innerHTML = `<i class="fas fa-unlock"></i> Last Status: Sent For Issuance`;
+    }
+            }
+     }
+  })
+
+
+})
+
+</script>
 
 
         <!-- ----- ----------------------- Function to Send the Mail end----------------------- -->

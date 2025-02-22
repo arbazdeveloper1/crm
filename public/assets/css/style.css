@@ -6490,6 +6490,7 @@ body.sidebar-gone .main-sidebar {
     background: rgba(249, 249, 249, 0.8) url("../img/loading.gif") 50% 50% no-repeat;
     backdrop-filter: blur(3px); /* Adjust the blur intensity as needed */
     opacity: 1;
+        
 }
 
 
