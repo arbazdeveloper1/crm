@@ -363,7 +363,7 @@
                           <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
                           <button type="submit"
                             style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
-                            Acknowledge
+                            I Acknowledge
                           </button>
                         </form>
                       <form action="http://localhost:3000/customer_doc_upload/<%- result[0]?.customer_id %>" method="get">
@@ -560,7 +560,7 @@
 
                     <div class="col-sm-12 col-xl-12" style="text-align:right;margin-top:5%">
                       <button type="button" class="btn btn-outline-secondary" style="text-align:right"
-                        data-dismiss="modal">Close</button>
+                        data-dismiss="modal" id="closeModal">Close</button>
                       <!-- <button type="button" id="check_email" style="text-align:left" class="btn btn-warning">Check
                             Email</button> -->
                       <button type="submit" class="btn btn-primary" style="text-align:right" id="MailSendButton">Send
@@ -849,9 +849,9 @@ function removeItem(element, fileName) {
                 position: "topRight"
               });
             }
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 2000);
           }
 
           // Error handler
