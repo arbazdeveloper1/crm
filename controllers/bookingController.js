@@ -675,3 +675,34 @@ export const ChangeStatus = async (req, res) => {
     console.error(error);
   }
 };
+
+export const ChangeBookingStatus = async (req, res) => {
+  try {
+    let {
+      customer_id,
+      payment_status,
+      card_holder_name,
+      queue_name,
+      charging_source,
+      verfication,
+      companycard,
+      cardnum,
+      voucher,
+      amount,
+      remarks,
+    } = req.body;
+
+    let qry = `INSERT INTO customer_booking_status 
+    (customer_id, customer_name, payment_status, queue_name, charging_source, card_verified, company_card_used, card_number, voucher_used, amount, remarks)
+    VALUES ('${customer_id}','${card_holder_name}', '${payment_status}', '${queue_name}', '${charging_source}', '${verfication}','${companycard}', '${cardnum}', '${voucher}', '${amount}', '${remarks}')`;
+    let ExecuteQuery = await query(qry);
+
+    if (ExecuteQuery.affectedRows == 0) {
+      res.status(401).json({ success: false, msg: "table not updated" });
+      return;
+    }
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error(error);
+  }
+};

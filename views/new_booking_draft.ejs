@@ -18,7 +18,7 @@
 </head>
 
 <body>
-  <!-- <div class="loader"></div> -->
+  <div class="loader"></div>
   <% if(email==='true' ) { %>
     <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
       <a href="#" class="btn btn-success mx-2" data-toggle="modal" data-target="#exampleModal">Send Email Now</a>
@@ -32,7 +32,16 @@
             <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal3">Attechments</a>
           </li>
           <li class="nav-item mx-2">
-            <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">Last Status: Charged</a>
+            <% if(userRole == 'agent') { %>
+            <% if(result[0].Docusign_Verified == 'true') { %>
+              <a href="#" class="btn btn-warning" id="change_status"><i class="fas fa-<%= result[0].status === 'sent_for_issuance' ? 'unlock' : 'lock' %>"></i>&nbsp;&nbsp;Last Status: <%- result[0].status === 'sent_for_issuance' ? "Send for Issuance" : "Working" %></a>
+              <% } else { %>
+                <a href="#" class="btn btn-warning" id="alert_for_verfication"><i class="fas fa-lock"></i> Last Status: Working</a>
+              <% } %>
+              <% } %>
+              <% if(userRole == 'admin') { %>
+              <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">Last Status: Charged</a>
+              <% } %>
           </li>
           <li class="nav-item mx-2">
             <a href="#" class="btn btn-info">Booking Remarks</a>
@@ -357,23 +366,22 @@
                           style="font-weight:bold;">1-855-515-1040</a><br><br>
                         <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
                       Acknowledge</a> -->
-
+                      <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
+                      <% if(email == 'false') { %>
                       <div style="display: flex; align-items: center; gap: 15px;">
-                        <form action="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" method="get" style="display: inline-block; margin: 0;">
-                          <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
-                          <button type="submit"
-                            style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
-                            I Acknowledge
-                          </button>
-                        </form>
-                      <form action="http://localhost:3000/customer_doc_upload/<%- result[0]?.customer_id %>" method="get">
-                        <button type="submit"
-                          style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">
-                          Upload Files
-                        </button>
-                      <form action="">
+                        <a href="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" 
+                          style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
+                         I Acknowledge
+                       </a>
+
+
+                     <a href="http://localhost:3000/customer_doc_upload/<%- encodeURIComponent(result[0]?.customer_id) %>" 
+                        style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;padding:8px;">
+                        Upload Files
+                     </a>
 
                       </div>
+                      <% } %>
                       
                           
                         <p></p>
@@ -648,6 +656,31 @@
                       <h6 class="font-weight-bold">Attachments by Agent</h6>
                       <div class="list-group" id="attachmentsList"></div>
                     </div>
+
+                    <% if (result[0] && result[0].uploaded_document) { 
+                      let documents = result[0].uploaded_document.split(',').map(doc => doc.trim()).filter(doc => doc);
+                      if (documents.length > 0) { 
+                  %>
+                      <h6 class="font-weight-bold" style="margin-bottom: 10px;">📎 Attachments by User</h6>
+                      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                          <% documents.forEach(doc => { 
+                              let filePath = `/uploads/${doc}`; // Assuming files are in 'uploads' folder
+                              let fileName = doc.split('/').pop(); // Get actual file name
+                              let fileExtension = fileName.split('.').pop().toLowerCase();
+                              let isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                          %>
+                              <!-- Stylish Button for Image or PDF -->
+                              <a href="<%= filePath %>" target="_blank" 
+                                 style="display: flex; align-items: center; justify-content: center; 
+                                        padding: 4px 8px; border-radius: 5px; text-decoration: none; 
+                                        background-color: <%= isImage ? '#007bff' : '#28a745' %>; 
+                                        color: white; font-weight: bold; border: none; cursor: pointer;font-size: 12px;">
+                                  <%= isImage ? '🖼️ ' : '📄 ' %> <%= fileName %>
+                              </a>
+                          <% }); %>
+                      </div>
+                  <% } } %>
+
                   </div>
         
                   <!-- E-Tickets tab -->
@@ -697,9 +730,20 @@
                <div class="row">
                  <div class="col-sm-4">
                    <label for="recipient-name" class="col-form-label">Payment Status:</label>
-                  <select name="status_admin" class="form-control" id="cars" required="">
+                  <select name="status_admin" class="form-control" id="payment_status" required="">
                         <option value="" hidden="">--Choose--</option>
-                        <option value="2">Charged</option><option value="3">Declined</option><option value="4">Invalid</option><option value="5">Voided</option><option value="others">Others</option><option value="6">Insufficient Funds</option><option value="1">Pickup</option><option value="7">Chargeback</option><option value="8">Partaly Refund</option><option value="9">Refund</option><option value="10">CB Alert</option>                </select>
+                        <option value="charged">Charged</option>
+                        <option value="declined">Declined</option>
+                        <option value="invalid">Invalid</option>
+                        <option value="voided">Voided</option>
+                        <option value="others">Others</option>
+                        <option value="insufficient_fund">Insufficient Funds</option>
+                        <option value="pickup">Pickup</option>
+                        <option value="chargeback">Chargeback</option>
+                        <option value="partaly_refund">Partaly Refund</option>
+                        <option value="refund">Refund</option>
+                        <option value="cb_alert">CB Alert</option>
+                      </select>
                   
                   <input type="hidden" value="1108" name="eid">
                   <input type="hidden" value="KNOVA WOOTEN" name="cch">
@@ -715,33 +759,36 @@
                 </div>
                 <div class="form-group col-sm-4">
                   <label for="recipient-name" class="col-form-label">Customer Name:</label>
-                  <input type="text" class="form-control" id="email" value="KNOVA WOOTEN" autocomplete="off" readonly="">
+                  <input type="text" class="form-control" id="card_holder_name" value="<%- result[0]?.card_holder_name %>" autocomplete="off" readonly="">
                  </div>
                
                <div class="form-group col-sm-4">
                   <label for="recipient-name" class="col-form-label">Confirmation / ARL:</label>
-                  <input type="text" class="form-control" id="email" value=" 44GKJ3" autocomplete="off" readonly="">
+                  <input type="text" class="form-control" id="customer_id" value="<%- result[0]?.customer_id %>" autocomplete="off" readonly="">
                  </div>
                
                 </div>
                 <div class="row">
                      <div class="form-group col-sm-6">
                       <label for="recipient-name" class="col-form-label">Queue name:</label>
-                      <select name="call_source" class="form-control" id="cars" required="">
+                      <select name="call_source" class="form-control" id="queue_name" required="">
                         <option value="" hidden="">--Choose--</option>
-                        <option value="Own GTF">Own GTF</option>                </select>
+                        <option value="Own_gtf">Own GTF</option>
+                      </select>
                      </div>
                     <div class="form-group col-sm-6">
                       <label for="recipient-name" class="col-form-label">Charging Source:</label>
-                       <select name="charge_source" class="form-control" id="cars" required="">
+                       <select name="charge_source" class="form-control" id="charging_source" required="">
                         <option value="" hidden="">--Choose--</option>
-                        <option value="My Fly Support">My Fly Support</option><option value="Air Ticket Pro">Air Ticket Pro</option>                </select>
+                        <option value="my_fly_support">My Fly Support</option>
+                        <option value="air_ticket_pro">Air Ticket Pro</option>
+                      </select>
                      </div>
                 </div>
                 <div class="row">
                      <div class="form-group col-sm-4">
                       <label for="recipient-name" class="col-form-label">Card Verified:</label>
-                      <select name="card_verified" class="form-control" id="cars" required="">
+                      <select name="card_verified" class="form-control" id="verfication" required="">
                         <option value="" hidden="">--Choose--</option>
                         <option value="yes">Yes</option>
                         <option value="no" selected="">No</option>
@@ -757,7 +804,7 @@
                      </div>
                      <div class="form-group col-sm-4">
                       <label for="recipient-name" class="col-form-label">Card Number:</label>
-                      <input type="text" class="form-control" maxlength="10" name="card_num" id="cardnum" value="" placeholder="Enter Last 4 Digit" autocomplete="off" readonly="">
+                      <input type="text" class="form-control" maxlength="10" name="card_num" id="cardnum" value="<%- result[0]?.card_number.slice(-4) || "No card available" %>" placeholder="Enter Last 4 Digit" autocomplete="off" readonly="">
                      </div>
                 </div>
                 <div class="row">
@@ -771,19 +818,19 @@
                      </div>
                      <div class="form-group col-sm-6">
                       <label for="recipient-name" class="col-form-label">Amount:</label>
-                      <input type="text" class="form-control" name="vamount" id="amount" value="" placeholder="Enter Amount" autocomplete="off" readonly="">
+                      <input type="text" class="form-control" name="vamount" id="amount" value="<%- result[0]?.total_amount %>" placeholder="Enter Amount" autocomplete="off" readonly="">
                      </div>
                 </div>
                 <div class="row">
                  <div class="col-sm-12">
-                <textarea name="payment_remarks" placeholder="Enter Payment Remarks (if Any)" class="form-control"></textarea>
+                <textarea name="payment_remarks" placeholder="Enter Payment Remarks (if Any)" class="form-control" id="remarks"></textarea>
                 </div>
                 </div>
               
             </div>
               <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Update Now</button>
+              <button type="submit" class="btn btn-primary" id="updatebokingstatus">Update Now</button>
             </div>
             </div>
           </div>
@@ -792,6 +839,43 @@
         <!-- charge modal close -->
 
         <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
+
+        <script>
+          let BookingStatusBtn = document.getElementById('updatebokingstatus')
+          BookingStatusBtn.addEventListener('click', function() {
+            let payment_status = document.getElementById('payment_status').value;
+            let card_holder_name = document.getElementById('card_holder_name').value;
+            let customer_id = document.getElementById('customer_id').value;
+            let queue_name = document.getElementById('queue_name').value;
+            let charging_source = document.getElementById('charging_source').value;
+            let verfication = document.getElementById('verfication').value;
+            let companycard = document.getElementById('companycard').value;
+            let cardnum = document.getElementById('cardnum').value;
+            let voucher = document.getElementById('voucher').value;
+            let amount = document.getElementById('amount').value;
+            let remarks = document.getElementById('remarks').value;
+
+             // Send FormData AJAX request
+             $.ajax({
+                url: '/api/bookingstatus',
+                type: 'json',
+                method: "post",
+                data: {payment_status: payment_status, card_holder_name: card_holder_name, customer_id: customer_id, queue_name: queue_name, charging_source: charging_source, verfication: verfication, companycard: companycard, cardnum: cardnum, voucher: voucher, amount: amount, remarks: remarks},
+                success: function(res){
+                  if(res.success) {
+                    iziToast.success({
+                title: "Success",
+                message: "Booking Status Updated !!",
+                position: "topRight"
+              });
+                  }
+                },
+              });
+
+
+          })
+        </script>
+
 <script>
 
 let uploadedFiles = {};
@@ -892,6 +976,8 @@ function removeItem(element, fileName) {
             e.preventDefault();
             MailSendButton.disabled = true
             
+            $('.loader').fadeIn('slow')
+            
             let selectedEmailType = document.querySelector('input[name="emailtype"]:checked').value;
             let fromEmail = document.getElementById('fromemail').value;
             let Emailsubject = document.getElementById('mailsubject').value;
@@ -944,6 +1030,7 @@ function removeItem(element, fileName) {
 
           // Success handler
           function handleResponse(response) {
+            $('.loader').fadeOut('slow')
             if (response.success) {
               iziToast.success({
                 title: "Success",
@@ -964,6 +1051,7 @@ function removeItem(element, fileName) {
 
           // Error handler
           function handleError(error) {
+            $('.loader').fadeOut('slow')
             iziToast.error({
               title: "Error",
               message: "Something went wrong! Please try again.",
@@ -1027,6 +1115,45 @@ function removeItem(element, fileName) {
               console.error("Button with ID 'changeCurrencyBtn' not found.");
             }
           });
+
+
+
+          let button = document.getElementById('alert_for_verfication');
+button.addEventListener('click', () => {
+  iziToast.error({
+                title: "Error",
+           message: "Verify the Document First",
+                position: "topRight"
+              });
+})
+
+let change_status = document.getElementById('change_status')
+
+change_status.addEventListener('click', () => {
+  let customer_id = document.getElementById('customer_id').value;
+
+  $.ajax({
+    url: '/api/change_status',
+    type: 'POST',
+    dataType: 'json',
+    data: { customer_id },
+     success: function(res) {
+      if(res.success) {
+      iziToast.success({
+                title: "Success",
+                message: "Status changed successfully !!",
+                position: "topRight"
+              });
+              let changeStatusBtn = document.getElementById("change_status");
+    if (changeStatusBtn) {
+        changeStatusBtn.innerHTML = `<i class="fas fa-unlock"></i> Last Status: Sent For Issuance`;
+    }
+            }
+     }
+  })
+
+
+})
 
         </script>
 
