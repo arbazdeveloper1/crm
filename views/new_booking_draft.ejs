@@ -689,7 +689,133 @@
                 <!-- attechment modal close -->
 
 
-                
+                <!-- charge modal -->
+                <% if(email==='true' ) { %>
+                  <div class="modal fade" id="chargeModal" tabindex="-1" role="dialog"
+                    aria-labelledby="chargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content ">
+                        <div class="modal-header bg-primary">
+                          <h4 style="font-size:18px;color:white;" class="modal-title">Update Booking Status</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <label for="recipient-name" class="col-form-label">Payment Status:</label>
+                              <select name="status_admin" class="form-control" id="cars" required="">
+                                <option value="" hidden="">--Choose--</option>
+                                <option value="2">Charged</option>
+                                <option value="3">Declined</option>
+                                <option value="4">Invalid</option>
+                                <option value="5">Voided</option>
+                                <option value="others">Others</option>
+                                <option value="6">Insufficient Funds</option>
+                                <option value="1">Pickup</option>
+                                <option value="7">Chargeback</option>
+                                <option value="8">Partaly Refund</option>
+                                <option value="9">Refund</option>
+                                <option value="10">CB Alert</option>
+                              </select>
+
+                              <input type="hidden" value="1108" name="eid">
+                              <input type="hidden" value="KNOVA WOOTEN" name="cch">
+                              <input type="hidden" value=" 44GKJ3" name="pnr">
+                              <input type="hidden" value=" 44GKJ3" name="arc">
+                              <input type="hidden" value="Nathan" name="agent">
+                              <input type="hidden" value="4402511877" name="phone">
+                              <input type="hidden" value="donniedanko16@gmail.com" name="email">
+                              <input type="hidden" value="607.96" name="ticket_cost">
+                              <input type="hidden" value="538.24" name="mco">
+                              <input type="hidden" value="1" name="email_status">
+                              <input type="hidden"
+                                value="https://crm.kingjourney.com/admin/draft/view-new_bookings.php?eid=1108&amp;email_type=1&amp;email_live=preview"
+                                name="booking_url">
+                            </div>
+                            <div class="form-group col-sm-4">
+                              <label for="recipient-name" class="col-form-label">Customer Name:</label>
+                              <input type="text" class="form-control" id="email" value="KNOVA WOOTEN" autocomplete="off"
+                                readonly="">
+                            </div>
+
+                            <div class="form-group col-sm-4">
+                              <label for="recipient-name" class="col-form-label">Confirmation / ARL:</label>
+                              <input type="text" class="form-control" id="email" value=" 44GKJ3" autocomplete="off"
+                                readonly="">
+                            </div>
+
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-sm-6">
+                              <label for="recipient-name" class="col-form-label">Queue name:</label>
+                              <select name="call_source" class="form-control" id="cars" required="">
+                                <option value="" hidden="">--Choose--</option>
+                                <option value="Own GTF">Own GTF</option>
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                              <label for="recipient-name" class="col-form-label">Charging Source:</label>
+                              <select name="charge_source" class="form-control" id="cars" required="">
+                                <option value="" hidden="">--Choose--</option>
+                                <option value="My Fly Support">My Fly Support</option>
+                                <option value="Air Ticket Pro">Air Ticket Pro</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-sm-4">
+                              <label for="recipient-name" class="col-form-label">Card Verified:</label>
+                              <select name="card_verified" class="form-control" id="cars" required="">
+                                <option value="" hidden="">--Choose--</option>
+                                <option value="yes">Yes</option>
+                                <option value="no" selected="">No</option>
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-4">
+                              <label for="recipient-name" class="col-form-label">Company Card Used:</label>
+                              <select name="card_used" class="form-control" id="companycard" required="">
+                                <option value="" hidden="">--Choose--</option>
+                                <option value="yes">Yes</option>
+                                <option value="no" selected="">No</option>
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-4">
+                              <label for="recipient-name" class="col-form-label">Card Number:</label>
+                              <input type="text" class="form-control" maxlength="10" name="card_num" id="cardnum"
+                                value="" placeholder="Enter Last 4 Digit" autocomplete="off" readonly="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-sm-6">
+                              <label for="recipient-name" class="col-form-label">Voucher Used:</label>
+                              <select name="voucher_used" class="form-control" id="voucher" required="">
+                                <option value="" hidden="">--Choose--</option>
+                                <option value="yes">Yes</option>
+                                <option value="no" selected="">No</option>
+                              </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                              <label for="recipient-name" class="col-form-label">Amount:</label>
+                              <input type="text" class="form-control" name="vamount" id="amount" value=""
+                                placeholder="Enter Amount" autocomplete="off" readonly="">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <textarea name="payment_remarks" placeholder="Enter Payment Remarks (if Any)"
+                                class="form-control"></textarea>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Update Now</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+                    <!-- charge modal close -->
 
                     <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
                     <script>
