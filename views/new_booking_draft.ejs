@@ -94,18 +94,19 @@
                           style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111;"
                           lato",="" helvetica,="" arial,="" sans-serif;="" font-size:="" 48px;="" font-weight:=""
                           200;="" letter-spacing:="" 2px;="" line-height:="" 48px;"="">
-                          
-                            <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
-                              <% if(email==='true' ) { %>
-                                <% if(result[0]?.Docusign_Verified !='false' ) { %>
-                                <a href="/pdfupload/<%- result[0]?.signed_document %>" target="_blank" ><i style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
-                                  </b></a>  <br><br>
-                                  <% }else{ %>
-                                    <i style="color:red" class="fa fa-times-circle"></i><b style="color: red;"> Docusign
-                                      Verified </b><br><br>
+
+                          <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
+                            <% if(email==='true' ) { %>
+                              <% if(result[0]?.Docusign_Verified !='false' ) { %>
+                                <a href="/pdfupload/<%- result[0]?.signed_document %>" target="_blank"><i
+                                    style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
+                                  </b></a> <br><br>
+                                <% }else{ %>
+                                  <i style="color:red" class="fa fa-times-circle"></i><b style="color: red;"> Docusign
+                                    Verified </b><br><br>
+                                  <% } %>
                                     <% } %>
-                                      <% } %>
-                            </h1>
+                          </h1>
                           </a>
 
                         </td>
@@ -358,24 +359,26 @@
                         <!-- <a href="/" style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">I
                       Acknowledge</a> -->
 
-                      <div style="display: flex; align-items: center; gap: 15px;">
-                        <form action="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" method="get" style="display: inline-block; margin: 0;">
-                          <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
-                          <button type="submit"
-                            style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
-                            I Acknowledge
-                          </button>
-                        </form>
-                      <form action="http://localhost:3000/customer_doc_upload/<%- result[0]?.customer_id %>" method="get">
-                        <button type="submit"
-                          style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">
-                          Upload Files
-                        </button>
-                      <form action="">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                          <form action="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>" method="get"
+                            style="display: inline-block; margin: 0;">
+                            <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
+                            <button type="submit"
+                              style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
+                              I Acknowledge
+                            </button>
+                          </form>
+                          <form action="http://localhost:3000/customer_doc_upload/<%- result[0]?.customer_id %>"
+                            method="get">
+                            <button type="submit"
+                              style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;">
+                              Upload Files
+                            </button>
+                            <form action="">
 
-                      </div>
-                      
-                          
+                        </div>
+
+
                         <p></p>
                       </td>
                     </tr>
@@ -527,7 +530,8 @@
                     </div>
                     <div class="col-sm-12" style="margin-bottom:3%">
                       <label for="eticketfile" class="col-form-label">Select E-Ticket:</label>
-                      <select name="eticketfile" id="eticketfile" class="form-control" multiple style="min-height: 100px;">
+                      <select name="eticketfile" id="eticketfile" class="form-control" multiple
+                        style="min-height: 100px;">
                         <option value="" disabled>Select Attachments</option>
                       </select>
                       <small class="text-muted">Hold Ctrl to select multiple files</small>
@@ -581,264 +585,160 @@
 
         <!-- Currency change modal start -->
         <% if(email==='true' ) { %>
-        <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="formModal2"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="formModal2">Change Currency</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"
-                  style="outline: none;">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <label for="currency">Select Currency</label>
-                  <select class="form-control" id="currency" name="currency">
-                    <option value="USD">USD - US Dollar</option>
-                    <option value="EUR">EUR - Euro</option>
-                    <option value="GBP">GBP - British Pound</option>
-                    <option value="CAD">CAD - Canadian Dollar</option>
-                    <!-- Add more currency options as needed -->
-                  </select>
+          <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="formModal2"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                  <h5 class="modal-title" id="formModal2">Change Currency</h5>
+                  <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"
+                    style="outline: none;">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="changeCurrencyBtn">Update Currency</button>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="currency">Select Currency</label>
+                    <select class="form-control" id="currency" name="currency">
+                      <option value="USD">USD - US Dollar</option>
+                      <option value="EUR">EUR - Euro</option>
+                      <option value="GBP">GBP - British Pound</option>
+                      <option value="CAD">CAD - Canadian Dollar</option>
+                      <!-- Add more currency options as needed -->
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="changeCurrencyBtn">Update Currency</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <% } %>
+          <% } %>
 
-        <!-- Currency change modal end -->
+            <!-- Currency change modal end -->
 
 
-        <!-- Attachments modal -->
-        <% if(email==='true' ) { %>
-          <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="attachmentsModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="attachmentsModalLabel">Attachments & Documents</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-        
-              <div class="modal-body">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#attachment" role="tab">Attachments</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#recording" role="tab">E-Tickets</a>
-                  </li>
-                </ul>
-        
-                <!-- Tab content -->
-                <div class="tab-content mt-3">
-                  <!-- Attachments tab -->
-                  <div class="tab-pane fade show active" id="attachment" role="tabpanel">
-                    <div class="mb-4">
-                      <h6 class="font-weight-bold">Attachments by Agent</h6>
-                      <div class="list-group" id="attachmentsList"></div>
+            <!-- Attachments modal -->
+            <% if(email==='true' ) { %>
+              <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"
+                aria-labelledby="attachmentsModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title" id="attachmentsModalLabel">Attachments & Documents</h5>
+                      <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
-                  </div>
-        
-                  <!-- E-Tickets tab -->
-                  <div class="tab-pane fade" id="recording" role="tabpanel">
-                    <div class="scroll-container mb-4" style="max-height: 250px; overflow-y: auto;">
-                      <div class="list-group" id="eTicketsList"></div>
-                    </div>
-        
-                    <!-- Upload form -->
-                    <!-- <form id="uploadForm"> -->
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <input type="text" class="form-control" id="fileName" placeholder="Enter File Name" required>
-                          </div>
-                          <div class="col-md-6">
-                            <input type="file" class="form-control" id="fileInput" required>
+
+                    <div class="modal-body">
+                      <!-- Nav tabs -->
+                      <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="#attachment" role="tab">Attachments</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#recording" role="tab">E-Tickets</a>
+                        </li>
+                      </ul>
+
+                      <!-- Tab content -->
+                      <div class="tab-content mt-3">
+                        <!-- Attachments tab -->
+                        <div class="tab-pane fade show active" id="attachment" role="tabpanel">
+                          <div class="mb-4">
+                            <h6 class="font-weight-bold">Attachments by Agent</h6>
+                            <div class="list-group" id="attachmentsList"></div>
                           </div>
                         </div>
+
+                        <!-- E-Tickets tab -->
+                        <div class="tab-pane fade" id="recording" role="tabpanel">
+                          <div class="scroll-container mb-4" style="max-height: 250px; overflow-y: auto;">
+                            <div class="list-group" id="eTicketsList"></div>
+                          </div>
+
+                          <!-- Upload form -->
+                          <!-- <form id="uploadForm"> -->
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <input type="text" class="form-control" id="fileName" placeholder="Enter File Name"
+                                  required>
+                              </div>
+                              <div class="col-md-6">
+                                <input type="file" class="form-control" id="fileInput" required>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="text-right">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="uploadForm">Upload</button>
+                          </div>
+                          <!-- </form> -->
+                        </div>
                       </div>
-        
-                      <div class="text-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="uploadForm">Upload</button>
-                      </div>
-                    <!-- </form> -->
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <% } %>
-        <!-- attechment modal close -->
+              <% } %>
+                <!-- attechment modal close -->
 
-        
-        <!-- charge modal -->
-        <% if(email==='true' ) { %>
-          <div class="modal fade" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content ">
-              <div class="modal-header bg-primary">
-                <h4 style="font-size:18px;color:white;" class="modal-title">Update Booking Status</h4>
-              </div>
-              <div class="modal-body">
-               <div class="row">
-                 <div class="col-sm-4">
-                   <label for="recipient-name" class="col-form-label">Payment Status:</label>
-                  <select name="status_admin" class="form-control" id="cars" required="">
-                        <option value="" hidden="">--Choose--</option>
-                        <option value="2">Charged</option><option value="3">Declined</option><option value="4">Invalid</option><option value="5">Voided</option><option value="others">Others</option><option value="6">Insufficient Funds</option><option value="1">Pickup</option><option value="7">Chargeback</option><option value="8">Partaly Refund</option><option value="9">Refund</option><option value="10">CB Alert</option>                </select>
-                  
-                  <input type="hidden" value="1108" name="eid">
-                  <input type="hidden" value="KNOVA WOOTEN" name="cch">
-                  <input type="hidden" value=" 44GKJ3" name="pnr">
-                  <input type="hidden" value=" 44GKJ3" name="arc">
-                  <input type="hidden" value="Nathan" name="agent">
-                  <input type="hidden" value="4402511877" name="phone">
-                  <input type="hidden" value="donniedanko16@gmail.com" name="email">
-                  <input type="hidden" value="607.96" name="ticket_cost">
-                  <input type="hidden" value="538.24" name="mco">
-                  <input type="hidden" value="1" name="email_status">
-                  <input type="hidden" value="https://crm.kingjourney.com/admin/draft/view-new_bookings.php?eid=1108&amp;email_type=1&amp;email_live=preview" name="booking_url">
-                </div>
-                <div class="form-group col-sm-4">
-                  <label for="recipient-name" class="col-form-label">Customer Name:</label>
-                  <input type="text" class="form-control" id="email" value="KNOVA WOOTEN" autocomplete="off" readonly="">
-                 </div>
-               
-               <div class="form-group col-sm-4">
-                  <label for="recipient-name" class="col-form-label">Confirmation / ARL:</label>
-                  <input type="text" class="form-control" id="email" value=" 44GKJ3" autocomplete="off" readonly="">
-                 </div>
-               
-                </div>
-                <div class="row">
-                     <div class="form-group col-sm-6">
-                      <label for="recipient-name" class="col-form-label">Queue name:</label>
-                      <select name="call_source" class="form-control" id="cars" required="">
-                        <option value="" hidden="">--Choose--</option>
-                        <option value="Own GTF">Own GTF</option>                </select>
-                     </div>
-                    <div class="form-group col-sm-6">
-                      <label for="recipient-name" class="col-form-label">Charging Source:</label>
-                       <select name="charge_source" class="form-control" id="cars" required="">
-                        <option value="" hidden="">--Choose--</option>
-                        <option value="My Fly Support">My Fly Support</option><option value="Air Ticket Pro">Air Ticket Pro</option>                </select>
-                     </div>
-                </div>
-                <div class="row">
-                     <div class="form-group col-sm-4">
-                      <label for="recipient-name" class="col-form-label">Card Verified:</label>
-                      <select name="card_verified" class="form-control" id="cars" required="">
-                        <option value="" hidden="">--Choose--</option>
-                        <option value="yes">Yes</option>
-                        <option value="no" selected="">No</option>
-                      </select>
-                     </div>
-                    <div class="form-group col-sm-4">
-                      <label for="recipient-name" class="col-form-label">Company Card Used:</label>
-                       <select name="card_used" class="form-control" id="companycard" required="">
-                        <option value="" hidden="">--Choose--</option>
-                        <option value="yes">Yes</option>
-                        <option value="no" selected="">No</option>
-                      </select>
-                     </div>
-                     <div class="form-group col-sm-4">
-                      <label for="recipient-name" class="col-form-label">Card Number:</label>
-                      <input type="text" class="form-control" maxlength="10" name="card_num" id="cardnum" value="" placeholder="Enter Last 4 Digit" autocomplete="off" readonly="">
-                     </div>
-                </div>
-                <div class="row">
-                     <div class="form-group col-sm-6">
-                      <label for="recipient-name" class="col-form-label">Voucher Used:</label>
-                       <select name="voucher_used" class="form-control" id="voucher" required="">
-                        <option value="" hidden="">--Choose--</option>
-                        <option value="yes">Yes</option>
-                        <option value="no" selected="">No</option>
-                      </select>
-                     </div>
-                     <div class="form-group col-sm-6">
-                      <label for="recipient-name" class="col-form-label">Amount:</label>
-                      <input type="text" class="form-control" name="vamount" id="amount" value="" placeholder="Enter Amount" autocomplete="off" readonly="">
-                     </div>
-                </div>
-                <div class="row">
-                 <div class="col-sm-12">
-                <textarea name="payment_remarks" placeholder="Enter Payment Remarks (if Any)" class="form-control"></textarea>
-                </div>
-                </div>
-              
-            </div>
-              <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Update Now</button>
-            </div>
-            </div>
-          </div>
-        </div>
-        <% } %>
-        <!-- charge modal close -->
 
-        <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
-<script>
+                
 
-let uploadedFiles = {};
+                    <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
+                    <script>
 
-function clearSelectOptions() {
-  const select = document.getElementById("eticketfile");
-  while (select.options.length > 1) {
-    select.remove(1);
-  }
-}
+                      let uploadedFiles = {};
 
-function addUploadedFile(fileName, file) {
-  // Add to uploadedFiles object
-  uploadedFiles[fileName] = file;
-  
-  // Clear existing options first
-  clearSelectOptions();
-  
-  // Add all files from uploadedFiles object
-  const select = document.getElementById("eticketfile");
-  Object.keys(uploadedFiles).forEach(name => {
-    let option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
-    select.appendChild(option);
-  });
-}
+                      function clearSelectOptions() {
+                        const select = document.getElementById("eticketfile");
+                        while (select.options.length > 1) {
+                          select.remove(1);
+                        }
+                      }
 
-document.getElementById("uploadForm").addEventListener("click", function (event) {
-  event.preventDefault();
+                      function addUploadedFile(fileName, file) {
+                        // Add to uploadedFiles object
+                        uploadedFiles[fileName] = file;
 
-  let fileInput = document.getElementById("fileInput");
-  let fileNameInput = document.getElementById("fileName");
+                        // Clear existing options first
+                        clearSelectOptions();
 
-  if (fileInput.files.length === 0) {
-    alert("Please select a file to upload.");
-    return;
-  }
+                        // Add all files from uploadedFiles object
+                        const select = document.getElementById("eticketfile");
+                        Object.keys(uploadedFiles).forEach(name => {
+                          let option = document.createElement("option");
+                          option.value = name;
+                          option.textContent = name;
+                          select.appendChild(option);
+                        });
+                      }
 
-  let file = fileInput.files[0];
-  let fileName = fileNameInput.value || file.name;
-  let fileURL = URL.createObjectURL(file);
+                      document.getElementById("uploadForm").addEventListener("click", function (event) {
+                        event.preventDefault();
 
-  // Add to eTicketsList
-  let eTicketItem = document.createElement("div");
-  eTicketItem.className = "list-group-item";
-  eTicketItem.innerHTML = `
+                        let fileInput = document.getElementById("fileInput");
+                        let fileNameInput = document.getElementById("fileName");
+
+                        if (fileInput.files.length === 0) {
+                          alert("Please select a file to upload.");
+                          return;
+                        }
+
+                        let file = fileInput.files[0];
+                        let fileName = fileNameInput.value || file.name;
+                        let fileURL = URL.createObjectURL(file);
+
+                        // Add to eTicketsList
+                        let eTicketItem = document.createElement("div");
+                        eTicketItem.className = "list-group-item";
+                        eTicketItem.innerHTML = `
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <b>Filename:</b>
@@ -850,203 +750,203 @@ document.getElementById("uploadForm").addEventListener("click", function (event)
       </div>
     </div>
   `;
-  document.getElementById("eTicketsList").appendChild(eTicketItem);
+                        document.getElementById("eTicketsList").appendChild(eTicketItem);
 
-  // Clone to attachmentsList
-  let attachmentItem = eTicketItem.cloneNode(true);
-  document.getElementById("attachmentsList").appendChild(attachmentItem);
+                        // Clone to attachmentsList
+                        let attachmentItem = eTicketItem.cloneNode(true);
+                        document.getElementById("attachmentsList").appendChild(attachmentItem);
 
-  // Add to select options
-  addUploadedFile(fileName, file);
+                        // Add to select options
+                        addUploadedFile(fileName, file);
 
-  // Reset form
-  fileInput.value = "";
-  fileNameInput.value = "";
-});
-
-
-function removeItem(element, fileName) {
-  // Remove the visual elements
-  element.parentElement.parentElement.remove();
-  
-  // Remove from uploadedFiles object
-  delete uploadedFiles[fileName];
-  
-  // Update select options
-  clearSelectOptions();
-  Object.keys(uploadedFiles).forEach(name => {
-    let select = document.getElementById("eticketfile");
-    let option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
-    select.appendChild(option);
-  });
-}
-
-// email
-
-</script>
-        <script>
-          let MailSendButton = document.getElementById('MailSendButton');
-          MailSendButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            MailSendButton.disabled = true
-            
-            let selectedEmailType = document.querySelector('input[name="emailtype"]:checked').value;
-            let fromEmail = document.getElementById('fromemail').value;
-            let Emailsubject = document.getElementById('mailsubject').value;
-            let toEmail = document.getElementById('email').value;
-            let customer_id = document.getElementById('customer_id').value;
-            
-            if (selectedEmailType === 'ticket') {
-              const formData = new FormData();
-              formData.append('fromEmail', fromEmail);
-              formData.append('subject', Emailsubject);
-              formData.append('toEmail', toEmail);
-              formData.append('emailtype', selectedEmailType);
-              formData.append('customer_id', customer_id);
-
-              let eticketSelect = document.getElementById('eticketfile');
-              let selectedFiles = Array.from(eticketSelect.selectedOptions);
-              
-              selectedFiles.forEach(option => {
-                if (uploadedFiles[option.value]) {
-                  formData.append('files', uploadedFiles[option.value]);
-                }
-              });
-
-              // Send FormData AJAX request
-              $.ajax({
-                url: '/api/send_email',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: handleResponse,
-                error: handleError
-              });
-            } else {
-              $.ajax({
-                url: '/api/send_email',
-                type: 'POST',
-                data: {
-                  fromEmail,
-                  subject: Emailsubject,
-                  toEmail,
-                  emailtype: selectedEmailType,
-                  customer_id
-                },
-                success: handleResponse,
-                error: handleError
-              });
-            }
-          });
-
-          // Success handler
-          function handleResponse(response) {
-            if (response.success) {
-              iziToast.success({
-                title: "Success",
-                message: "Email Sent Succesfully !!",
-                position: "topRight"
-              });
-            } else {
-              iziToast.error({
-                title: "Error",
-                message: response.message || "Email not sent!",
-                position: "topRight"
-              });
-            }
-            // setTimeout(() => {
-            //   window.location.reload();
-            // }, 2000);
-          }
-
-          // Error handler
-          function handleError(error) {
-            iziToast.error({
-              title: "Error",
-              message: "Something went wrong! Please try again.",
-              position: "topRight"
-            });
-          }
-
-          // Show/hide e-ticket file selection based on email type
-          document.querySelectorAll('input[name="emailtype"]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-              const eticketFileDiv = document.getElementById('eticketfile').closest('.col-sm-12');
-              if (e.target.value === 'ticket') {
-                eticketFileDiv.style.display = 'block';
-              } else {
-                eticketFileDiv.style.display = 'none';
-              }
-            });
-          });
-
-          // Trigger initial state
-          document.querySelector('input[name="emailtype"]:checked')
-            .dispatchEvent(new Event('change'));
-
-          // update currency
-          document.addEventListener("DOMContentLoaded", function () {
-            let updateCurrencyBtn = document.getElementById('changeCurrencyBtn');
-
-            if (updateCurrencyBtn) {
-              updateCurrencyBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                let customer_id = document.getElementById('customer_id')?.value;
-                let currency = document.getElementById('currency')?.value;
-
-
-                $.ajax({
-                  url: '/api/update_currency',
-                  method: 'POST',
-                  data: { customer_id, currency },
-                  success: (response) => {
-                    if (response.success) {
-                      iziToast.success({
-                        title: "Success",
-                        message: "Currency updated successfully!",
-                        position: "topRight"
+                        // Reset form
+                        fileInput.value = "";
+                        fileNameInput.value = "";
                       });
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 500);
-                    } else {
-                      iziToast.warning({ title: "Warning", message: "Currency update failed. Try again." });
-                    }
-                  },
-                  error: (error) => {
-                    iziToast.error({ title: "Error", message: "Something went wrong! Please try again." });
-                    console.log(error);
-                  }
-                });
-              });
-            } else {
-              console.error("Button with ID 'changeCurrencyBtn' not found.");
-            }
-          });
-
-        </script>
 
 
-        <!-- ----- ----------------------- Function to Send the Mail end----------------------- -->
+                      function removeItem(element, fileName) {
+                        // Remove the visual elements
+                        element.parentElement.parentElement.remove();
+
+                        // Remove from uploadedFiles object
+                        delete uploadedFiles[fileName];
+
+                        // Update select options
+                        clearSelectOptions();
+                        Object.keys(uploadedFiles).forEach(name => {
+                          let select = document.getElementById("eticketfile");
+                          let option = document.createElement("option");
+                          option.value = name;
+                          option.textContent = name;
+                          select.appendChild(option);
+                        });
+                      }
+
+                      // email
+
+                    </script>
+                    <script>
+                      let MailSendButton = document.getElementById('MailSendButton');
+                      MailSendButton.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        MailSendButton.disabled = true
+
+                        let selectedEmailType = document.querySelector('input[name="emailtype"]:checked').value;
+                        let fromEmail = document.getElementById('fromemail').value;
+                        let Emailsubject = document.getElementById('mailsubject').value;
+                        let toEmail = document.getElementById('email').value;
+                        let customer_id = document.getElementById('customer_id').value;
+
+                        if (selectedEmailType === 'ticket') {
+                          const formData = new FormData();
+                          formData.append('fromEmail', fromEmail);
+                          formData.append('subject', Emailsubject);
+                          formData.append('toEmail', toEmail);
+                          formData.append('emailtype', selectedEmailType);
+                          formData.append('customer_id', customer_id);
+
+                          let eticketSelect = document.getElementById('eticketfile');
+                          let selectedFiles = Array.from(eticketSelect.selectedOptions);
+
+                          selectedFiles.forEach(option => {
+                            if (uploadedFiles[option.value]) {
+                              formData.append('files', uploadedFiles[option.value]);
+                            }
+                          });
+
+                          // Send FormData AJAX request
+                          $.ajax({
+                            url: '/api/send_email',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: handleResponse,
+                            error: handleError
+                          });
+                        } else {
+                          $.ajax({
+                            url: '/api/send_email',
+                            type: 'POST',
+                            data: {
+                              fromEmail,
+                              subject: Emailsubject,
+                              toEmail,
+                              emailtype: selectedEmailType,
+                              customer_id
+                            },
+                            success: handleResponse,
+                            error: handleError
+                          });
+                        }
+                      });
+
+                      // Success handler
+                      function handleResponse(response) {
+                        if (response.success) {
+                          iziToast.success({
+                            title: "Success",
+                            message: "Email Sent Succesfully !!",
+                            position: "topRight"
+                          });
+                        } else {
+                          iziToast.error({
+                            title: "Error",
+                            message: response.message || "Email not sent!",
+                            position: "topRight"
+                          });
+                        }
+                        // setTimeout(() => {
+                        //   window.location.reload();
+                        // }, 2000);
+                      }
+
+                      // Error handler
+                      function handleError(error) {
+                        iziToast.error({
+                          title: "Error",
+                          message: "Something went wrong! Please try again.",
+                          position: "topRight"
+                        });
+                      }
+
+                      // Show/hide e-ticket file selection based on email type
+                      document.querySelectorAll('input[name="emailtype"]').forEach(radio => {
+                        radio.addEventListener('change', (e) => {
+                          const eticketFileDiv = document.getElementById('eticketfile').closest('.col-sm-12');
+                          if (e.target.value === 'ticket') {
+                            eticketFileDiv.style.display = 'block';
+                          } else {
+                            eticketFileDiv.style.display = 'none';
+                          }
+                        });
+                      });
+
+                      // Trigger initial state
+                      document.querySelector('input[name="emailtype"]:checked')
+                        .dispatchEvent(new Event('change'));
+
+                      // update currency
+                      document.addEventListener("DOMContentLoaded", function () {
+                        let updateCurrencyBtn = document.getElementById('changeCurrencyBtn');
+
+                        if (updateCurrencyBtn) {
+                          updateCurrencyBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+
+                            let customer_id = document.getElementById('customer_id')?.value;
+                            let currency = document.getElementById('currency')?.value;
 
 
-        <!-- General JS Scripts -->
-        <script src="/assets/js/app.min.js"></script>
-        <!-- JS Libraies -->
-        <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
-        <!-- Page Specific JS File -->
-        <script src="/assets/js/page/index.js"></script>
-        <!-- Template JS File -->
-        <script src="/assets/js/scripts.js"></script>
+                            $.ajax({
+                              url: '/api/update_currency',
+                              method: 'POST',
+                              data: { customer_id, currency },
+                              success: (response) => {
+                                if (response.success) {
+                                  iziToast.success({
+                                    title: "Success",
+                                    message: "Currency updated successfully!",
+                                    position: "topRight"
+                                  });
+                                  setTimeout(() => {
+                                    window.location.reload();
+                                  }, 500);
+                                } else {
+                                  iziToast.warning({ title: "Warning", message: "Currency update failed. Try again." });
+                                }
+                              },
+                              error: (error) => {
+                                iziToast.error({ title: "Error", message: "Something went wrong! Please try again." });
+                                console.log(error);
+                              }
+                            });
+                          });
+                        } else {
+                          console.error("Button with ID 'changeCurrencyBtn' not found.");
+                        }
+                      });
 
-        <!-- Custom JS File -->
-        <script src="/assets/js/custom.js"></script>
-        <!-- JS Libraies -->
-        
+                    </script>
+
+
+                    <!-- ----- ----------------------- Function to Send the Mail end----------------------- -->
+
+
+                    <!-- General JS Scripts -->
+                    <script src="/assets/js/app.min.js"></script>
+                    <!-- JS Libraies -->
+                    <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
+                    <!-- Page Specific JS File -->
+                    <script src="/assets/js/page/index.js"></script>
+                    <!-- Template JS File -->
+                    <script src="/assets/js/scripts.js"></script>
+
+                    <!-- Custom JS File -->
+                    <script src="/assets/js/custom.js"></script>
+                    <!-- JS Libraies -->
+
 </body>
 
 
