@@ -1119,14 +1119,7 @@ function removeItem(element, fileName) {
 
 
 
-          let button = document.getElementById('alert_for_verfication');
-button.addEventListener('click', () => {
-  iziToast.error({
-                title: "Error",
-           message: "Verify the Document First",
-                position: "topRight"
-              });
-})
+      
 
 let change_status = document.getElementById('change_status')
 
@@ -1156,6 +1149,14 @@ change_status.addEventListener('click', () => {
 
 })
 
+let button = document.getElementById('alert_for_verfication');
+button.addEventListener('click', () => {
+  iziToast.error({
+                title: "Error",
+           message: "Verify the Document First",
+                position: "topRight"
+              });
+})
         </script>
 
 
