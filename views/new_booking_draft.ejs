@@ -129,7 +129,7 @@
                   <tbody>
                     <tr>
                       <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666;">
-                        <p style="margin: 0;">We would like you to go through your itinerary carefully. Please reply to
+                        <p style="margin: 0; color:#666666;">We would like you to go through your itinerary carefully. Please reply to
                           this
                           email as "I Authorize or I Agree" only when you have checked all the information and you are
                           completely satisfied with the itinerary and price. As per our conversation and as agreed, we
@@ -1030,6 +1030,7 @@ function removeItem(element, fileName) {
 
           // Success handler
           function handleResponse(response) {
+          $('#closeModal').close();
             $('.loader').fadeOut('slow')
             if (response.success) {
               iziToast.success({
