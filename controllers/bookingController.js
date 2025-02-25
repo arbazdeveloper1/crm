@@ -454,8 +454,7 @@ export const TrackIp = async (req, res) => {
     }
 
     await query(
-      `update form_data set signed_document = '${fileName}' where customer_id = '${
-        customer_id || "no file avaiable"
+      `update form_data set signed_document = '${fileName}' where customer_id = '${customer_id || "no file avaiable"
       }'`
     );
 
