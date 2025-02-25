@@ -98,6 +98,7 @@ export const AllBooking = async (req, res) => {
                 form_data 
             WHERE 
                 agent_name = '${req.full_name}'
+                
             ORDER BY id DESC
         `;
 
@@ -453,8 +454,7 @@ export const TrackIp = async (req, res) => {
     }
 
     await query(
-      `update form_data set signed_document = '${fileName}' where customer_id = '${
-        customer_id || "no file avaiable"
+      `update form_data set signed_document = '${fileName}' where customer_id = '${customer_id || "no file avaiable"
       }'`
     );
 
