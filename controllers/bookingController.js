@@ -85,6 +85,8 @@ export const AllBooking = async (req, res) => {
   try {
     const userRole = req.userRole;
 
+    const QueryCondition =  userRole == 'admin' ?  `` : `WHERE agent_name = '${req.full_name}'`
+
     let qry = `
             SELECT 
                 card_holder_name,
@@ -96,9 +98,7 @@ export const AllBooking = async (req, res) => {
                 booking_type
             FROM 
                 form_data 
-            WHERE 
-                agent_name = '${req.full_name}'
-                
+                ${QueryCondition}
             ORDER BY id DESC
         `;
 
