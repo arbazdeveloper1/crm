@@ -157,8 +157,18 @@ export const new_booking_draft = async (req, res) => {
             WHERE 
                 customer_id = '${customer_id}'
         `;
-
+    
     const result = await query(qry);
+
+    let qry2 = `SELECT DISTINCT users.userRole FROM users JOIN form_data ON users.full_name = form_data.agent_name AND form_data.customer_id = '${customer_id}'`
+    const result2 = await query(qry2);
+    const user_status = result2[0].userRole;
+
+    let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`
+    let result3 = await query(qry3);
+    const charging_status = result3[0];
+    console.log(charging_status)
+
 
     // Calculate Base Fare
     let BaseFare = 0;
@@ -176,6 +186,9 @@ export const new_booking_draft = async (req, res) => {
         FullName,
         email,
         BaseFare,
+        user_status,
+        charging_status
+
       });
     } else {
       res.render("new_booking_draft", {
@@ -184,6 +197,8 @@ export const new_booking_draft = async (req, res) => {
         FullName,
         email,
         BaseFare,
+        user_status,
+        charging_status
       });
     }
   } catch (error) {
@@ -697,10 +712,13 @@ export const ChangeBookingStatus = async (req, res) => {
     VALUES ('${customer_id}','${card_holder_name}', '${payment_status}', '${queue_name}', '${charging_source}', '${verfication}','${companycard}', '${cardnum}', '${voucher}', '${amount}', '${remarks}')`;
     let ExecuteQuery = await query(qry);
 
+    
+
     if (ExecuteQuery.affectedRows == 0) {
       res.status(401).json({ success: false, msg: "table not updated" });
       return;
     }
+   
     res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
