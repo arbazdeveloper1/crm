@@ -45,13 +45,13 @@
 
                       <% if (userRole=='admin' && result[0].status==="sent_for_issuance" ) { %>
                         <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">Last Status:
-                          Charged</a>
+                          <%- charging_status %></a>
                         <% } else if (userRole=='admin' ) { %>
                           <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">Last
-                            Status: Charged</a>
+                            Status: <%- charging_status %></a>
                           <% } else if (charging_status=='charged' ) { %>
                             <a href="#" class="btn btn-success" data-toggle="modal" data-target="#chargeModal">Last
-                              Status: Charged</a>
+                              Status: <%- charging_status %></a>
                             <% } %>
 
           </li>
@@ -1058,7 +1058,7 @@
 
                       // Success handler
                       function handleResponse(response) {
-                        $('#closeModal').close();
+                        $('#closeModal').click();
                         $('.loader').fadeOut('slow')
                         if (response.success) {
                           iziToast.success({

@@ -45,8 +45,8 @@
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered table-md">
-                  <tbody>
-                    <tr>
+                  <tbody class="text-center">
+                  <tr>
                     <th>Customer</th>
                     <th>Price (USD)</th>
                     <th>Email Type</th>
@@ -55,13 +55,15 @@
                     <th>Cust Id</th>
                     <th>Action</th>
                   </tr>
-
+                </tbody>
+                  
+                  <tbody class="text-center">
                   <% result.forEach((item, index) => { %>
                   <tr>
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true"><%= item.card_holder_name %></a></td>
                     <td><%= item.total_amount %></td>
                     <td><%= item.email_type %></td>
-                    <td><%= item.created_at %></td>
+                    <td><%= item.created_at %><br><%= item.status %></td>
                     <td><%= item.agent_name %></td>
                     <td><%= item.customer_id %></td>
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true" class="btn btn-primary">Details</a></td>

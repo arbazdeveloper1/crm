@@ -57,7 +57,8 @@ export const booking_list = async (req, res) => {
             email_type,
             created_at,
             agent_name,
-            customer_id
+            customer_id,
+            status
         FROM 
             form_data 
         WHERE 
@@ -95,7 +96,8 @@ export const AllBooking = async (req, res) => {
                 created_at,
                 agent_name,
                 customer_id,
-                booking_type
+                booking_type,
+                status
             FROM 
                 form_data 
                 ${QueryCondition}
@@ -103,6 +105,8 @@ export const AllBooking = async (req, res) => {
         `;
 
     const result = await query(qry);
+
+
 
     if (result.length > 0) {
       res.render("all_booking", { userRole, result });
@@ -166,9 +170,8 @@ export const new_booking_draft = async (req, res) => {
 
     let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`
     let result3 = await query(qry3);
-    const charging_status = result3[0];
+    const charging_status = result3[0].payment_status;
     console.log(charging_status)
-
 
     // Calculate Base Fare
     let BaseFare = 0;
