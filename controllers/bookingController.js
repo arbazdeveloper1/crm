@@ -170,8 +170,7 @@ export const new_booking_draft = async (req, res) => {
 
     let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`
     let result3 = await query(qry3);
-    const charging_status = result3[0].payment_status;
-    console.log(charging_status)
+    const charging_status = result3[0]?.payment_status;
 
     // Calculate Base Fare
     let BaseFare = 0;

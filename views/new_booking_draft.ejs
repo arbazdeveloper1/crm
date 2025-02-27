@@ -44,26 +44,30 @@
                     <% } %>
 
                       <% if (userRole=='admin' && result[0].status==="sent_for_issuance" ) { %>
-                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">Last Status:
-                          <%- charging_status %></a>
+                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">
+                          Last Status: <%- charging_status ? charging_status : 'working' %>
+                        </a>
                         <% } else if (userRole=='admin' ) { %>
-                          <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">Last
-                            Status: <%- charging_status %></a>
-                          <% } else if (charging_status=='charged' ) { %>
-                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#chargeModal">Last
-                              Status: <%- charging_status %></a>
+                          <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">
+                            Last Status: <%- charging_status ? charging_status : 'working' %>
+                          </a>
+                          <% } else if (charging_status==='charged' ) { %>
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#chargeModal">
+                              Last Status: <%- charging_status ? charging_status : 'working' %>
+                            </a>
                             <% } %>
+
 
           </li>
           <li class="nav-item mx-2">
-            <a href="#" class="btn btn-info">Booking Remarks</a>
+            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#noteModal">Add Note</a>
           </li>
           <li class="nav-item mx-2">
             <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal2">Change Currency</a>
           </li>
-          <li class="nav-item mx-2">
+          <!-- <li class="nav-item mx-2">
             <a href="#" class="btn btn-success">Fetch Score</a>
-          </li>
+          </li> -->
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item mx-2">
@@ -635,322 +639,399 @@
             </div>
           </div>
           <% } %>
-
             <!-- Currency change modal end -->
 
-
-            <!-- Attachments modal -->
+            <!-- Remarks change modal start -->
             <% if(email==='true' ) { %>
-              <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"
-                aria-labelledby="attachmentsModalLabel" aria-hidden="true">
+              <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="formModal2"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                      <h5 class="modal-title" id="attachmentsModalLabel">Attachments & Documents</h5>
-                      <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                  <div class="modal-content" bis_skin_checked="1">
+                    <div class="modal-header" bis_skin_checked="1">
+                      <h4 class="modal-title">Add Special Notes</h4>
+                      <button type="button" class="close" data-dismiss="modal">×</button>
                     </div>
+                    <div class="modal-body row" bis_skin_checked="1">
+                      <div class="col-sm-12" bis_skin_checked="1">
+                        <input type="hidden" value="183" name="id">
+                        <input type="hidden" value="cms1" name="mycode">
+                        <input type="hidden"
+                          value=""
+                          name="refer">
 
-                    <div class="modal-body">
-                      <!-- Nav tabs -->
-                      <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item">
-                          <a class="nav-link active" data-toggle="tab" href="#recording" role="tab">E-Tickets</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" data-toggle="tab" href="#attachment" role="tab">Attachments</a>
-                        </li>
-                      </ul>
+                        <input list="browsers" class="form-control" name="addnotes" id="browser" autocomplete="off"
+                          style="padding:20px;border:1px solid grey;">
+                        <datalist id="browsers" name="notes">
+                          <option
+                            value="As per our Telephonic conversation and as you agreed, please be advised that we will add bags to your reservation with">
+                            Add Bagage</option>
+                          <option
+                            value="As per our Telephonic conversation and as you agreed, we will assign the seats to your reservation, with">
+                            Seat Assignemnt</option>
+                          <option
+                            value="As per our Telephonic conversation and as you agreed, we will upgrade your seats with">
+                            Seat Updgrade</option>
+                          <option
+                            value="As per our Telephonic conversation and as you agreed, we have added the pet to your reservation with">
+                            Pet Add</option>
+                          <option
+                            value="As per our Telephonic conversation and as you agreed we will amend or correct the name as per your request with">
+                            Name Correction</option>
+                          <option
+                            value="As per our Telephonic conversation and as you agreed we will add Insurance to your reaservatin with">
+                            Insurance</option>
+                          <option
+                            value="As per our Telephonic conversation and as you agreed, we will confirm your flights with">
+                            Flight Confirmation</option>
+                        </datalist>
 
-                      <!-- Tab content -->
-                      <div class="tab-content mt-3">
-
-                        <!-- E-Tickets tab -->
-                        <div class="tab-pane fade show active" id="recording" role="tabpanel">
-                          <div class="scroll-container mb-4" style="max-height: 250px; overflow-y: auto;">
-                            <div class="list-group" id="eTicketsList"></div>
-                          </div>
-
-                          <!-- Upload form -->
-                          <!-- <form id="uploadForm"> -->
-                          <div class="form-group">
-                            <div class="row">
-                              <div class="col-md-6">
-                                <input type="text" class="form-control" id="fileName" placeholder="Enter File Name"
-                                  required>
-                              </div>
-                              <div class="col-md-6">
-                                <input type="file" class="form-control" id="fileInput" required>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="text-right">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="uploadForm">Upload</button>
-                          </div>
-                          <!-- </form> -->
-                        </div>
-                        <!-- Attachments tab -->
-                        <div class="tab-pane fade " id="attachment" role="tabpanel">
-                          <div class="mb-4">
-                            <h6 class="font-weight-bold">Attachments by Agent</h6>
-                            <div class="list-group" id="attachmentsList"></div>
-                          </div>
-
-                          <% if (result[0] && result[0].uploaded_document) { let
-                            documents=result[0].uploaded_document.split(',').map(doc=> doc.trim()).filter(doc => doc);
-                            if (documents.length > 0) {
-                            %>
-                            <h6 class="font-weight-bold" style="margin-bottom: 10px;">📎 Attachments by User</h6>
-                            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                              <% documents.forEach(doc=> {
-                                let filePath = `/uploads/${doc}`; // Assuming files are in 'uploads' folder
-                                let fileName = doc.split('/').pop(); // Get actual file name
-                                let fileExtension = fileName.split('.').pop().toLowerCase();
-                                let isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
-                                %>
-                                <!-- Stylish Button for Image or PDF -->
-                                <a href="<%= filePath %>" target="_blank"
-                                  style="display: flex; align-items: center; justify-content: center; 
-                                        padding: 4px 8px; border-radius: 5px; text-decoration: none; 
-                                        background-color: <%= isImage ? '#007bff' : '#28a745' %>; 
-                                        color: white; font-weight: bold; border: none; cursor: pointer;font-size: 12px;">
-                                  <%= isImage ? '🖼️ ' : '📄 ' %>
-                                    <%= fileName %>
-                                </a>
-                                <% }); %>
-                            </div>
-                            <% } } %>
-
-                        </div>
-
-
+                        <!-- <textarea name="notes" class="form-control" Placeholder="Enter Your Special Notes"></textarea -->
                       </div>
+
+
+                    </div>
+                    <div class="modal-footer" bis_skin_checked="1">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                   </div>
                 </div>
               </div>
               <% } %>
-                <!-- attechment modal close -->
+                <!-- Remarks change modal end -->
 
 
-                <!-- charge modal -->
+                <!-- Attachments modal -->
                 <% if(email==='true' ) { %>
-                  <div class="modal fade" id="chargeModal" tabindex="-1" role="dialog"
-                    aria-labelledby="chargeModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"
+                    aria-labelledby="attachmentsModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                      <div class="modal-content ">
-                        <div class="modal-header bg-primary">
-                          <h4 style="font-size:18px;color:white;" class="modal-title">Update Booking Status</h4>
+                      <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                          <h5 class="modal-title" id="attachmentsModalLabel">Attachments & Documents</h5>
+                          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                         </div>
+
                         <div class="modal-body">
-                          <div class="row">
-                            <div class="col-sm-4">
-                              <label for="recipient-name" class="col-form-label">Payment Status:</label>
-                              <select name="status_admin" class="form-control" id="payment_status" required="">
-                                <option value="" hidden="">--Choose--</option>
-                                <option value="charged">Charged</option>
-                                <option value="declined">Declined</option>
-                                <option value="invalid">Invalid</option>
-                                <option value="voided">Voided</option>
-                                <option value="others">Others</option>
-                                <option value="insufficient_fund">Insufficient Funds</option>
-                                <option value="pickup">Pickup</option>
-                                <option value="chargeback">Chargeback</option>
-                                <option value="partaly_refund">Partaly Refund</option>
-                                <option value="refund">Refund</option>
-                                <option value="cb_alert">CB Alert</option>
-                              </select>
+                          <!-- Nav tabs -->
+                          <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" data-toggle="tab" href="#recording" role="tab">E-Tickets</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" data-toggle="tab" href="#attachment" role="tab">Attachments</a>
+                            </li>
+                          </ul>
 
-                              <input type="hidden" value="1108" name="eid">
-                              <input type="hidden" value="KNOVA WOOTEN" name="cch">
-                              <input type="hidden" value=" 44GKJ3" name="pnr">
-                              <input type="hidden" value=" 44GKJ3" name="arc">
-                              <input type="hidden" value="Nathan" name="agent">
-                              <input type="hidden" value="4402511877" name="phone">
-                              <input type="hidden" value="donniedanko16@gmail.com" name="email">
-                              <input type="hidden" value="607.96" name="ticket_cost">
-                              <input type="hidden" value="538.24" name="mco">
-                              <input type="hidden" value="1" name="email_status">
-                              <input type="hidden"
-                                value="https://crm.kingjourney.com/admin/draft/view-new_bookings.php?eid=1108&amp;email_type=1&amp;email_live=preview"
-                                name="booking_url">
+                          <!-- Tab content -->
+                          <div class="tab-content mt-3">
+
+                            <!-- E-Tickets tab -->
+                            <div class="tab-pane fade show active" id="recording" role="tabpanel">
+                              <div class="scroll-container mb-4" style="max-height: 250px; overflow-y: auto;">
+                                <div class="list-group" id="eTicketsList"></div>
+                              </div>
+
+                              <!-- Upload form -->
+                              <!-- <form id="uploadForm"> -->
+                              <div class="form-group">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <input type="text" class="form-control" id="fileName" placeholder="Enter File Name"
+                                      required>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <input type="file" class="form-control" id="fileInput" required>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="text-right">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" id="uploadForm">Upload</button>
+                              </div>
+                              <!-- </form> -->
                             </div>
-                            <div class="form-group col-sm-4">
-                              <label for="recipient-name" class="col-form-label">Customer Name:</label>
-                              <input type="text" class="form-control" id="card_holder_name"
-                                value="<%- result[0]?.card_holder_name %>" autocomplete="off" readonly="">
+                            <!-- Attachments tab -->
+                            <div class="tab-pane fade " id="attachment" role="tabpanel">
+                              <div class="mb-4">
+                                <h6 class="font-weight-bold">Attachments by Agent</h6>
+                                <div class="list-group" id="attachmentsList"></div>
+                              </div>
+
+                              <% if (result[0] && result[0].uploaded_document) { let
+                                documents=result[0].uploaded_document.split(',').map(doc=> doc.trim()).filter(doc =>
+                                doc);
+                                if (documents.length > 0) {
+                                %>
+                                <h6 class="font-weight-bold" style="margin-bottom: 10px;">📎 Attachments by User</h6>
+                                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                  <% documents.forEach(doc=> {
+                                    let filePath = `/uploads/${doc}`; // Assuming files are in 'uploads' folder
+                                    let fileName = doc.split('/').pop(); // Get actual file name
+                                    let fileExtension = fileName.split('.').pop().toLowerCase();
+                                    let isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                                    %>
+                                    <!-- Stylish Button for Image or PDF -->
+                                    <a href="<%= filePath %>" target="_blank"
+                                      style="display: flex; align-items: center; justify-content: center; 
+                                        padding: 4px 8px; border-radius: 5px; text-decoration: none; 
+                                        background-color: <%= isImage ? '#007bff' : '#28a745' %>; 
+                                        color: white; font-weight: bold; border: none; cursor: pointer;font-size: 12px;">
+                                      <%= isImage ? '🖼️ ' : '📄 ' %>
+                                        <%= fileName %>
+                                    </a>
+                                    <% }); %>
+                                </div>
+                                <% } } %>
+
                             </div>
 
-                            <div class="form-group col-sm-4">
-                              <label for="recipient-name" class="col-form-label">Confirmation / ARL:</label>
-                              <input type="text" class="form-control" id="customer_id"
-                                value="<%- result[0]?.customer_id %>" autocomplete="off" readonly="">
-                            </div>
 
                           </div>
-                          <div class="row">
-                            <div class="form-group col-sm-6">
-                              <label for="recipient-name" class="col-form-label">Queue name:</label>
-                              <select name="call_source" class="form-control" id="queue_name" required="">
-                                <option value="" hidden="">--Choose--</option>
-                                <option value="Own_gtf">Own GTF</option>
-                              </select>
-                            </div>
-                            <div class="form-group col-sm-6">
-                              <label for="recipient-name" class="col-form-label">Charging Source:</label>
-                              <select name="charge_source" class="form-control" id="charging_source" required="">
-                                <option value="" hidden="">--Choose--</option>
-                                <option value="my_fly_support">My Fly Support</option>
-                                <option value="air_ticket_pro">Air Ticket Pro</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="form-group col-sm-4">
-                              <label for="recipient-name" class="col-form-label">Card Verified:</label>
-                              <select name="card_verified" class="form-control" id="verfication" required="">
-                                <option value="" hidden="">--Choose--</option>
-                                <option value="yes">Yes</option>
-                                <option value="no" selected="">No</option>
-                              </select>
-                            </div>
-                            <div class="form-group col-sm-4">
-                              <label for="recipient-name" class="col-form-label">Company Card Used:</label>
-                              <select name="card_used" class="form-control" id="companycard" required="">
-                                <option value="" hidden="">--Choose--</option>
-                                <option value="yes">Yes</option>
-                                <option value="no" selected="">No</option>
-                              </select>
-                            </div>
-                            <div class="form-group col-sm-4">
-                              <label for="recipient-name" class="col-form-label">Card Number:</label>
-                              <input type="text" class="form-control" maxlength="10" name="card_num" id="cardnum"
-                                value="<%- result[0]?.card_number.slice(-4) || " No card available" %>"
-                              placeholder="Enter Last 4 Digit" autocomplete="off" readonly="">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="form-group col-sm-6">
-                              <label for="recipient-name" class="col-form-label">Voucher Used:</label>
-                              <select name="voucher_used" class="form-control" id="voucher" required="">
-                                <option value="" hidden="">--Choose--</option>
-                                <option value="yes">Yes</option>
-                                <option value="no" selected="">No</option>
-                              </select>
-                            </div>
-                            <div class="form-group col-sm-6">
-                              <label for="recipient-name" class="col-form-label">Amount:</label>
-                              <input type="text" class="form-control" name="vamount" id="amount"
-                                value="<%- result[0]?.total_amount %>" placeholder="Enter Amount" autocomplete="off"
-                                readonly="">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-12">
-                              <textarea name="payment_remarks" placeholder="Enter Payment Remarks (if Any)"
-                                class="form-control" id="remarks"></textarea>
-                            </div>
-                          </div>
-
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary" id="updatebokingstatus">Update Now</button>
                         </div>
                       </div>
                     </div>
                   </div>
                   <% } %>
-                    <!-- charge modal close -->
+                    <!-- attechment modal close -->
 
-                    <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
 
-                    <script>
-                      let BookingStatusBtn = document.getElementById('updatebokingstatus')
-                      BookingStatusBtn.addEventListener('click', function () {
-                        let payment_status = document.getElementById('payment_status').value;
-                        let card_holder_name = document.getElementById('card_holder_name').value;
-                        let customer_id = document.getElementById('customer_id').value;
-                        let queue_name = document.getElementById('queue_name').value;
-                        let charging_source = document.getElementById('charging_source').value;
-                        let verfication = document.getElementById('verfication').value;
-                        let companycard = document.getElementById('companycard').value;
-                        let cardnum = document.getElementById('cardnum').value;
-                        let voucher = document.getElementById('voucher').value;
-                        let amount = document.getElementById('amount').value;
-                        let remarks = document.getElementById('remarks').value;
+                    <!-- charge modal -->
+                    <% if(email==='true' ) { %>
+                      <div class="modal fade" id="chargeModal" tabindex="-1" role="dialog"
+                        aria-labelledby="chargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content ">
+                            <div class="modal-header bg-primary">
+                              <h4 style="font-size:18px;color:white;" class="modal-title">Update Booking Status</h4>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label for="recipient-name" class="col-form-label">Payment Status:</label>
+                                  <select name="status_admin" class="form-control" id="payment_status" required="">
+                                    <option value="" hidden="">--Choose--</option>
+                                    <option value="charged">Charged</option>
+                                    <option value="declined">Declined</option>
+                                    <option value="invalid">Invalid</option>
+                                    <option value="voided">Voided</option>
+                                    <option value="others">Others</option>
+                                    <option value="insufficient_fund">Insufficient Funds</option>
+                                    <option value="pickup">Pickup</option>
+                                    <option value="chargeback">Chargeback</option>
+                                    <option value="partaly_refund">Partaly Refund</option>
+                                    <option value="refund">Refund</option>
+                                    <option value="cb_alert">CB Alert</option>
+                                  </select>
 
-                        // Send FormData AJAX request
-                        $.ajax({
-                          url: '/api/bookingstatus',
-                          type: 'json',
-                          method: "post",
-                          data: { payment_status: payment_status, card_holder_name: card_holder_name, customer_id: customer_id, queue_name: queue_name, charging_source: charging_source, verfication: verfication, companycard: companycard, cardnum: cardnum, voucher: voucher, amount: amount, remarks: remarks },
-                          success: function (res) {
-                            if (res.success) {
-                              iziToast.success({
-                                title: "Success",
-                                message: "Booking Status Updated !!",
-                                position: "topRight"
+                                  <input type="hidden" value="1108" name="eid">
+                                  <input type="hidden" value="KNOVA WOOTEN" name="cch">
+                                  <input type="hidden" value=" 44GKJ3" name="pnr">
+                                  <input type="hidden" value=" 44GKJ3" name="arc">
+                                  <input type="hidden" value="Nathan" name="agent">
+                                  <input type="hidden" value="4402511877" name="phone">
+                                  <input type="hidden" value="donniedanko16@gmail.com" name="email">
+                                  <input type="hidden" value="607.96" name="ticket_cost">
+                                  <input type="hidden" value="538.24" name="mco">
+                                  <input type="hidden" value="1" name="email_status">
+                                  <input type="hidden"
+                                    value="https://crm.kingjourney.com/admin/draft/view-new_bookings.php?eid=1108&amp;email_type=1&amp;email_live=preview"
+                                    name="booking_url">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                  <label for="recipient-name" class="col-form-label">Customer Name:</label>
+                                  <input type="text" class="form-control" id="card_holder_name"
+                                    value="<%- result[0]?.card_holder_name %>" autocomplete="off" readonly="">
+                                </div>
+
+                                <div class="form-group col-sm-4">
+                                  <label for="recipient-name" class="col-form-label">Confirmation / ARL:</label>
+                                  <input type="text" class="form-control" id="customer_id"
+                                    value="<%- result[0]?.customer_id %>" autocomplete="off" readonly="">
+                                </div>
+
+                              </div>
+                              <div class="row">
+                                <div class="form-group col-sm-6">
+                                  <label for="recipient-name" class="col-form-label">Queue name:</label>
+                                  <select name="call_source" class="form-control" id="queue_name" required="">
+                                    <option value="" hidden="">--Choose--</option>
+                                    <option value="Own_gtf">Own GTF</option>
+                                  </select>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                  <label for="recipient-name" class="col-form-label">Charging Source:</label>
+                                  <select name="charge_source" class="form-control" id="charging_source" required="">
+                                    <option value="" hidden="">--Choose--</option>
+                                    <option value="my_fly_support">My Fly Support</option>
+                                    <option value="air_ticket_pro">Air Ticket Pro</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="form-group col-sm-4">
+                                  <label for="recipient-name" class="col-form-label">Card Verified:</label>
+                                  <select name="card_verified" class="form-control" id="verfication" required="">
+                                    <option value="" hidden="">--Choose--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no" selected="">No</option>
+                                  </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                  <label for="recipient-name" class="col-form-label">Company Card Used:</label>
+                                  <select name="card_used" class="form-control" id="companycard" required="">
+                                    <option value="" hidden="">--Choose--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no" selected="">No</option>
+                                  </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                  <label for="recipient-name" class="col-form-label">Card Number:</label>
+                                  <input type="text" class="form-control" maxlength="10" name="card_num" id="cardnum"
+                                    value="<%- result[0]?.card_number.slice(-4) || " No card available" %>"
+                                  placeholder="Enter Last 4 Digit" autocomplete="off" readonly="">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="form-group col-sm-6">
+                                  <label for="recipient-name" class="col-form-label">Voucher Used:</label>
+                                  <select name="voucher_used" class="form-control" id="voucher" required="">
+                                    <option value="" hidden="">--Choose--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no" selected="">No</option>
+                                  </select>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                  <label for="recipient-name" class="col-form-label">Amount:</label>
+                                  <input type="text" class="form-control" name="vamount" id="amount"
+                                    value="<%- result[0]?.total_amount %>" placeholder="Enter Amount" autocomplete="off"
+                                    readonly="">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <textarea name="payment_remarks" placeholder="Enter Payment Remarks (if Any)"
+                                    class="form-control" id="remarks"></textarea>
+                                </div>
+                              </div>
+
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" id="updatebokingstatus">Update Now</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <% } %>
+                        <!-- charge modal close -->
+
+
+
+                        <script>
+                          document.addEventListener("DOMContentLoaded", function () {
+                            let button = document.getElementById('alert_for_verfication');
+                            if (button) {
+                              button.addEventListener('click', () => {
+                                iziToast.error({
+                                  title: "Error",
+                                  message: "Verify the Document First",
+                                  position: "topRight"
+                                });
                               });
                             }
-                          },
-                        });
+                          });
+                        </script>
 
 
-                      })
-                    </script>
+                        <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
 
-                    <script>
+                        <script>
+                          let BookingStatusBtn = document.getElementById('updatebokingstatus')
+                          BookingStatusBtn.addEventListener('click', function () {
+                            let payment_status = document.getElementById('payment_status').value;
+                            let card_holder_name = document.getElementById('card_holder_name').value;
+                            let customer_id = document.getElementById('customer_id').value;
+                            let queue_name = document.getElementById('queue_name').value;
+                            let charging_source = document.getElementById('charging_source').value;
+                            let verfication = document.getElementById('verfication').value;
+                            let companycard = document.getElementById('companycard').value;
+                            let cardnum = document.getElementById('cardnum').value;
+                            let voucher = document.getElementById('voucher').value;
+                            let amount = document.getElementById('amount').value;
+                            let remarks = document.getElementById('remarks').value;
 
-                      let uploadedFiles = {};
+                            // Send FormData AJAX request
+                            $.ajax({
+                              url: '/api/bookingstatus',
+                              type: 'json',
+                              method: "post",
+                              data: { payment_status: payment_status, card_holder_name: card_holder_name, customer_id: customer_id, queue_name: queue_name, charging_source: charging_source, verfication: verfication, companycard: companycard, cardnum: cardnum, voucher: voucher, amount: amount, remarks: remarks },
+                              success: function (res) {
+                                if (res.success) {
+                                  iziToast.success({
+                                    title: "Success",
+                                    message: "Booking Status Updated !!",
+                                    position: "topRight"
+                                  });
+                                }
+                              },
+                            });
 
-                      function clearSelectOptions() {
-                        const select = document.getElementById("eticketfile");
-                        while (select.options.length > 1) {
-                          select.remove(1);
-                        }
-                      }
 
-                      function addUploadedFile(fileName, file) {
-                        // Add to uploadedFiles object
-                        uploadedFiles[fileName] = file;
+                          })
+                        </script>
 
-                        // Clear existing options first
-                        clearSelectOptions();
+                        <script>
 
-                        // Add all files from uploadedFiles object
-                        const select = document.getElementById("eticketfile");
-                        Object.keys(uploadedFiles).forEach(name => {
-                          let option = document.createElement("option");
-                          option.value = name;
-                          option.textContent = name;
-                          select.appendChild(option);
-                        });
-                      }
+                          let uploadedFiles = {};
 
-                      document.getElementById("uploadForm").addEventListener("click", function (event) {
-                        event.preventDefault();
+                          function clearSelectOptions() {
+                            const select = document.getElementById("eticketfile");
+                            while (select.options.length > 1) {
+                              select.remove(1);
+                            }
+                          }
 
-                        let fileInput = document.getElementById("fileInput");
-                        let fileNameInput = document.getElementById("fileName");
+                          function addUploadedFile(fileName, file) {
+                            // Add to uploadedFiles object
+                            uploadedFiles[fileName] = file;
 
-                        if (fileInput.files.length === 0) {
-                          alert("Please select a file to upload.");
-                          return;
-                        }
+                            // Clear existing options first
+                            clearSelectOptions();
 
-                        let file = fileInput.files[0];
-                        let fileName = fileNameInput.value || file.name;
-                        let fileURL = URL.createObjectURL(file);
+                            // Add all files from uploadedFiles object
+                            const select = document.getElementById("eticketfile");
+                            Object.keys(uploadedFiles).forEach(name => {
+                              let option = document.createElement("option");
+                              option.value = name;
+                              option.textContent = name;
+                              select.appendChild(option);
+                            });
+                          }
 
-                        // Add to eTicketsList
-                        let eTicketItem = document.createElement("div");
-                        eTicketItem.className = "list-group-item";
-                        eTicketItem.innerHTML = `
+                          document.getElementById("uploadForm").addEventListener("click", function (event) {
+                            event.preventDefault();
+
+                            let fileInput = document.getElementById("fileInput");
+                            let fileNameInput = document.getElementById("fileName");
+
+                            if (fileInput.files.length === 0) {
+                              alert("Please select a file to upload.");
+                              return;
+                            }
+
+                            let file = fileInput.files[0];
+                            let fileName = fileNameInput.value || file.name;
+                            let fileURL = URL.createObjectURL(file);
+
+                            // Add to eTicketsList
+                            let eTicketItem = document.createElement("div");
+                            eTicketItem.className = "list-group-item";
+                            eTicketItem.innerHTML = `
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <b>Filename:</b>
@@ -962,247 +1043,242 @@
       </div>
     </div>
   `;
-                        document.getElementById("eTicketsList").appendChild(eTicketItem);
+                            document.getElementById("eTicketsList").appendChild(eTicketItem);
 
-                        // Clone to attachmentsList
-                        let attachmentItem = eTicketItem.cloneNode(true);
-                        document.getElementById("attachmentsList").appendChild(attachmentItem);
+                            // Clone to attachmentsList
+                            let attachmentItem = eTicketItem.cloneNode(true);
+                            document.getElementById("attachmentsList").appendChild(attachmentItem);
 
-                        // Add to select options
-                        addUploadedFile(fileName, file);
+                            // Add to select options
+                            addUploadedFile(fileName, file);
 
-                        // Reset form
-                        fileInput.value = "";
-                        fileNameInput.value = "";
-                      });
+                            // Reset form
+                            fileInput.value = "";
+                            fileNameInput.value = "";
+                          });
 
 
-                      function removeItem(element, fileName) {
-                        // Remove the visual elements
-                        element.parentElement.parentElement.remove();
+                          function removeItem(element, fileName) {
+                            // Remove the visual elements
+                            element.parentElement.parentElement.remove();
 
-                        // Remove from uploadedFiles object
-                        delete uploadedFiles[fileName];
+                            // Remove from uploadedFiles object
+                            delete uploadedFiles[fileName];
 
-                        // Update select options
-                        clearSelectOptions();
-                        Object.keys(uploadedFiles).forEach(name => {
-                          let select = document.getElementById("eticketfile");
-                          let option = document.createElement("option");
-                          option.value = name;
-                          option.textContent = name;
-                          select.appendChild(option);
-                        });
-                      }
+                            // Update select options
+                            clearSelectOptions();
+                            Object.keys(uploadedFiles).forEach(name => {
+                              let select = document.getElementById("eticketfile");
+                              let option = document.createElement("option");
+                              option.value = name;
+                              option.textContent = name;
+                              select.appendChild(option);
+                            });
+                          }
 
-                      // email
+                          // email
 
-                    </script>
-                    <script>
-                      let MailSendButton = document.getElementById('MailSendButton');
-                      MailSendButton.addEventListener('click', async (e) => {
-                        e.preventDefault();
-                        MailSendButton.disabled = true
+                        </script>
+                        <script>
+                          let MailSendButton = document.getElementById('MailSendButton');
+                          MailSendButton.addEventListener('click', async (e) => {
+                            e.preventDefault();
+                            MailSendButton.disabled = true
 
-                        $('.loader').fadeIn('slow')
+                            $('.loader').fadeIn('slow')
 
-                        let selectedEmailType = document.querySelector('input[name="emailtype"]:checked').value;
-                        let fromEmail = document.getElementById('fromemail').value;
-                        let Emailsubject = document.getElementById('mailsubject').value;
-                        let toEmail = document.getElementById('email').value;
-                        let customer_id = document.getElementById('customer_id').value;
+                            let selectedEmailType = document.querySelector('input[name="emailtype"]:checked').value;
+                            let fromEmail = document.getElementById('fromemail').value;
+                            let Emailsubject = document.getElementById('mailsubject').value;
+                            let toEmail = document.getElementById('email').value;
+                            let customer_id = document.getElementById('customer_id').value;
 
-                        if (selectedEmailType === 'ticket') {
-                          const formData = new FormData();
-                          formData.append('fromEmail', fromEmail);
-                          formData.append('subject', Emailsubject);
-                          formData.append('toEmail', toEmail);
-                          formData.append('emailtype', selectedEmailType);
-                          formData.append('customer_id', customer_id);
+                            if (selectedEmailType === 'ticket') {
+                              const formData = new FormData();
+                              formData.append('fromEmail', fromEmail);
+                              formData.append('subject', Emailsubject);
+                              formData.append('toEmail', toEmail);
+                              formData.append('emailtype', selectedEmailType);
+                              formData.append('customer_id', customer_id);
 
-                          let eticketSelect = document.getElementById('eticketfile');
-                          let selectedFiles = Array.from(eticketSelect.selectedOptions);
+                              let eticketSelect = document.getElementById('eticketfile');
+                              let selectedFiles = Array.from(eticketSelect.selectedOptions);
 
-                          selectedFiles.forEach(option => {
-                            if (uploadedFiles[option.value]) {
-                              formData.append('files', uploadedFiles[option.value]);
+                              selectedFiles.forEach(option => {
+                                if (uploadedFiles[option.value]) {
+                                  formData.append('files', uploadedFiles[option.value]);
+                                }
+                              });
+
+                              // Send FormData AJAX request
+                              $.ajax({
+                                url: '/api/send_email',
+                                type: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: handleResponse,
+                                error: handleError
+                              });
+                            } else {
+                              $.ajax({
+                                url: '/api/send_email',
+                                type: 'POST',
+                                data: {
+                                  fromEmail,
+                                  subject: Emailsubject,
+                                  toEmail,
+                                  emailtype: selectedEmailType,
+                                  customer_id
+                                },
+                                success: handleResponse,
+                                error: handleError
+                              });
                             }
                           });
 
-                          // Send FormData AJAX request
-                          $.ajax({
-                            url: '/api/send_email',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: handleResponse,
-                            error: handleError
-                          });
-                        } else {
-                          $.ajax({
-                            url: '/api/send_email',
-                            type: 'POST',
-                            data: {
-                              fromEmail,
-                              subject: Emailsubject,
-                              toEmail,
-                              emailtype: selectedEmailType,
-                              customer_id
-                            },
-                            success: handleResponse,
-                            error: handleError
-                          });
-                        }
-                      });
-
-                      // Success handler
-                      function handleResponse(response) {
-                        $('#closeModal').click();
-                        $('.loader').fadeOut('slow')
-                        if (response.success) {
-                          iziToast.success({
-                            title: "Success",
-                            message: "Email Sent Succesfully !!",
-                            position: "topRight"
-                          });
-                        } else {
-                          iziToast.error({
-                            title: "Error",
-                            message: response.message || "Email not sent!",
-                            position: "topRight"
-                          });
-                        }
-                        // setTimeout(() => {
-                        //   window.location.reload();
-                        // }, 2000);
-                      }
-
-                      // Error handler
-                      function handleError(error) {
-                        $('.loader').fadeOut('slow')
-                        iziToast.error({
-                          title: "Error",
-                          message: "Something went wrong! Please try again.",
-                          position: "topRight"
-                        });
-                      }
-
-                      // Show/hide e-ticket file selection based on email type
-                      document.querySelectorAll('input[name="emailtype"]').forEach(radio => {
-                        radio.addEventListener('change', (e) => {
-                          const eticketFileDiv = document.getElementById('eticketfile').closest('.col-sm-12');
-                          if (e.target.value === 'ticket') {
-                            eticketFileDiv.style.display = 'block';
-                          } else {
-                            eticketFileDiv.style.display = 'none';
+                          // Success handler
+                          function handleResponse(response) {
+                            $('#closeModal').click();
+                            $('.loader').fadeOut('slow')
+                            if (response.success) {
+                              iziToast.success({
+                                title: "Success",
+                                message: "Email Sent Succesfully !!",
+                                position: "topRight"
+                              });
+                            } else {
+                              iziToast.error({
+                                title: "Error",
+                                message: response.message || "Email not sent!",
+                                position: "topRight"
+                              });
+                            }
+                            // setTimeout(() => {
+                            //   window.location.reload();
+                            // }, 2000);
                           }
-                        });
-                      });
 
-                      // Trigger initial state
-                      document.querySelector('input[name="emailtype"]:checked')
-                        .dispatchEvent(new Event('change'));
+                          // Error handler
+                          function handleError(error) {
+                            $('.loader').fadeOut('slow')
+                            iziToast.error({
+                              title: "Error",
+                              message: "Something went wrong! Please try again.",
+                              position: "topRight"
+                            });
+                          }
 
-                      // update currency
-                      document.addEventListener("DOMContentLoaded", function () {
-                        let updateCurrencyBtn = document.getElementById('changeCurrencyBtn');
-
-                        if (updateCurrencyBtn) {
-                          updateCurrencyBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-
-                            let customer_id = document.getElementById('customer_id')?.value;
-                            let currency = document.getElementById('currency')?.value;
-
-
-                            $.ajax({
-                              url: '/api/update_currency',
-                              method: 'POST',
-                              data: { customer_id, currency },
-                              success: (response) => {
-                                if (response.success) {
-                                  iziToast.success({
-                                    title: "Success",
-                                    message: "Currency updated successfully!",
-                                    position: "topRight"
-                                  });
-                                  setTimeout(() => {
-                                    window.location.reload();
-                                  }, 500);
-                                } else {
-                                  iziToast.warning({ title: "Warning", message: "Currency update failed. Try again." });
-                                }
-                              },
-                              error: (error) => {
-                                iziToast.error({ title: "Error", message: "Something went wrong! Please try again." });
-                                console.log(error);
+                          // Show/hide e-ticket file selection based on email type
+                          document.querySelectorAll('input[name="emailtype"]').forEach(radio => {
+                            radio.addEventListener('change', (e) => {
+                              const eticketFileDiv = document.getElementById('eticketfile').closest('.col-sm-12');
+                              if (e.target.value === 'ticket') {
+                                eticketFileDiv.style.display = 'block';
+                              } else {
+                                eticketFileDiv.style.display = 'none';
                               }
                             });
                           });
-                        } else {
-                          console.error("Button with ID 'changeCurrencyBtn' not found.");
-                        }
-                      });
+
+                          // Trigger initial state
+                          document.querySelector('input[name="emailtype"]:checked')
+                            .dispatchEvent(new Event('change'));
+
+                          // update currency
+                          document.addEventListener("DOMContentLoaded", function () {
+                            let updateCurrencyBtn = document.getElementById('changeCurrencyBtn');
+
+                            if (updateCurrencyBtn) {
+                              updateCurrencyBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+
+                                let customer_id = document.getElementById('customer_id')?.value;
+                                let currency = document.getElementById('currency')?.value;
 
 
-
-
-
-                      let change_status = document.getElementById('change_status')
-
-                      change_status.addEventListener('click', () => {
-                        let customer_id = document.getElementById('customer_id').value;
-
-                        $.ajax({
-                          url: '/api/change_status',
-                          type: 'POST',
-                          dataType: 'json',
-                          data: { customer_id },
-                          success: function (res) {
-                            if (res.success) {
-                              iziToast.success({
-                                title: "Success",
-                                message: "Status changed successfully !!",
-                                position: "topRight"
+                                $.ajax({
+                                  url: '/api/update_currency',
+                                  method: 'POST',
+                                  data: { customer_id, currency },
+                                  success: (response) => {
+                                    if (response.success) {
+                                      iziToast.success({
+                                        title: "Success",
+                                        message: "Currency updated successfully!",
+                                        position: "topRight"
+                                      });
+                                      setTimeout(() => {
+                                        window.location.reload();
+                                      }, 500);
+                                    } else {
+                                      iziToast.warning({ title: "Warning", message: "Currency update failed. Try again." });
+                                    }
+                                  },
+                                  error: (error) => {
+                                    iziToast.error({ title: "Error", message: "Something went wrong! Please try again." });
+                                    console.log(error);
+                                  }
+                                });
                               });
-                              let changeStatusBtn = document.getElementById("change_status");
-                              if (changeStatusBtn) {
-                                changeStatusBtn.innerHTML = `<i class="fas fa-unlock"></i> Last Status: Sent For Issuance`;
-                              }
+                            } else {
+                              console.error("Button with ID 'changeCurrencyBtn' not found.");
                             }
-                          }
-                        })
+                          });
 
 
-                      })
-
-                      let button = document.getElementById('alert_for_verfication');
-                      button.addEventListener('click', () => {
-                        iziToast.error({
-                          title: "Error",
-                          message: "Verify the Document First",
-                          position: "topRight"
-                        });
-                      })
-                    </script>
 
 
-                    <!-- ----- ----------------------- Function to Send the Mail end----------------------- -->
+
+                          let change_status = document.getElementById('change_status')
+
+                          change_status.addEventListener('click', () => {
+                            let customer_id = document.getElementById('customer_id').value;
+
+                            $.ajax({
+                              url: '/api/change_status',
+                              type: 'POST',
+                              dataType: 'json',
+                              data: { customer_id },
+                              success: function (res) {
+                                if (res.success) {
+                                  iziToast.success({
+                                    title: "Success",
+                                    message: "Status changed successfully !!",
+                                    position: "topRight"
+                                  });
+                                  let changeStatusBtn = document.getElementById("change_status");
+                                  if (changeStatusBtn) {
+                                    changeStatusBtn.innerHTML = `<i class="fas fa-unlock"></i> Last Status: Sent For Issuance`;
+                                  }
+                                }
+                              }
+                            })
 
 
-                    <!-- General JS Scripts -->
-                    <script src="/assets/js/app.min.js"></script>
-                    <!-- JS Libraies -->
-                    <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
-                    <!-- Page Specific JS File -->
-                    <script src="/assets/js/page/index.js"></script>
-                    <!-- Template JS File -->
-                    <script src="/assets/js/scripts.js"></script>
+                          })
 
-                    <!-- Custom JS File -->
-                    <script src="/assets/js/custom.js"></script>
-                    <!-- JS Libraies -->
+
+
+
+                        </script>
+
+
+                        <!-- ----- ----------------------- Function to Send the Mail end----------------------- -->
+
+
+                        <!-- General JS Scripts -->
+                        <script src="/assets/js/app.min.js"></script>
+                        <!-- JS Libraies -->
+                        <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
+                        <!-- Page Specific JS File -->
+                        <script src="/assets/js/page/index.js"></script>
+                        <!-- Template JS File -->
+                        <script src="/assets/js/scripts.js"></script>
+
+                        <!-- Custom JS File -->
+                        <script src="/assets/js/custom.js"></script>
+                        <!-- JS Libraies -->
 
 </body>
 
