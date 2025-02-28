@@ -155,7 +155,8 @@ export const new_booking_draft = async (req, res) => {
                 Docusign_Verified,
                 signed_document,
                 uploaded_document,
-                status
+                status,
+                note
             FROM 
                 form_data
             WHERE 
@@ -726,3 +727,27 @@ export const ChangeBookingStatus = async (req, res) => {
     console.error(error);
   }
 };
+
+
+
+
+export const UpdateRemarks = async (req, res) => {
+  try {
+    let { AddNote, customer_id } = req.body;
+
+    let qry = `UPDATE form_data
+    SET note='${AddNote}' 
+    WHERE customer_id = '${customer_id}'`;
+    let ExecuteQuery = await query(qry)
+
+    if(ExecuteQuery.affectedRows == 0){
+     return res.status(401).json({success: false, msg: "Row Not updated"})
+    }
+
+    res.status(200).json({success: true, msg: "Remarks update successfully", Remarknote: AddNote})
+
+  } catch (error) {
+    console.error(error);
+    return res.json(500).status({msg: "internal server error"})
+  }
+}

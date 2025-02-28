@@ -228,7 +228,7 @@
     // URL mapping for each option
     const urlMapping = {
       new_booking: '/new-booking',
-      exchange: '/exchange',
+      exchange: '/new-booking',
       refund: '/refund',
       future_credit: '/future-credit',
       seat_upgrade: '/seat-upgrade'
@@ -275,6 +275,26 @@
         console.error('Error during logout:', error);
       });
     }
+
+
+    const selectElement = document.getElementById("bookingOptions");
+
+  // Load the saved selection when the page loads
+  document.addEventListener("DOMContentLoaded", function () {
+      const savedSelection = sessionStorage.getItem("selectedBookingOption");
+      // if (savedSelection) {
+      //     selectElement.value = savedSelection;
+      // }
+  });
+
+  // Store the selection in sessionStorage when changed
+  selectElement.addEventListener("change", function () {
+      sessionStorage.setItem("selectedBookingOption", this.value);
+  });
+
+
+  const selectedValue = sessionStorage.getItem("selectedBookingOption");
+
   </script>
   
   <!-- General JS Scripts -->
