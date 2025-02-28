@@ -181,9 +181,10 @@
                                           <% }); %>
                                             would be shown under <%- result[0]?.mco_description=='my_fly_support'
                                               ? 'My Fly Support' : result[0]?.mco_description %>.
-                                              <br><br>
+                                              
 
-                                              <% }); %>
+                                              <% }); %><br>
+                                              <b><%- result[0]?.note == 'undefined' ? "Additinal Note:- ": '' %></b><p id="note"> <%- result[0]?.note %></p><br><br>
 
                                                 <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
                                                   <input type="hidden" name="customer_id" id="customer_id"
@@ -659,7 +660,7 @@
                           value=""
                           name="refer">
 
-                        <input list="browsers" class="form-control" name="addnotes" id="browser" autocomplete="off"
+                        <input list="browsers" class="form-control" value="<%- result[0]?.note %>" name="addnotes" id="browser" autocomplete="off"
                           style="padding:20px;border:1px solid grey;">
                         <datalist id="browsers" name="notes">
                           <option
@@ -691,8 +692,8 @@
 
                     </div>
                     <div class="modal-footer" bis_skin_checked="1">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal1">Close</button>
+                      <button type="submit" class="btn btn-primary" id="add_note">Submit</button>
                     </div>
                   </div>
                 </div>
@@ -1259,10 +1260,36 @@
                           })
 
 
-
-
                         </script>
 
+                        <script>
+
+                          let AddNoteButton = document.getElementById('add_note')
+                          
+                          AddNoteButton.addEventListener('click', async () =>{
+                            let AddNote = document.getElementById('browser').value;
+                            let customer_id = document.getElementById('customer_id').value;
+                            let note = document.getElementById('note')
+                            $.ajax({
+                              url:"/api/Remarks",
+                              type: "POST",
+                              dataType: "json",
+                              data: {AddNote: AddNote, customer_id: customer_id},
+                              success: function(res){
+                                $("#closeModal1").click()
+                                if(res.success){
+                                  iziToast.success({
+                                title: "Success",
+                                message: "Email Sent Succesfully !!",
+                                position: "topRight"
+                              });
+                              note.innerHTML = res.Remarknote
+                                }
+                              }
+                            })
+                          })
+
+                        </script>
 
                         <!-- ----- ----------------------- Function to Send the Mail end----------------------- -->
 
