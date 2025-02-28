@@ -702,8 +702,10 @@
       let mco_description =
         document.getElementById("mco_description").value;
       let mco_calculated = document.getElementById("mco_calculated").value;
+      let selectedValue = sessionStorage.getItem("selectedBookingOption");
 
       formData.append("mco_calculated", mco_calculated);
+      formData.append("booking_type", selectedValue)
 
       // Get all airline data from localStorage
       let airlinesData = JSON.parse(
@@ -894,7 +896,8 @@
         }
       }
     }
-  </script>
+
+     </script>
 </body>
 
 </html>

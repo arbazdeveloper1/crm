@@ -228,7 +228,7 @@
     // URL mapping for each option
     const urlMapping = {
       new_booking: '/new-booking',
-      exchange: '/exchange',
+      exchange: '/new-booking',
       refund: '/refund',
       future_credit: '/future-credit',
       seat_upgrade: '/seat-upgrade'
@@ -282,9 +282,9 @@
   // Load the saved selection when the page loads
   document.addEventListener("DOMContentLoaded", function () {
       const savedSelection = sessionStorage.getItem("selectedBookingOption");
-      if (savedSelection) {
-          selectElement.value = savedSelection;
-      }
+      // if (savedSelection) {
+      //     selectElement.value = savedSelection;
+      // }
   });
 
   // Store the selection in sessionStorage when changed

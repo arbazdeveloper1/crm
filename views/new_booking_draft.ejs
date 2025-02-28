@@ -44,7 +44,7 @@
                     <% } %>
 
                       <% if (userRole=='admin' && result[0].status==="sent_for_issuance" ) { %>
-                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">
+                        <a href="#" class="btn btn-warning" data-toggle="modal"  data-target="#chargeModal">
                           Last Status: <%- charging_status ? charging_status : 'working' %>
                         </a>
                         <% } else if (userRole=='admin' ) { %>
@@ -184,7 +184,7 @@
                                               
 
                                               <% }); %><br>
-                                              <b><%- result[0]?.note == 'undefined' ? "Additinal Note:- ": '' %></b><p id="note"> <%- result[0]?.note %></p><br><br>
+                                              <b><%- result[0]?.note != 'undefined' ? "Additinal Note:- ": '' %></b><span id="note"> <%- result[0]?.note %></span><br><br>
 
                                                 <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
                                                   <input type="hidden" name="customer_id" id="customer_id"
@@ -196,7 +196,7 @@
                       <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; ">
                         <p style="margin: 0;">
 
-                          <b style="color:#024;">Passenger(s) information –</b><br><br>
+                          <b style="color:#024;">Passenger(s) information –</b><br>
                         <table style="background: #d2d2d2; border: solid 1px #d2d2d2;" width="100%" cellspacing="0"
                           cellpadding="0" border="0">
                           <thead>
@@ -255,7 +255,7 @@
                         </table><br><br>
                         <br><br>
 
-                        <b style="color:#024;">Trip Details –</b><br><br>
+                        <b style="color:#024;">Trip Details –</b><br>
                         </p>
                         <p>
 
@@ -1280,7 +1280,7 @@
                                 if(res.success){
                                   iziToast.success({
                                 title: "Success",
-                                message: "Email Sent Succesfully !!",
+                                message: "Additinal note Added !!",
                                 position: "topRight"
                               });
                               note.innerHTML = res.Remarknote
