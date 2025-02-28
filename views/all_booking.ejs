@@ -46,7 +46,7 @@
               <div class="table-responsive">
                 <table class="table table-bordered table-md">
                   <thead class="text-center">
-                  <tr>
+                  <tr >
                     <th>Customer</th>
                     <th>Price (USD)</th>
                     <th>Email Type</th>
@@ -57,7 +57,7 @@
                   </tr>
                 </thead>
                   
-                  <tbody>
+                  <tbody class="text-center">
                   <% result.forEach((item, index) => { %>
                   <tr>
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>

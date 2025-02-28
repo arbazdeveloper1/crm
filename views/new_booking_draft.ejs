@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title> Admin Dashboard </title>
+  <title> New Booking Draft </title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="/assets/css/app.min.css">
   <link rel="stylesheet" href="/assets/bundles/izitoast/css/iziToast.min.css">
@@ -655,9 +655,7 @@
                       <div class="col-sm-12" bis_skin_checked="1">
                         <input type="hidden" value="183" name="id">
                         <input type="hidden" value="cms1" name="mycode">
-                        <input type="hidden"
-                          value=""
-                          name="refer">
+                        <input type="hidden" value="" name="refer">
 
                         <input list="browsers" class="form-control" name="addnotes" id="browser" autocomplete="off"
                           style="padding:20px;border:1px solid grey;">
@@ -1032,17 +1030,17 @@
                             let eTicketItem = document.createElement("div");
                             eTicketItem.className = "list-group-item";
                             eTicketItem.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <b>Filename:</b>
-        <a href="${fileURL}" target="_blank">${fileName}</a>
-        <small class="text-muted d-block">(${new Date().toISOString().split("T")[0]})</small>
-      </div>
-      <div class="deleterow btn-lg text-danger" onclick="removeItem(this, '${fileName}')">
-        <i class="fa fa-times-circle"></i>
-      </div>
-    </div>
-  `;
+                                  <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                      <b>Filename:</b>
+                                      <a href="${fileURL}" target="_blank">${fileName}</a>
+                                      <small class="text-muted d-block">(${new Date().toISOString().split("T")[0]})</small>
+                                    </div>
+                                    <div class="deleterow btn-lg text-danger" onclick="removeItem(this, '${fileName}')">
+                                      <i class="fa fa-times-circle"></i>
+                                    </div>
+                                  </div>
+                                `;
                             document.getElementById("eTicketsList").appendChild(eTicketItem);
 
                             // Clone to attachmentsList

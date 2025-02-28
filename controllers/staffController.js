@@ -139,6 +139,7 @@ export const newBooking = async (req, res) => {
 }
 
 
+
 export const newBookingForm = async (req, res) => {
   const {
       total_amount, mco_description, charge_type, mco_calculated,
