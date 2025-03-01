@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test
-    , newBookingForm
+    , newBookingForm, refund_form
 } from '../controllers/staffController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -16,6 +16,7 @@ router.get('/get_user/:id',getUserById); // get user by single id
 router.post('/update_user', updateUser); //update user detail by id
 router.get('/new-booking',verifyToken, newBooking); //New booking auth
 router.post('/newBookingForm', newBookingForm)
+router.get('/refund_form', verifyToken, refund_form)
 
 
 

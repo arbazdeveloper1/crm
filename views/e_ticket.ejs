@@ -180,61 +180,57 @@
                                         Authorization :</span><br><br>
 
                                     
-                                    <table class="tg">
-                                        <thead>
-                                            <tr>
-                                                <th class="tg-0lax"><b>BOOKING PNR:</b></th>
-                                                <th class="tg-0lax"><%- result[0]?.gds_pnr %></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <tr>
-                                                <td class="tg-0lax"><b>TOTAL CHARGES:</b></td>
-                                                <td class="tg-0lax"> <%- result[0]?.total_amount %> </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>BASE FARE:</b></td>
-                                                <td class="tg-0lax"><%- BaseFare %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>TAXES &amp; FEES:</b></td>
-                                                <td class="tg-0lax"><%- result[0]?.mco_calculated %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>REASON OF BOOKING:</b></td>
-                                                <td class="tg-0lax">New Booking</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>AIRLINE REFERENCE (ARL):</b></td>
-                                                <td class="tg-0lax"><%- result[0]?.arl_confirmation %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>CARD HOLDER NAME:</b></td>
-                                                <td class="tg-0lax"><%- result[0]?.card_holder_name %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>CARD NUMBER:</b></td>
-                                                <td class="tg-0lax"><%- result[0]?.card_number %> (<%- result[0]?.card_type %>)</td>
-                               `             </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>CARD EXPIRY / CVV:</b></td>
-                                                <td class="tg-0lax"><%- result[0]?.expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%-
-                                                      result[0]?.cvv %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>BILLING PHONE:</b></td>
-                                                <td class="tg-0lax"><%- result[0]?.billing_phone %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax"><b>BILLING EMAIL:</b></td>
-                                                <td class="tg-0lax"><%- result[0]?.email %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-0lax" colspan="2"><b>BILLING ADDRESS OF CARD:</b> <%- result[0]?.billing_address %></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <table style="border: 1px solid #666666; font-family: Arial, sans-serif; font-size: 14px; border-collapse: collapse; width: 50%;">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>BOOKING PNR:</b></th>
+                                                    <th style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.gds_pnr %></th>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>TOTAL CHARGES:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.total_amount %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>BASE FARE:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- BaseFare %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>TAXES &amp; FEES:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.mco_calculated %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>REASON OF BOOKING:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;">New Booking</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>AIRLINE REFERENCE (ARL):</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.arl_confirmation %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>CARD HOLDER NAME:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.card_holder_name %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>CARD NUMBER:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.card_number %> (<%- result[0]?.card_type %>)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>CARD EXPIRY / CVV:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.expiration %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp; <%- result[0]?.cvv %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>BILLING PHONE:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.billing_phone %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><b>BILLING EMAIL:</b></td>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.email %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: left; padding: 5px;" colspan="2"><b>BILLING ADDRESS OF CARD:</b> <%- result[0]?.billing_address %></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
                                     <br><br><span style="font-weight: bolder; color: #6777ef;">Please find your e-ticket and other related documents attached below.</span><br>
 
@@ -257,7 +253,7 @@
                                                     (Reservations Desk)<br>
                                                 </p>
                                                 ☎ <b>Toll-free (24/7) :</b>&nbsp;&nbsp; <a href="#"
-                                                    style="font-weight:bold;background: #6777ef;">1-855-515-1040</a>
+                                                    style="font-weight:bold;color: #6777ef;text-decoration: none;">1-855-515-1040</a>
                                             </div>
                                         </div> 
                                     </div>

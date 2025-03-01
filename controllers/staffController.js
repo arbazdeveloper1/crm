@@ -138,6 +138,17 @@ export const newBooking = async (req, res) => {
   }
 }
 
+export const refund_form = async (req, res) => {
+  try{
+    const users = await query('SELECT * FROM users');
+    res.render('refund_form',{users})
+  }catch(error){
+    res.status(500).json({success:false, message: 'Error loading page'})
+  }
+}
+
+
+
 
 export const newBookingForm = async (req, res) => {
   const {
