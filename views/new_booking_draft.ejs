@@ -43,7 +43,7 @@
                   <% } %>
                     <% } %>
 
-                      <% if (userRole=='admin' && result[0].status==="sent_for_issuance" ) { %>
+                      <% if (userRole=='admin' && result[0].status==="sent_for_issuance") { %>
                         <a href="#" class="btn btn-warning" data-toggle="modal"  data-target="#chargeModal">
                           Last Status: <%- charging_status ? charging_status : 'working' %>
                         </a>
