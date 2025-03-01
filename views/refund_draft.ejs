@@ -19,7 +19,7 @@
 
 
 
-<body style="background: #ebebeb;">
+<body>
   <div class="loader"></div>
   <% if(email==='true' ) { %>
     <nav class="navbar navbar-expand-lg bg-primary " style="margin-left: -13%; z-index: 1000;">
@@ -91,11 +91,10 @@
 
     <div class="container-fluid justify-content-center d-flex " style="margin-top: -10%;">
       <div class="row ">
-        <div class="col-12 d-flex justify-content-center">
-        <table  border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+        <div class="col-12 ">
           <tbody>
             <tr>
-              <td  align="center" style="background: #6777ef;">
+              <td bgcolor="#2b0495" align="center">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
                   <tbody>
                     <tr>
@@ -105,10 +104,10 @@
                 </table>
               </td>
             </tr>
-            <tr >
+            <tr>
               <% } %>
-                <td align="center" style="background: #6777ef;padding: 0px 10px 0px 10px;">
-                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 100%;">
+                <td bgcolor="#2b0495" align="center" style="padding: 0px 10px 0px 10px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
                     <tbody>
                       <tr>
                         <td bgcolor="#ffffff" align="left" valign="top"
@@ -143,7 +142,7 @@
                 </td>
             </tr>
             <tr>
-              <td align="center" style="padding: 0px 10px 0px 10px;">
+              <td bgcolor="#ededed" align="center" style="padding: 0px 10px 0px 10px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
                   <tbody>
                     <tr>
@@ -398,7 +397,7 @@
               </td>
             </tr>
             <tr>
-              <td align="center" style="padding: 30px 10px 0px 10px;">
+              <td bgcolor="#ededed" align="center" style="padding: 30px 10px 0px 10px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
                   <tbody>
                     <tr>
@@ -481,10 +480,9 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </div>
       </div>
     </div>
-  </div>
 
 
 
@@ -1266,7 +1264,7 @@
                                 if (res.success) {
                                   iziToast.success({
                                     title: "Success",
-                                    message: "Additinal note Added !!",
+                                    message: "Additinal note Added !",
                                     position: "topRight"
                                   });
                                   note.innerHTML = res.Remarknote
