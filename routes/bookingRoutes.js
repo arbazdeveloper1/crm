@@ -14,7 +14,8 @@ import {
   uploadDocuments,
   ChangeStatus,
   ChangeBookingStatus,
-  UpdateRemarks
+  UpdateRemarks,
+  RefundDescription
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -51,5 +52,8 @@ route.post('/api/bookingstatus', verifyToken, ChangeBookingStatus)
 
 
 route.post('/api/Remarks', verifyToken, UpdateRemarks)
+
+
+route.post('/api/refund_booking', verifyToken,upload.array('file',10), RefundDescription)
 
 export default route;

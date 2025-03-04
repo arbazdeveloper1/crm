@@ -126,9 +126,10 @@
   <div class="container mt-5" style="width: 50%">
     <div class="col-12 p-3 box-control">
       <h5 class="justify-content-center d-flex text-danger">
-        New Booking
+        <span id="main_heading">New Booking</span>
         <p class="text-dark">(Email draft)</p>
       </h5>
+
       <div class="step-indicator" style="background-color: antiquewhite">
         <div id="step1-indicator" class="active">Price Description</div>
         <div id="step2-indicator">Card Information</div>
@@ -175,12 +176,13 @@
             <div class="col-6">
               <div class="form-group">
                 <label>Type of Charge<span class="text-danger">*</span></label>
-                <select name="typeOfCharge" class="form-control" required>
+                <select name="typeOfCharge" class="form-control" required id="typeofcharge">
                   <option selected disabled>Choose an option</option>
                   <option value="single">Single</option>
                   <option value="split">Split</option>
                 </select>
               </div>
+             
               <div class="form-group">
                 <label>MCO (auto calculated)</label>
                 <input type="text" class="form-control" id="mco_calculated" name="MCO" disabled />
@@ -214,9 +216,8 @@
               </div>
               <div class="form-group">
                 <label>Currency<span class="text-danger">*</span></label>
-                <select name="currency" class="form-control" required>
-                  <option value="Select currency">Select Currency</option>
-                  <option value="USD">USD</option>
+                <select name="currency" class="form-control">
+                  <option value="USD" selected>USD</option>
                   <option value="CAD">CAD</option>
                   <option value="GBP">GBP</option>
                   <option value="EUR">EUR</option>
@@ -396,6 +397,28 @@
     </div>
   </div>
 
+
+  <script>
+let selectCharge = document.getElementById('typeofcharge');
+let input1 = document.getElementById('airline_name');
+let input2 = document.getElementById('airline_cost');
+let btn = document.getElementById('add-airline');
+
+selectCharge.addEventListener('change', () => {
+
+  let selectedValue = selectCharge.value;
+  if(selectedValue == 'single') {
+    input1.disabled = true
+    input2.disabled = true
+    btn.disabled = true
+  }else{
+    input1.disabled = false
+    input2.disabled = false
+    btn.disabled = false
+  }
+});
+  </script>
+
   <script defer>
     function detectCardType() {
       const cardNumberInput = document.getElementById("cardNumber");
@@ -530,6 +553,17 @@
         }
       });
     });
+
+    const selectedValue = sessionStorage.getItem("selectedBookingOption");
+
+if(selectedValue == 'exchange') {
+  let heading = document.getElementById('main_heading').innerHTML = ''
+  document.getElementById('main_heading').innerHTML = 'Exchange'
+}else if(selectedValue == 'seat_upgrade') {
+  let heading = document.getElementById('main_heading').innerHTML = ''
+  document.getElementById('main_heading').innerHTML = 'Seat Upgrade'
+}
+
   </script>
 
   <script>

@@ -516,7 +516,7 @@
       localStorage.removeItem("airline_default");
 
       const totalQuotedInput = document.getElementById("total-quoted");
-      const mcoCalculatedInput = document.getElementById("mco_calculated");
+      // const mcoCalculatedInput = document.getElementById("mco_calculated");
       let InputCount = 0;
 
       let airlinesData = {};
@@ -572,7 +572,7 @@
         });
 
         const mcoValue = totalQuoted - totalAirlineCost;
-        mcoCalculatedInput.value = mcoValue.toFixed(2);
+        // mcoCalculatedInput.value = mcoValue.toFixed(2);
       }
 
       document
@@ -680,10 +680,8 @@
       let total_quoted = document.getElementById("total-quoted").value;
       let mco_description =
         document.getElementById("mco_description").value;
-      let mco_calculated = document.getElementById("mco_calculated").value;
       let selectedValue = sessionStorage.getItem("selectedBookingOption");
 
-      formData.append("mco_calculated", mco_calculated);
       formData.append("booking_type", selectedValue)
 
       // Get all airline data from localStorage
@@ -717,8 +715,11 @@
         }
       });
 
+      formData.forEach((value, key) => {
+    console.log(key, value);
+})
       $.ajax({
-        url: "/make_booking",
+        url: "/api/refund_booking",
         method: "post",
         dataType: "json",
         data: formData,
