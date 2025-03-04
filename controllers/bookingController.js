@@ -1,4 +1,4 @@
-import { Price_Description } from "../models/bookingModel.js";
+import { Price_Description, Refund_Description } from "../models/bookingModel.js";
 import { query } from "../config/db.js";
 import ejs from "ejs";
 import path from "path";
@@ -44,6 +44,31 @@ export const priceDescription = async (req, res) => {
     return res.status(500).json({ message: "Server Error" });
   }
 };
+
+export const RefundDescription = async (req, res) => {
+  try {
+    const FileName = req?.files?.map((item) => {
+      return item?.filename;
+    });
+    req.FileName = FileName?.join(",");
+    const agentFullName = req?.full_name || "No Name";
+
+    const add_payload = {
+      ...req.body,
+      fullname: agentFullName, // Add the fullname to payload
+    };
+
+    const insert_resp = await Refund_Description(add_payload, FileName);
+    if (insert_resp) {
+      return res.status(201).json(insert_resp);
+    }
+    return res
+      .status(400)
+      .json({ message: "Not able to insert record", status: false });
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+}
 
 export const booking_list = async (req, res) => {
   try {
@@ -710,12 +735,19 @@ export const ChangeBookingStatus = async (req, res) => {
       remarks,
     } = req.body;
 
-    let qry = `INSERT INTO customer_booking_status 
-    (customer_id, customer_name, payment_status, queue_name, charging_source, card_verified, company_card_used, card_number, voucher_used, amount, remarks)
-    VALUES ('${customer_id}','${card_holder_name}', '${payment_status}', '${queue_name}', '${charging_source}', '${verfication}','${companycard}', '${cardnum}', '${voucher}', '${amount}', '${remarks}')`;
-    let ExecuteQuery = await query(qry);
+    let ExecuteQuery;
+    let isCustomerExists = await query(`SELECT id FROM customer_booking_status WHERE customer_id='${customer_id}'`)
 
-    
+    if(isCustomerExists.length > 0){
+      let qry = `UPDATE customer_booking_status 
+      SET customer_name='${card_holder_name}', payment_status='${payment_status}', queue_name='${queue_name}', charging_source='${charging_source}', card_verified='${verfication}', company_card_used='${companycard}', card_number='${cardnum}', voucher_used='${voucher}', amount='${amount}', remarks='${remarks}' WHERE customer_id='${customer_id}'`
+       ExecuteQuery = await query(qry);
+    }else{
+      let qry = `INSERT INTO customer_booking_status 
+      (customer_id, customer_name, payment_status, queue_name, charging_source, card_verified, company_card_used, card_number, voucher_used, amount, remarks)
+      VALUES ('${customer_id}','${card_holder_name}', '${payment_status}', '${queue_name}', '${charging_source}', '${verfication}','${companycard}', '${cardnum}', '${voucher}', '${amount}', '${remarks}')`;
+       ExecuteQuery = await query(qry);
+    }
 
     if (ExecuteQuery.affectedRows == 0) {
       res.status(401).json({ success: false, msg: "table not updated" });
