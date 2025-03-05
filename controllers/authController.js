@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { query } from '../config/db.js';
 import transporter from '../config/mailConfig.js';
 import { findUserByEmail, findUserByUsername, updateUserOTP, resetPassword , allBooking } from '../models/userModel.js';
 
@@ -26,7 +27,18 @@ export const dashboard = async (req, res) => {
     const userRole = req.userRole;
     const bookings = await allBooking();
     
-    res.render('dashboard', { userRole, bookings });
+    // Fetch form_data records
+    const formData = await query('SELECT * FROM form_data');
+
+    // Get the count of records in form_data
+    const countResult = await query('SELECT COUNT(*) AS total FROM form_data');
+    const totalNewbookingCount = countResult[0].total; 
+
+    const empNewBookingCount = await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ?', ['new_booking']);
+    const employeeNewBookingCount = empNewBookingCount[0].total; 
+    
+
+    res.render('dashboard', { userRole, bookings, formData, totalNewbookingCount, employeeNewBookingCount });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
     res.status(500).send('Internal Server Error');

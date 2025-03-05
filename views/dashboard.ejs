@@ -48,7 +48,12 @@
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <h5 class="font-15">New Booking's</h5>
-                          <h2 class="mb-3 font-18">258</h2>
+                          <% if (userRole === 'admin') { %>
+                          <h2 class="mb-3 font-18"><%= totalNewbookingCount%></h2>
+                          <% } else if (userRole === 'agent') { %>
+                            <h2 class="mb-3 font-18"><%= employeeNewBookingCount %></h2>
+                            <% } %>
+
                           <p class="mb-0"><span class="col-green">10%</span> Increase</p>
                         </div>
                       </div>
@@ -114,7 +119,7 @@
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
-                          <h5 class="font-15">Future Credit</h5>
+                          <h5 class="font-15">Seat Upgrade</h5>
                           <h2 class="mb-3 font-18">697</h2>
                           <p class="mb-0"><span class="col-green">42%</span> Increase</p>
                         </div>
