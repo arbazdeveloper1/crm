@@ -147,7 +147,18 @@ export const refund_form = async (req, res) => {
   }
 }
 
+export const docusign_list = async (req, res) => {
+  try{
+    const form_data = await query('SELECT * FROM form_data');
 
+    res.render('docusign_list', { 
+      form_data, 
+      userRole: req.userRole 
+    });
+  } catch(error){
+    res.status(500).json({success:false, message: 'Error loading page'})
+  }
+}
 
 
 export const newBookingForm = async (req, res) => {
