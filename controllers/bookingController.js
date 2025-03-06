@@ -888,3 +888,115 @@ export const UpdateRemarks = async (req, res) => {
     return res.json(500).status({msg: "internal server error"})
   }
 }
+
+
+
+
+export const booking_exchange = async (req, res) => {
+  try {
+    const userRole = req.userRole;
+
+    let qry = `
+        SELECT 
+           id,
+            card_holder_name,
+            total_amount,
+            email_type,
+            created_at,
+            agent_name,
+            customer_id,
+            status
+        FROM 
+            form_data 
+        WHERE 
+            agent_name = '${req.full_name}' AND booking_type = 'exchange'
+        ORDER BY id DESC
+    `;
+
+    const result = await query(qry);
+
+    if (result.length > 0) {
+      res.render("booking", { userRole, result });
+    } else {
+      res.render("booking", { userRole, result: [] });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+};
+
+export const booking_refund = async (req, res) => {
+  try {
+    const userRole = req.userRole;
+
+    let qry = `
+        SELECT 
+           id,
+            card_holder_name,
+            total_amount,
+            email_type,
+            created_at,
+            agent_name,
+            customer_id,
+            status
+        FROM 
+            form_data 
+        WHERE 
+            agent_name = '${req.full_name}' AND booking_type = 'refund_form'
+        ORDER BY id DESC
+    `;
+
+    const result = await query(qry);
+
+    if (result.length > 0) {
+      res.render("booking", { userRole, result });
+    } else {
+      res.render("booking", { userRole, result: [] });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+};
+
+
+export const booking_seatupgrade = async (req, res) => {
+  try {
+    const userRole = req.userRole;
+
+    let qry = `
+        SELECT 
+           id,
+            card_holder_name,
+            total_amount,
+            email_type,
+            created_at,
+            agent_name,
+            customer_id,
+            status
+        FROM 
+            form_data 
+        WHERE 
+            agent_name = '${req.full_name}' AND booking_type = 'seat_upgrade'
+        ORDER BY id DESC
+    `;
+
+    const result = await query(qry);
+
+    if (result.length > 0) {
+      res.render("booking", { userRole, result });
+    } else {
+      res.render("booking", { userRole, result: [] });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+};

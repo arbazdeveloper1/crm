@@ -118,3 +118,11 @@ export const logoutUser = (req, res) => {
 };
 
 
+
+export const authforgetpassword = (req, res) => {
+  try {
+    res.render('auth_forgot_password', {})
+  } catch (error) {
+    console.error(error);
+  }
+}

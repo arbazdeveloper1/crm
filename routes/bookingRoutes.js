@@ -62,6 +62,11 @@ route.post('/api/bookingstatus', verifyToken, ChangeBookingStatus)
 route.post('/api/Remarks', verifyToken, UpdateRemarks)
 
 
-route.post('/api/refund_booking', verifyToken,upload.array('file',10), RefundDescription)
+route.post('/api/refund_booking', verifyToken,upload.array('file',10), RefundDescription);
+
+
+route.get('/booking_exchange', verifyToken, booking_exchange);
+route.get('/booking_refund', verifyToken, booking_refund);
+route.get('/booking_seatupgrade', verifyToken, booking_seatupgrade)
 
 export default route;
