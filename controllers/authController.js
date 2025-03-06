@@ -26,24 +26,47 @@ export const dashboard = async (req, res) => {
   try {
     const userRole = req.userRole;
     const bookings = await allBooking();
-    
+    const users = await query('SELECT * FROM users');
+
     // Fetch form_data records
     const formData = await query('SELECT * FROM form_data');
 
-    // Get the count of records in form_data
-    const countResult = await query('SELECT COUNT(*) AS total FROM form_data');
-    const totalNewbookingCount = countResult[0].total; 
+    // Extract agent_name from req.userRole (if available)
+    const agentName = userRole?.agent_name || '';  
 
-    const empNewBookingCount = await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ?', ['new_booking']);
-    const employeeNewBookingCount = empNewBookingCount[0].total; 
-    
+    // Get total counts for each booking type
+    const totalNewbookingCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ?', ['new_booking']))[0].total;
+    const totalExchangeCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ?', ['exchange']))[0].total;
+    const totalRefundCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ?', ['refund_form']))[0].total;
+    const totalSeatUpgradeCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ?', ['seat_upgrade']))[0].total;
 
-    res.render('dashboard', { userRole, bookings, formData, totalNewbookingCount, employeeNewBookingCount });
+    // Get employee-specific counts
+    const employeeNewBookingCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ? AND agent_name = ?', ['new_booking', agentName]))[0].total;
+    const employeeExchangeCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ? AND agent_name = ?', ['exchange', agentName]))[0].total;
+    const employeeRefundCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ? AND agent_name = ?', ['refund_form', agentName]))[0].total;
+    const employeeSeatUpgradeCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ? AND agent_name = ?', ['seat_upgrade', agentName]))[0].total;
+
+    // Render dashboard with data
+    res.render('dashboard', { 
+      users, 
+      userRole, 
+      bookings, 
+      formData, 
+      totalNewbookingCount, 
+      employeeNewBookingCount, 
+      totalExchangeCount, 
+      employeeExchangeCount, 
+      totalRefundCount, 
+      employeeRefundCount, 
+      totalSeatUpgradeCount, 
+      employeeSeatUpgradeCount 
+    });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
     res.status(500).send('Internal Server Error');
   }
 };
+
 
 
 export const sendOTP = async (req, res) => {

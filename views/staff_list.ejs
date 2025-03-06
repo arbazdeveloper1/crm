@@ -46,7 +46,7 @@
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
-                          <h5 class="font-15">Total Employees</h5>
+                          <h5 class="font-15">Total Team</h5>
                           <h2 class="mb-3 font-18"><%= userCount %></h2>
                           <!-- <p class="mb-0"><span class="col-green">10%</span> Increase</p> -->
                         </div>
@@ -154,13 +154,14 @@
                   <div class="table-responsive">
                     <table class="table table-striped">
                       <tr>
-                        <th class="text-center">
+                        <!-- <th class="text-center">
                           <div class="custom-checkbox custom-checkbox-table custom-control">
                             <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad"
                               class="custom-control-input" id="checkbox-all">
                             <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
                           </div>
-                        </th>
+                        </th> -->
+                        <th>S no.</th>
                         <th>Full Name</th>
                         <th>Username</th>
                         <th>Email</th>
@@ -170,14 +171,16 @@
                         <th>Action</th>
                       </tr>
                     
-                      <% users.forEach(function(user) { %>
+                      <% users.forEach(function(user, index) { %>
                       <tr>
-                        <td class="p-0 text-center">
+                        <!-- <td class="p-0 text-center">
                           <div class="custom-checkbox custom-control">
                             <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-<%= user.username %>">
                             <label for="checkbox-<%= user.username %>" class="custom-control-label">&nbsp;</label>
                           </div>
-                        </td>
+                        </td> -->
+                        <td><%= index + 1 %></td>
+                       
                         <td>
                           <%= user.full_name %>
                         </td>
@@ -200,8 +203,7 @@
                           <div class="dropdown">
                               <a href="#" data-toggle="dropdown"><i class="fa-solid fa-ellipsis fa-2x"></i></a>
                               <div class="dropdown-menu">
-                                  <a class="dropdown-item edit-btn" href="#" data-user-id="<%= user.id %>">Edit</a>
-                                  <a class="dropdown-item" href="#">View Worksheet</a>
+                                  <a class="dropdown-item edit-btn" href="#" data-user-id="<%= user.id %>">Update Details</a>
                                   <a class="dropdown-item delete-user" href="#" data-id="<%= user.id %>">Delete</a>
                               </div>
                           </div>

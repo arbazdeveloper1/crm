@@ -37,11 +37,30 @@
       
       <!-- Main Content -->
       <div class="main-content">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-xl-12">
+            <div class="card">
+                <div class="card-header text-center d-flex flex-column">
+                  <div class="row">
+                    <!-- <div class="col-6">
+                      
+                    </div> -->
+                  <div class="col-12">
+                    <h4 class="mb-2">Welcome Back</h4>
+                    <h3 class="mb-2">Harry</h3>
+                    <h4 id="currentTime"></h4>
+                  </div>
+                </div>
+                </div>                        
+            </div>
+        </div>
+        
+        </div>
         <section class="section">
           <div class="row ">
             
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
+              <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
                     <div class="row ">
@@ -59,7 +78,7 @@
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                         <div class="banner-img">
-                          <img src="assets/img/banner/1.png" alt="">
+                          <img src="/assets/img/banner/1.png" alt="">
                         </div>
                       </div>
                     </div>
@@ -68,20 +87,24 @@
               </div>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
+              <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <h5 class="font-15"> Exchange</h5>
-                          <h2 class="mb-3 font-18">1,287</h2>
+                          <% if (userRole === 'admin') { %>
+                            <h2 class="mb-3 font-18"><%= totalExchangeCount%></h2>
+                            <% } else if (userRole === 'agent') { %>
+                              <h2 class="mb-3 font-18"><%= employeeExchangeCount %></h2>
+                              <% } %>
                           <p class="mb-0"><span class="col-orange">09%</span> Decrease</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                         <div class="banner-img">
-                          <img src="assets/img/banner/2.png" alt="">
+                          <img src="/assets/img/banner/2.png" alt="">
                         </div>
                       </div>
                     </div>
@@ -90,21 +113,25 @@
               </div>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
+              <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <h5 class="font-15">Refund</h5>
-                          <h2 class="mb-3 font-18">128</h2>
+                          <% if (userRole === 'admin') { %>
+                            <h2 class="mb-3 font-18"><%= totalRefundCount%></h2>
+                            <% } else if (userRole === 'agent') { %>
+                              <h2 class="mb-3 font-18"><%= employeeRefundCount %></h2>
+                              <% } %>
                           <p class="mb-0"><span class="col-green">18%</span>
                             Increase</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                         <div class="banner-img">
-                          <img src="assets/img/banner/3.png" alt="">
+                          <img src="/assets/img/banner/3.png" alt="">
                         </div>
                       </div>
                     </div>
@@ -113,20 +140,24 @@
               </div>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
+              <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <h5 class="font-15">Seat Upgrade</h5>
-                          <h2 class="mb-3 font-18">697</h2>
+                          <% if (userRole === 'admin') { %>
+                            <h2 class="mb-3 font-18"><%= totalSeatUpgradeCount%></h2>
+                            <% } else if (userRole === 'agent') { %>
+                              <h2 class="mb-3 font-18"><%= employeeSeatUpgradeCount %></h2>
+                              <% } %>
                           <p class="mb-0"><span class="col-green">42%</span> Increase</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                         <div class="banner-img">
-                          <img src="assets/img/banner/4.png" alt="">
+                          <img src="/assets/img/banner/4.png" alt="">
                         </div>
                       </div>
                     </div>
@@ -307,18 +338,47 @@
     </div>
   </div>
   
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const options = {
+        timeZone: "America/New_York",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      };
+  
+      let formattedTime = new Intl.DateTimeFormat("en-US", options).format(now);
+      
+      // Adjust format to match "March 5, 2025 at 2:55:45 pm"
+      formattedTime = formattedTime.replace(",", "") // Remove extra comma
+                                  .replace("AM", "am")
+                                  .replace("PM", "pm");
+      
+      document.getElementById("currentTime").innerText = formattedTime;
+    }
+  
+    // Update the time every second
+    setInterval(updateTime, 1000);
+  
+    // Initialize time on page load
+    updateTime();
+  </script>
   <!-- General JS Scripts -->
-  <script src="assets/js/app.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <!-- JS Libraies -->
-  <script src="assets/bundles/apexcharts/apexcharts.min.js"></script>
+  <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
   <!-- Page Specific JS File -->
-  <script src="assets/js/page/index.js"></script>
+  <script src="/assets/js/page/index.js"></script>
   <!-- Template JS File -->
-  <script src="assets/js/scripts.js"></script>
+  <script src="/assets/js/scripts.js"></script>
   <!-- Custom JS File -->
-  <script src="assets/js/custom.js"></script>
+  <script src="/assets/js/custom.js"></script>
 </body>
 
 
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>

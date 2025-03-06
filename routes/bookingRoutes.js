@@ -1,7 +1,6 @@
 import express, { Router } from "express";
 import {
   priceDescription,
-  booking_list,
   new_booking_draft,
   AllBooking,
   EmailAcknowledge,
@@ -15,7 +14,12 @@ import {
   ChangeStatus,
   ChangeBookingStatus,
   UpdateRemarks,
-  RefundDescription
+  RefundDescription,
+  new_booking_list,
+  exchange_list,
+  refund_list,
+  seat_upgrade_list
+  
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -27,7 +31,11 @@ route.post(
   upload.array("file", 10),
   priceDescription
 );
-route.get("/booking_list", verifyToken, booking_list);
+route.get("/new_booking_list", verifyToken, new_booking_list);
+route.get("/exchange_list", verifyToken, exchange_list);
+route.get("/refund_list", verifyToken, refund_list);
+route.get("/seat_upgrade_list", verifyToken, seat_upgrade_list);
+
 route.get("/new_booking_draft/:customer_id", verifyToken, new_booking_draft);
 route.get("/all_booking", verifyToken, AllBooking);
 
