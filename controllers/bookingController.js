@@ -814,7 +814,8 @@ export const ChangeStatus = async (req, res) => {
     let UpdateStatus = await query(
       `update form_data set status='sent_for_issuance' where customer_id='${customer_id}'`
     );
-    if (UpdateStatus.affectedRows == 0) {
+
+     if (UpdateStatus.affectedRows == 0) {
       return res.status(401).json({ success: false });
     }
 
@@ -843,6 +844,7 @@ export const ChangeBookingStatus = async (req, res) => {
     let ExecuteQuery;
     let isCustomerExists = await query(`SELECT id FROM customer_booking_status WHERE customer_id='${customer_id}'`)
 
+
     if(isCustomerExists.length > 0){
       let qry = `UPDATE customer_booking_status 
       SET customer_name='${card_holder_name}', payment_status='${payment_status}', queue_name='${queue_name}', charging_source='${charging_source}', card_verified='${verfication}', company_card_used='${companycard}', card_number='${cardnum}', voucher_used='${voucher}', amount='${amount}', remarks='${remarks}' WHERE customer_id='${customer_id}'`
@@ -853,6 +855,10 @@ export const ChangeBookingStatus = async (req, res) => {
       VALUES ('${customer_id}','${card_holder_name}', '${payment_status}', '${queue_name}', '${charging_source}', '${verfication}','${companycard}', '${cardnum}', '${voucher}', '${amount}', '${remarks}')`;
        ExecuteQuery = await query(qry);
     }
+
+    await query(
+      `update form_data set status='charged' where customer_id='${customer_id}'`
+    )
 
     if (ExecuteQuery.affectedRows == 0) {
       res.status(401).json({ success: false, msg: "table not updated" });
