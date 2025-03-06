@@ -63,7 +63,15 @@
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true"><%= item.card_holder_name %></a></td>
                     <td><%= item.total_amount %></td>
                     <td><%= item.email_type %></td>
-                    <td><%= item.created_at %><br><%= item.status %></td>
+                    <td><%= item.created_at %><br>
+                      <% if(item.status == 'working') { %>
+                        <span style="color: red;font-weight: 600;"><%= item.status %></span>
+                        <% } else if(item.status == 'sent_for_issuance') { %>
+                          <span style="color: rgb(198, 198, 9);font-weight: 600;">Sent for Issuance</span>
+                          <% } else if(item.status == 'charged') { %>
+                            <span style="color: green;font-weight: 600;"><%= item.status %></span>
+                            <% } %>
+                  </td>
                     <td><%= item.agent_name %></td>
                     <td><%= item.customer_id %></td>
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true" class="btn btn-primary">Details</a></td>

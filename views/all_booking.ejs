@@ -64,7 +64,7 @@
                     <td><%= item.total_amount %></td>
                     <td><%= item.booking_type %></td> 
                     <td class="text-center"><%= item.created_at %><br>
-                      <% if(item.status == 'Working') { %>
+                      <% if(item.status == 'working') { %>
                         <span style="color: red;font-weight: 600;"><%= item.status %></span>
                         <% } else if(item.status == 'sent_for_issuance') { %>
                           <span style="color: rgb(198, 198, 9);font-weight: 600;">Sent for Issuance</span>
