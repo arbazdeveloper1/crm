@@ -40,7 +40,7 @@
         <div class="col-12 col-md-12 col-lg-12">
           <div class="card">
             <div class="card-header">
-              <h4>Refund List</h4>
+              <h4>Exchange List</h4>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -71,7 +71,7 @@
                           <% } else if(item.status == 'charged') { %>
                             <span style="color: green;font-weight: 600;"><%= item.status %></span>
                             <% } %>
-                            (<%- item.updated_time %>)
+                            (<%= item.updated_time %>)
                     
                     </td>
                     <td><%= item.agent_name %></td>

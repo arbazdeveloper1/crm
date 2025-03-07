@@ -1,4 +1,4 @@
-import { Price_Description, Refund_Description } from "../models/bookingModel.js";
+import { Price_Description, Refund_Description, Future_credit } from "../models/bookingModel.js";
 import { query } from "../config/db.js";
 import ejs from "ejs";
 import path from "path";
@@ -70,28 +70,61 @@ export const RefundDescription = async (req, res) => {
   }
 }
 
+export const FutureCredit = async (req, res) => {
+  try {
+    const FileName = req?.files?.map((item) => {
+      return item?.filename;
+    });
+    req.FileName = FileName?.join(",");
+    const agentFullName = req?.full_name || "No Name";
+
+    const add_payload = {
+      ...req.body,
+      fullname: agentFullName, // Add the fullname to payload
+    };
+
+    const insert_resp = await Future_credit(add_payload, FileName);
+    if (!insert_resp) {
+      return res
+      .status(400)
+      .json({ message: "Not able to insert record", status: false });
+    }
+    
+    return res.status(201).json(insert_resp);
+    
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({success: false, msg: "Internal server Error"})
+  }
+}
+
+
+
 export const new_booking_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
+    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'new_booking'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'new_booking'`
+
     let qry = `
-        SELECT 
-           id,
-            card_holder_name,
-            total_amount,
-            email_type,
-            created_at,
-            agent_name,
-            customer_id,
-            status
-        FROM 
-            form_data 
-        WHERE 
-            agent_name = '${req.full_name}' AND booking_type = 'new_booking'
-        ORDER BY id DESC
-    `;
+            SELECT 
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                booking_type,
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time
+            FROM 
+                form_data 
+                ${QueryCondition}
+            ORDER BY id DESC
+        `;
 
     const result = await query(qry);
+
 
     if (result.length > 0) {
       res.render("new_booking_list", { userRole, result });
@@ -99,7 +132,6 @@ export const new_booking_list = async (req, res) => {
       res.render("new_booking_list", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -109,22 +141,24 @@ export const refund_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
+    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'refund_form'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'refund_form'`
+
     let qry = `
-        SELECT 
-           id,
-            card_holder_name,
-            total_amount,
-            email_type,
-            created_at,
-            agent_name,
-            customer_id,
-            status
-        FROM 
-            form_data 
-        WHERE 
-            agent_name = '${req.full_name}' AND booking_type = 'refund_form'
-        ORDER BY id DESC
-    `;
+            SELECT 
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                booking_type,
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time
+            FROM 
+                form_data 
+                ${QueryCondition}
+            ORDER BY id DESC
+        `;
 
     const result = await query(qry);
 
@@ -144,22 +178,24 @@ export const exchange_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
+        const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'exchange'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'exchange'`
+
     let qry = `
-        SELECT 
-           id,
-            card_holder_name,
-            total_amount,
-            email_type,
-            created_at,
-            agent_name,
-            customer_id,
-            status
-        FROM 
-            form_data 
-        WHERE 
-            agent_name = '${req.full_name}' AND booking_type = 'exchange'
-        ORDER BY id DESC
-    `;
+            SELECT 
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                booking_type,
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time
+            FROM 
+                form_data 
+                ${QueryCondition}
+            ORDER BY id DESC
+        `;
 
     const result = await query(qry);
 
@@ -179,22 +215,24 @@ export const seat_upgrade_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
+    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'seat_upgrade'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'seat_upgrade'`
+
     let qry = `
-        SELECT 
-           id,
-            card_holder_name,
-            total_amount,
-            email_type,
-            created_at,
-            agent_name,
-            customer_id,
-            status
-        FROM 
-            form_data 
-        WHERE 
-            agent_name = '${req.full_name}' AND booking_type = 'seat_upgrade'
-        ORDER BY id DESC
-    `;
+            SELECT 
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                booking_type,
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time
+            FROM 
+                form_data 
+                ${QueryCondition}
+            ORDER BY id DESC
+        `;
 
     const result = await query(qry);
 
@@ -227,7 +265,8 @@ export const AllBooking = async (req, res) => {
                 agent_name,
                 customer_id,
                 booking_type,
-                status
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time
             FROM 
                 form_data 
                 ${QueryCondition}
@@ -1006,3 +1045,40 @@ export const booking_seatupgrade = async (req, res) => {
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
+
+
+export const future_credit_list = async (req, res) => {
+  try {
+
+    const userRole = req.userRole;
+
+    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'future_credit'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'future_credit'`
+
+    let qry = `
+            SELECT 
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                booking_type,
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time
+            FROM 
+                form_data 
+                ${QueryCondition}
+            ORDER BY id DESC
+        `;
+
+    const result = await query(qry);
+
+    if (result.length > 0) {
+      res.render("future_credit_list", { userRole, result });
+    } else {
+      res.render("future_credit_list", { userRole, result: [] });
+    }
+  } catch (error) {
+    return res.status(500).json({success: false, msg: "Internal Server Error"});
+  }
+}

@@ -62,7 +62,7 @@
                   <tr>
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>
                     <td><%= item.total_amount %></td>
-                    <td><%= item.booking_type %></td> 
+                    <td><%= item.email_type %></td> 
                     <td class="text-center"><%= item.created_at %><br>
                       <% if(item.status == 'Working') { %>
                         <span style="color: red;font-weight: 600;"><%= item.status %></span>
@@ -71,6 +71,7 @@
                           <% } else if(item.status == 'charged') { %>
                             <span style="color: green;font-weight: 600;"><%= item.status %></span>
                             <% } %>
+                            (<%= item.updated_time %>)
                     
                     </td>
                     <td><%= item.agent_name %></td>

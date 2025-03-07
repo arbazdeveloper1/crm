@@ -35,10 +35,15 @@
           </li>
           <li class="nav-item mx-2">
             <% if(userRole=='agent' ) { %>
-              <% if(result[0].Docusign_Verified=='true' && result[0].status == 'sent_for_issuance' ) { %>
+              <% if(result[0].Docusign_Verified=='true') { %>
+                <% if(result[0].status === 'sent_for_issuance') { %>
                 <a href="#" class="btn btn-<%= result[0].status === 'sent_for_issuance' ? 'warning' : 'danger' %>" id="change_status"><i
                     class="fas fa-<%= result[0].status === 'sent_for_issuance' ? 'unlock' : 'lock' %>"></i>&nbsp;&nbsp;Last
                   Status: <%- result[0].status==='sent_for_issuance' ? "Send for Issuance" : "working" %></a>
+                  <% } else { %>
+                    <a href="#" class="btn btn-danger" id="alert_for_verfication"><i class="fas fa-lock"></i> Last
+                      Status: Working</a>
+                    <% } %>
                 <% } else if(result[0].status == 'charged') { %>
                   <a href="#" class="btn btn-success" id="change_status">&nbsp;&nbsp;Last
                   Status: charged</a>
@@ -48,7 +53,6 @@
                     <% } %>
                     <% } %>
                     
-
                       <% if (userRole=='admin' && result[0].status==="sent_for_issuance" ) { %>
                         <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">
                           Last Status: Recieved for Charge  

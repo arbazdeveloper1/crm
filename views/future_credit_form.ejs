@@ -176,7 +176,7 @@
             <div class="col-6">
               <div class="form-group">
                 <label>Date Of Expiration<span class="text-danger">*</span></label>
-                <input type="date" class="form-control" id="mco_calculated" name="MCO"  />
+                <input type="date" class="form-control" id="date_of_expiry" name="expiry"  />
               </div>
              
               <div class="form-group">
@@ -394,26 +394,6 @@
   </div>
 
 
-  <script>
-let selectCharge = document.getElementById('typeofcharge');
-let input1 = document.getElementById('airline_name');
-let input2 = document.getElementById('airline_cost');
-let btn = document.getElementById('add-airline');
-
-selectCharge.addEventListener('change', () => {
-
-  let selectedValue = selectCharge.value;
-  if(selectedValue == 'single') {
-    input1.disabled = true
-    input2.disabled = true
-    btn.disabled = true
-  }else{
-    input1.disabled = false
-    input2.disabled = false
-    btn.disabled = false
-  }
-});
-  </script>
 
   <script defer>
     function detectCardType() {
@@ -733,9 +713,11 @@ if(selectedValue == 'exchange') {
         document.getElementById("mco_description").value;
       let mco_calculated = document.getElementById("mco_calculated").value;
       let selectedValue = sessionStorage.getItem("selectedBookingOption");
+      let date_of_expiry = document.getElementById('date_of_expiry').value;
 
       formData.append("mco_calculated", mco_calculated);
-      formData.append("booking_type", selectedValue)
+      formData.append("booking_type", selectedValue);
+      formData.append("expirydate", date_of_expiry)
 
       // Get all airline data from localStorage
       let airlinesData = JSON.parse(
@@ -769,7 +751,7 @@ if(selectedValue == 'exchange') {
       });
 
       $.ajax({
-        url: "/make_booking",
+        url: "/api/future_credit",
         method: "post",
         dataType: "json",
         data: formData,
