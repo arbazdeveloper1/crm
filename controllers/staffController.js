@@ -146,6 +146,14 @@ export const refund_form = async (req, res) => {
     res.status(500).json({success:false, message: 'Error loading page'})
   }
 }
+export const future_credit_form = async (req, res) => {
+  try{
+    const users = await query('SELECT * FROM users');
+    res.render('future_credit_form',{users})
+  }catch(error){
+    res.status(500).json({success:false, message: 'Error loading page'})
+  }
+}
 
 export const docusign_list = async (req, res) => {
   try{

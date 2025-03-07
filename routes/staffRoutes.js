@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test, newBookingForm, refund_form, docusign_list
+import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test, newBookingForm, refund_form, docusign_list, future_credit_form
 } from '../controllers/staffController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -16,6 +16,7 @@ router.post('/update_user', updateUser); //update user detail by id
 router.get('/new-booking',verifyToken, newBooking); //New booking auth
 router.post('/newBookingForm', newBookingForm);
 router.get('/refund_form', verifyToken, refund_form);
+router.get('/future_credit_form', verifyToken, future_credit_form);
 router.get('/docusign_list', verifyToken, docusign_list);
 
 

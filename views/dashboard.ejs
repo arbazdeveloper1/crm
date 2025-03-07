@@ -5,14 +5,14 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title> Admin Dashboard </title>
+  <title>Dashboard </title>
   <!-- General CSS Files -->
-  <link rel="stylesheet" href="assets/css/app.min.css">
+  <link rel="stylesheet" href="/assets/css/app.min.css">
   <!-- Template CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
   <!-- Custom style CSS -->
-  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
   <!-- toastr -->
 <link rel="stylesheet" href="/assets/bundles/izitoast/css/iziToast.min.css">
 <script src="/assets/bundles/izitoast/js/iziToast.min.js"></script>
@@ -37,21 +37,29 @@
       
       <!-- Main Content -->
       <div class="main-content">
-        <div class="row">
+        <div class="row" style="margin-top: -2%;">
           <div class="col-md-12 col-lg-12 col-xl-12">
-            <div class="card">
-                <div class="card-header text-center d-flex flex-column">
-                  <div class="row">
-                    <!-- <div class="col-6">
-                      
-                    </div> -->
-                  <div class="col-12">
-                    <h4 class="mb-2">Welcome Back</h4>
-                    <h3 class="mb-2">Harry</h3>
-                    <h4 id="currentTime"></h4>
+            <div class="card" style="background-color: #F3F7FE;">
+              <div class="card-header d-flex align-items-center p-3">
+                <div class="row w-100">
+                  <!-- Left: Image -->
+                  <div class="col-md-4 col-12 text-center text-md-start">
+                    <video src="/public/assets/img/bannervideo.mp4" class="img-fluid" autoplay muted loop playsinline></video>
                   </div>
+          
+                  <!-- Center: Welcome Text -->
+                  <div class="col-md-4 col-12  mt-5 " >
+                    <h3 class="mb-2">Welcome Back</h4>
+                    <h1 class="mb-3">Harry</h3>
+                      <span style="font-size: largest;">
+                         <button class="btn-primary rounded btn-lg" id="currentTime"></button>
+                      </span>
+                  </div>
+          
+                  <!-- Right: Empty Space (Optional for Future Use) -->
+                  <div class="col-md-4 col-12"></div>
                 </div>
-                </div>                        
+              </div>
             </div>
         </div>
         
@@ -60,6 +68,7 @@
           <div class="row ">
             
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <a href="/new_booking_list" style="text-decoration: none;">
               <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
@@ -73,7 +82,7 @@
                             <h2 class="mb-3 font-18"><%= employeeNewBookingCount %></h2>
                             <% } %>
 
-                          <p class="mb-0"><span class="col-green">10%</span> Increase</p>
+                          <p class="mb-0"><span class="col-g                                                                                                                                                                                      reen">10%</span> Increase</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -84,9 +93,10 @@
                     </div>
                   </div>  
                 </div>
-              </div>
+              </div></a>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <a href="/exchange_list" style="text-decoration: none;">
               <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
@@ -110,9 +120,10 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div></a>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <a href="/refund_list" style="text-decoration: none;">
               <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
@@ -137,9 +148,10 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div></a>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <a href="/seat_upgrade_list" style="text-decoration: none;">
               <div class="card card-primary">
                 <div class="card-statistic-4">
                   <div class="align-items-center justify-content-between">
@@ -163,7 +175,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div></a>
             </div>
           </div>
           <div class="row">
