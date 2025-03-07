@@ -52,8 +52,7 @@
                           Last Status: Recieved for Charge  
                         </a>
                         <% } else if (userRole=='admin' ) { %>
-                          <a href="#" class="btn btn-<%= charging_status == 'charged' ? 'success' : 'danger' %>"
-                            >
+                          <a href="#" class="btn btn-<%= charging_status == 'charged' ? 'success' : 'danger' %>">
                             Last Status: <%- charging_status ? charging_status : 'working' %>
                           </a>
                           <% } else if (userRole=='admin' && charging_status==='charged' ) { %>
