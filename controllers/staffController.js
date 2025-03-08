@@ -112,15 +112,16 @@ export const getUserById = async (req, res) => {
   
 // Update a user by ID
 export const updateUser = async (req, res) => {
-  const { user_id, full_name, username, department, role } = req.body;
-
+  const { user_id, full_name, username, department, role, password } = req.body;
+  console.log(req.body)
+  let hashedPassword = await bcrypt.hash(password, 10)
   try {
     const sql = `
       UPDATE users 
-      SET full_name = ?, username = ?, department = ?, userRole = ?
+      SET full_name = ?, username = ?, department = ?, userRole = ?, password = ?
       WHERE id = ?
     `;
-    await query(sql, [full_name, username, department, role, user_id]);
+    await query(sql, [full_name, username, department, role, user_id, hashedPassword]);
 
     res.status(200).json({ success: true, message: 'User updated successfully' });
   } catch (error) {

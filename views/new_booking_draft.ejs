@@ -35,19 +35,20 @@
           </li>
           <li class="nav-item mx-2">
             <% if(userRole=='agent' ) { %>
-              <% if(result[0].Docusign_Verified=='true') { %>
-                <% if(result[0].status === 'sent_for_issuance') { %>
+              <% if(result[0].Docusign_Verified=='true' && result[0].status == 'working') { %>
+
                 <a href="#" class="btn btn-<%= result[0].status === 'sent_for_issuance' ? 'warning' : 'danger' %>" id="change_status"><i
                     class="fas fa-<%= result[0].status === 'sent_for_issuance' ? 'unlock' : 'lock' %>"></i>&nbsp;&nbsp;Last
                   Status: <%- result[0].status==='sent_for_issuance' ? "Send for Issuance" : "working" %></a>
-                  <% } else { %>
-                    <a href="#" class="btn btn-danger" id="alert_for_verfication"><i class="fas fa-lock"></i> Last
-                      Status: Working</a>
-                    <% } %>
+                 
                 <% } else if(result[0].status == 'charged') { %>
-                  <a href="#" class="btn btn-success" id="change_status">&nbsp;&nbsp;Last
+                  <i class="fas fa-unlock"></i><a href="#" class="btn btn-success" id="change_status">&nbsp;&nbsp;Last
                   Status: charged</a>
-                  <% } else { %>
+                  <% } else if(result[0].status == 'sent_for_issuance')  { %>
+                  <i class="fas fa-unlock"></i><a href="#" class="btn btn-warning">
+                      Last Status: send for Charge  
+                    </a>
+                    <% } else { %>
                     <a href="#" class="btn btn-danger" id="alert_for_verfication"><i class="fas fa-lock"></i> Last
                       Status: Working</a>
                     <% } %>
@@ -57,12 +58,14 @@
                         <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">
                           Last Status: Recieved for Charge  
                         </a>
-                        <% } else if (userRole=='admin' ) { %>
-                          <a href="#" class="btn btn-<%= charging_status == 'charged' ? 'success' : 'danger' %>">
-                            Last Status: <%- charging_status ? charging_status : 'working' %>
+                        <% } else if (userRole=='admin' && charging_status==='charged') { %>
+
+                          <a href="#" class="btn btn-<%= charging_status == 'charged' ? 'success' : 'danger' %>" id="alert_for_verfication">
+                            <i class="fas fa-<%= result[0].status === 'charged' ? 'unlock' : 'lock' %>"></i>  Last Status: <%- charging_status ? charging_status : 'working' %>
+
                           </a>
-                          <% } else if (userRole=='admin' && charging_status==='charged' ) { %>
-                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#chargeModal">
+                          <% } else { %>
+                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
                               Last Status: <%- charging_status ? charging_status : 'working' %>
                             </a>
                             <% } %>
@@ -923,8 +926,6 @@
                       <% } %>
                         <!-- charge modal close -->
 
-
-
                         <script>
                           document.addEventListener("DOMContentLoaded", function () {
                             let button = document.getElementById('alert_for_verfication');
@@ -939,7 +940,6 @@
                             }
                           });
                         </script>
-
 
                         <!-- ----- ----------------------- Function to Send the Mail start ----------------------- -->
 
