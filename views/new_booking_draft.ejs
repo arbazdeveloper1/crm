@@ -41,16 +41,18 @@
                 <a href="#" class="btn btn-<%= result[0].status === 'sent_for_issuance' ? 'warning' : 'danger' %>" id="change_status"><i
                     class="fas fa-<%= result[0].status === 'sent_for_issuance' ? 'unlock' : 'lock' %>"></i>&nbsp;&nbsp;Last
                   Status: <%- result[0].status==='sent_for_issuance' ? "Send for Issuance" : "working" %></a>
-                 
-                <% } else if(result[0].status == 'charged' && charging_status==='charged') { %>
+                  
+                <% } else if(result[0].status == 'charged' && charging_status == 'charged') { %>
                   <i class="fas fa-unlock"></i><a href="#" class="btn btn-success" id="change_status">&nbsp;&nbsp;Last
                   Status: charged</a>
                   <% } else if(result[0].status == 'sent_for_issuance')  { %>
                   <i class="fas fa-unlock"></i><a href="#" class="btn btn-warning">
                       Last Status: send for Charge  
                     </a>
+                    <% } else if(charging_status != 'charged') { %>
+                      <a href="#" class="btn btn-danger"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: charging_status</a>
                     <% } else { %>
-                      <a href="#" class="btn btn-danger" id="alert_for_verfication"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: Declined</a>
+                      <a href="#" class="btn btn-danger" id="alert_for_verfication"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: working</a>
                     <% } %>
                     <% } %>
                     
@@ -65,10 +67,12 @@
                             <i class="fas fa-<%= result[0].status === 'charged' ? 'unlock' : 'lock' %>"></i>  Last Status: <%- charging_status ? charging_status : 'working' %>
 
                           </a>
-                          <% } else { %>
-                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
-                              Last Status: Declined
-                            </a>
+                          <% } else if(charging_status != 'charged') { %>
+                            <a href="#" class="btn btn-danger"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: charging_status</a>
+                            <% }else{ %>
+                              <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
+                                Last Status: <%- charging_status ? charging_status : 'working' %>
+                              </a>
                             <% } %>
                             <% } %>
 
@@ -1249,8 +1253,9 @@
                                   let changeStatusBtn = document.getElementById("change_status");
                                   if (changeStatusBtn) {
                                     changeStatusBtn.innerHTML = `<i class="fas fa-unlock"></i> Last Status: Sent For charge`;
-                                    changeStatusBtn.classList.remove("btn-danger");
-                                    changeStatusBtn.classList.add("btn-warning");
+                                    changeStatusBtn.style.backgroundColor = "#FFA426";
+                                    changeStatusBtn.style.color = "#ffffff"; 
+                                    changeStatusBtn.style.border = "none";
                                   }
                                 }
                               }
