@@ -145,12 +145,13 @@
               <div class="form-group">
                 <label>Total Amount Quoted<span class="text-danger">*</span></label>
                 <input type="text" name="totalAmountQuoted" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                  class="form-control" id="total-quoted" placeholder="Enter the amount" required />
+                  class="form-control" id="total-quoted" value="<%- form_data[0]?.total_amount %>" placeholder="Enter the amount" required />
               </div>
               <div class="form-group">
                 <label>MCO Description<span class="text-danger">*</span></label>
                 <select name="mcoDescription" class="form-control" id="mco_description" required>
                   <option selected disabled>Choose an option</option>
+                  <option value="<%- form_data[0]?.charge_type %>"></option>
                   <option value="my_fly_support">My Fly Support</option>
                   <option value="Second_Merchant">Second Merchant</option>
                 </select>

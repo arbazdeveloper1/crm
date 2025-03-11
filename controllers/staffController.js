@@ -133,11 +133,16 @@ export const updateUser = async (req, res) => {
 
 export const newBooking = async (req, res) => {
   try{
+
+    let { customer_id } = req.query
     const users = await query('SELECT * FROM users');
-    res.render('new-booking',{users})
+
+    const form_data = await query(`SELECT * FROM form_data WHERE customer_id='${customer_id}'`)
+
+    res.render('new-booking',{users, form_data})
   }catch(error){
-    throw new Error(err)
-    res.status(500).json({success:false, message: 'Error loading page'})
+    console.log(error)
+    throw new Error(error)
   }
 }
 
