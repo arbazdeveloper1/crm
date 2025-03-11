@@ -127,39 +127,38 @@
                             <b>Dear <%- result[0]?.card_holder_name %> , </b><br><br><span
                               style="font-size:15px;">Greetings of the day! </span>
                           </h1>
-                          <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> 
+                          <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
                         </td>
                         <td bgcolor="#ffffff" align="right" valign="top"
-                        style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111;">
-                        
-                        <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
-                          <% if(email==='true' ) { %>
-                            <% if(result[0]?.Docusign_Verified !='false' ) { %>
+                          style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111;">
+
+                          <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
+                            <% if(email==='true' ) { %>
+                              <% if(result[0]?.Docusign_Verified !='false' ) { %>
                                 <a href="/pdfupload/<%- result[0]?.signed_document %>" target="_blank"><i
-                                  style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
+                                    style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
                                   </b></a> <br><br>
-                                  <% }else{ %>
-                                    <i style="color:red" class="fa fa-times-circle"></i><b style="color: red;"> Docusign
+                                <% }else{ %>
+                                  <i style="color:red" class="fa fa-times-circle"></i><b style="color: red;"> Docusign
                                     Verified </b><br><br>
+                                  <% } %>
                                     <% } %>
-                                    <% } %>
-                                  </h1>
-                                </a>
-                                
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
+                          </h1>
+                          </a>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
+                  <tbody>
                     <tr>
-                      <td align="center" style="padding: 0px 10px 0px 10px;">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 800px;">
-                          <tbody>
-                            <tr>
-                            
-                              <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666;">
-                                <p style="margin: 0; color:#666666;">We would like you to go through your itinerary carefully.
+                      <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666;">
+                        <p style="margin: 0; color:#666666;">We would like you to go through your itinerary carefully.
                           Please reply to
                           this
                           email as "I Authorize or I Agree" only when you have checked all the information and you are
@@ -1110,7 +1109,7 @@
 
                               // Send FormData AJAX request
                               $.ajax({
-                                url: '/api/send_email/new_booking',
+                                url: '/api/send_email',
                                 type: 'POST',
                                 data: formData,
                                 processData: false,
@@ -1120,7 +1119,7 @@
                               });
                             } else {
                               $.ajax({
-                                url: '/api/send_email/new_booking',
+                                url: '/api/send_email',
                                 type: 'POST',
                                 data: {
                                   fromEmail,
