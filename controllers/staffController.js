@@ -125,6 +125,7 @@ export const updateUser = async (req, res) => {
 
     res.status(200).json({ success: true, message: 'User updated successfully' });
   } catch (error) {
+    throw new Error(err)
     console.error('Error updating user:', error);
     res.status(500).json({ success: false, message: 'Error updating user data' });
   }
@@ -135,6 +136,7 @@ export const newBooking = async (req, res) => {
     const users = await query('SELECT * FROM users');
     res.render('new-booking',{users})
   }catch(error){
+    throw new Error(err)
     res.status(500).json({success:false, message: 'Error loading page'})
   }
 }
@@ -144,6 +146,7 @@ export const refund_form = async (req, res) => {
     const users = await query('SELECT * FROM users');
     res.render('refund_form',{users})
   }catch(error){
+    throw new Error(err)
     res.status(500).json({success:false, message: 'Error loading page'})
   }
 }
@@ -152,6 +155,7 @@ export const future_credit_form = async (req, res) => {
     const users = await query('SELECT * FROM users');
     res.render('future_credit_form',{users})
   }catch(error){
+    throw new Error(err)
     res.status(500).json({success:false, message: 'Error loading page'})
   }
 }
@@ -165,6 +169,7 @@ export const docusign_list = async (req, res) => {
       userRole: req.userRole 
     });
   } catch(error){
+    throw new Error(err)
     res.status(500).json({success:false, message: 'Error loading page'})
   }
 }
@@ -232,6 +237,7 @@ export const newBookingForm = async (req, res) => {
       res.status(201).redirect('/dashboard');
   } catch (err) {
       console.error('Error inserting data: ', err);
+      throw new Error(err)
       return res.status(500).json({ error: 'Failed to insert data' });
   }
 }

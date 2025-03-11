@@ -20,7 +20,8 @@ import {
   refund_list,
   seat_upgrade_list,
   FutureCredit,
-  future_credit_list
+  future_credit_list,
+  new_booking_draft_refund
   
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
@@ -42,7 +43,7 @@ route.get("/future_credit_list", verifyToken, future_credit_list);
 route.get("/new_booking_draft/:customer_id", verifyToken, new_booking_draft);
 route.get("/all_booking", verifyToken, AllBooking);
 
-route.post("/api/send_email",verifyToken,upload.array('files',10),EmailAcknowledge)
+route.post("/api/send_email/:mail_type", verifyToken, upload.array('files',10), EmailAcknowledge)
 route.post("/api/update_currency", verifyToken,UpdateCurrency)
 
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
@@ -68,6 +69,11 @@ route.post('/api/Remarks', verifyToken, UpdateRemarks)
 route.post('/api/refund_booking', verifyToken,upload.array('file',10), RefundDescription);
 
 route.post('/api/future_credit', verifyToken,upload.array('file',10), FutureCredit )
+
+
+
+// refund booking
+route.get("/new_booking_draft_refund/:customer_id", verifyToken, new_booking_draft_refund);
 
 
 export default route;

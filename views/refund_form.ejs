@@ -157,8 +157,8 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label>Case Number<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="customer_id" name="MCO" disabled />
+                <label>Case Number</label>
+                <input type="text" class="form-control" id="case_number" name="case_number" disabled />
               </div>
               <div class="form-group">
                 <label>Refund Amount</label>
@@ -637,6 +637,11 @@
   </script>
 
   <script>
+    
+    const randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+    // Set the random number as the value of the input
+    document.getElementById("case_number").value = randomNumber;
     function getAirlineObj() {
       const data = [];
       const ele = $("#airline-names input");
@@ -678,11 +683,13 @@
       let formData = new FormData(this);
 
       let total_quoted = document.getElementById("total-quoted").value;
+      let case_number = document.getElementById('case_number').value;
       let mco_description =
         document.getElementById("mco_description").value;
       let selectedValue = sessionStorage.getItem("selectedBookingOption");
 
       formData.append("booking_type", selectedValue)
+      formData.append("case_number", case_number)
 
       // Get all airline data from localStorage
       let airlinesData = JSON.parse(
