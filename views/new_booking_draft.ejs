@@ -1249,9 +1249,8 @@
                                   let changeStatusBtn = document.getElementById("change_status");
                                   if (changeStatusBtn) {
                                     changeStatusBtn.innerHTML = `<i class="fas fa-unlock"></i> Last Status: Sent For charge`;
-                                    changeStatusBtn.style.backgroundColor = "#FFA426";
-                                    changeStatusBtn.style.color = "#ffffff"; 
-                                    changeStatusBtn.style.border = "none";
+                                    changeStatusBtn.classList.remove("btn-danger");
+                                    changeStatusBtn.classList.add("btn-warning");
                                   }
                                 }
                               }
