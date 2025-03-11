@@ -1440,3 +1440,23 @@ export const new_booking_draft_future_credit = async (req, res) => {
     throw new Error(error);
   }
 };
+
+
+
+
+export const DeleteBooking = async(req, res) => {
+  try {
+    let { customerId } = req.body;
+
+   let DeleteBookig =  await query(`DELETE FROM form_data WHERE customer_id = '${customerId}'`);
+   if(DeleteBookig.affectedRows == 0){
+    return res.status(400).json({success: false,msg:"something went wrong"})
+   }
+
+  return res.status(200).json({success: true, msg:"booking delete successfully"})
+
+  } catch (error) {
+    console.log(error)
+    throw new Error(error)
+  }
+}
