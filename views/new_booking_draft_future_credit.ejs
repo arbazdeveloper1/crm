@@ -65,7 +65,7 @@
 
                           </a>
                           <% } else { %>
-                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
+                            <a href="#" class="btn btn-danger">
                               Last Status: <%- charging_status ? charging_status : 'working' %>
                             </a>
                             <% } %>
@@ -127,7 +127,8 @@
                             <b>Dear <%- result[0]?.card_holder_name %> , </b><br><br><span
                               style="font-size:15px;">Greetings of the day! </span>
                           </h1>
-                          <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> 
+                          <br><b>Subject: </b> <%- result[0]?.subject_line || "No Subject" %> <br>
+
                         </td>
                         <td bgcolor="#ffffff" align="right" valign="top"
                         style="padding: 40px 20px 20px 20px; border-radius: 0px 4px 0px 0px; color: #111111;">
@@ -159,46 +160,17 @@
                             <tr>
                             
                               <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666;">
-                                <p style="margin: 0; color:#666666;">We would like you to go through your itinerary carefully.
-                          Please reply to
-                          this
-                          email as "I Authorize or I Agree" only when you have checked all the information and you are
-                          completely satisfied with the itinerary and price. As per our conversation and as agreed, we
-                          have
-                          booked your itinerary as follows -
+                                <p style="margin: 0; color:#666666;">We would like you to go through your itinerary carefully. Please reply to this email as "I Authorize" or Click on I Acknowledge, only when you have checked all the information and you are completely satisfied with the itinerary and price.
                           <br><br>
-                          Total price for all passenger(s) including taxes and fees: <b>$ <%- result[0]?.total_amount %>
-                              <%- result[0]?.currency %></b> (Total for all
-                          passengers) and the same amount would be charged on your Visa card ending with <%-
-                            result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
-                            <br>
 
-                            <% result?.forEach((row, index)=> {
-                              let airline_data;
-                              try {
-                              airline_data = JSON.parse(row.airline_info)
-                              } catch (error) {
-                              airline_data = [];
-                              }
+                          We have received your cancellation request for booking reference <%- result[0]?.booking_ref_no %> for passenger(s):
+                            <br><br>
 
-                              let chargeCount = airline_data.length;
-                              %>
-
-                              <br> On your bank statement, there would be
-                              <%= chargeCount===1 ? "one charge" : chargeCount + " charges" %>,
-
-                                <% airline_data.forEach((airline, pIndex)=> { %>
-                                  <%= pIndex===0 ? "one from" : ", one from" %>
-                                    <%= airline.airline_name %> for <%= airline.airline_cost %>
-                                        <%= row.currency %>
-                                          <% }); %>
-                                            would be shown under <%- result[0]?.mco_description=='my_fly_support'
-                                              ? 'My Fly Support' : result[0]?.mco_description %>.
+                            A $ <%- result[0]?.total_amount %> <%- result[0]?.currency %> cancellation fee will be charged to the account provided, once the cancellation is confirmed. and the same amount would be charged on your <%- result[0]?.card_type %> card ending with <%- result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
 
 
-                                              <% }); %><br>
-                                                <b><%- result[0]?.note !='undefined' ? "Additinal Note:- " : ''
-                                                    %></b><span id="note"> <%- result[0]?.note %></span><br><br>
+
+                          <br><br>
 
                                                 <b style="color:#024;">Confirmation : </b><%- result[0]?.customer_id %>
                                                   <input type="hidden" name="customer_id" id="customer_id"
@@ -300,30 +272,26 @@
                                   result[0]?.gds_pnr %></td>
                             </tr>
                             <tr>
-                              <th style="border: 1px solid #666666; text-align: left; padding: 5px;">TOTAL CHARGES:</th>
-                              <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%-
-                                  result[0]?.total_amount %></td>
-                            </tr>
-                            <tr>
-                              <th style="border: 1px solid #666666; text-align: left; padding: 5px;">BASE FARE:</th>
-                              <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- BaseFare %>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th style="border: 1px solid #666666; text-align: left; padding: 5px;">TAXES & FEES:</th>
+                              <th style="border: 1px solid #666666; text-align: left; padding: 5px;">CREDIT AMOUNT:</th>
                               <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%-
                                   result[0]?.mco_calculated %></td>
                             </tr>
                             <tr>
+                              <th style="border: 1px solid #666666; text-align: left; padding: 5px;">TAXES & fEES:</th>
+                              <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- result[0]?.total_amount %>
+                              </td>
+                            </tr>
+                           
+                            <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">REASON OF BOOKING:
                               </th>
-                              <td style="border: 1px solid #666666; text-align: left; padding: 5px;">New Booking</td>
+                              <td style="border: 1px solid #666666; text-align: left; padding: 5px;">Future Credit</td>
                             </tr>
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">AIRLINE REFERENCE
                                 (ARL):</th>
                               <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%-
-                                  result[0]?.arl_confirmation %></td>
+                                  result[0]?.booking_ref_no%></td>
                             </tr>
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">CARD HOLDER NAME:
@@ -776,8 +744,7 @@
                                     <a href="<%= filePath %>" target="_blank"
                                       style="display: flex; align-items: center; justify-content: center; 
                                         padding: 4px 8px; border-radius: 5px; text-decoration: none; 
-                                        background-color: <%= isImage ? '#007bff' : '#28a745' %>; 
-                                        color: white; font-weight: bold; border: none; cursor: pointer;font-size: 12px;">
+                                        background-color: <%= isImage ? '#007bff' : '#28a745' %> color: white; font-weight: bold; border: none; cursor: pointer;font-size: 12px;">
                                       <%= isImage ? '🖼️ ' : '📄 ' %>
                                         <%= fileName %>
                                     </a>
@@ -1110,7 +1077,7 @@
 
                               // Send FormData AJAX request
                               $.ajax({
-                                url: '/api/send_email/new_booking',
+                                url: `/api/send_email/future_credit`,
                                 type: 'POST',
                                 data: formData,
                                 processData: false,
@@ -1120,7 +1087,7 @@
                               });
                             } else {
                               $.ajax({
-                                url: '/api/send_email/new_booking',
+                                url: '/api/send_email/future_credit',
                                 type: 'POST',
                                 data: {
                                   fromEmail,

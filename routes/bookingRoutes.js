@@ -20,8 +20,16 @@ import {
   refund_list,
   seat_upgrade_list,
   FutureCredit,
+<<<<<<< HEAD
   future_credit_list
 
+=======
+  future_credit_list,
+  new_booking_draft_refund,
+  new_booking_draft_seat_upgrade,
+  new_booking_draft_future_credit
+  
+>>>>>>> 980397a603f686cf5e40115de28cae13ad9852cc
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -42,8 +50,13 @@ route.get("/future_credit_list", verifyToken, future_credit_list);
 route.get("/new_booking_draft/:customer_id", verifyToken, new_booking_draft);
 route.get("/all_booking", verifyToken, AllBooking);
 
+<<<<<<< HEAD
 route.post("/api/send_email", verifyToken, upload.array('files', 10), EmailAcknowledge)
 route.post("/api/update_currency", verifyToken, UpdateCurrency)
+=======
+route.post("/api/send_email/:mail_type", verifyToken, upload.array('files',10), EmailAcknowledge)
+route.post("/api/update_currency", verifyToken,UpdateCurrency)
+>>>>>>> 980397a603f686cf5e40115de28cae13ad9852cc
 
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
 
@@ -68,6 +81,17 @@ route.post('/api/Remarks', verifyToken, UpdateRemarks)
 route.post('/api/refund_booking', verifyToken, upload.array('file', 10), RefundDescription);
 
 route.post('/api/future_credit', verifyToken, upload.array('file', 10), FutureCredit)
+
+
+
+// refund booking
+route.get("/new_booking_draft_refund/:customer_id", verifyToken, new_booking_draft_refund);
+
+// seat upgrade booking
+route.get('/new_booking_draft_seat_upgrade/:customer_id',verifyToken, new_booking_draft_seat_upgrade)
+
+// future credit booking
+route.get('/new_booking_draft_future_credit/:customer_id', verifyToken, new_booking_draft_future_credit)
 
 
 export default route;

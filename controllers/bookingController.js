@@ -1,4 +1,8 @@
-import { Price_Description, Refund_Description, Future_credit } from "../models/bookingModel.js";
+import {
+  Price_Description,
+  Refund_Description,
+  Future_credit,
+} from "../models/bookingModel.js";
 import { query } from "../config/db.js";
 import ejs from "ejs";
 import path from "path";
@@ -40,6 +44,7 @@ export const priceDescription = async (req, res) => {
       .status(400)
       .json({ message: "Not able to insert record", status: false });
   } catch (error) {
+    throw new Error(error);
     console.log("Error in Bookings Controller: " + error.message);
     return res.status(500).json({ message: "Server Error" });
   }
@@ -66,9 +71,10 @@ export const RefundDescription = async (req, res) => {
       .status(400)
       .json({ message: "Not able to insert record", status: false });
   } catch (error) {
+    throw new Error(error);
     return res.status(500).json({ message: "Server Error" });
   }
-}
+};
 
 export const FutureCredit = async (req, res) => {
   try {
@@ -86,25 +92,27 @@ export const FutureCredit = async (req, res) => {
     const insert_resp = await Future_credit(add_payload, FileName);
     if (!insert_resp) {
       return res
-      .status(400)
-      .json({ message: "Not able to insert record", status: false });
+        .status(400)
+        .json({ message: "Not able to insert record", status: false });
     }
-    
+
     return res.status(201).json(insert_resp);
-    
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({success: false, msg: "Internal server Error"})
+    throw new Error(error);
+    return res
+      .status(500)
+      .json({ success: false, msg: "Internal server Error" });
   }
-}
-
-
+};
 
 export const new_booking_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
-    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'new_booking'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'new_booking'`
+    const QueryCondition =
+      userRole == "admin"
+        ? `WHERE booking_type = 'new_booking'`
+        : `WHERE agent_name = '${req.full_name}' AND booking_type = 'new_booking'`;
 
     let qry = `
             SELECT 
@@ -125,13 +133,13 @@ export const new_booking_list = async (req, res) => {
 
     const result = await query(qry);
 
-
     if (result.length > 0) {
       res.render("new_booking_list", { userRole, result });
     } else {
       res.render("new_booking_list", { userRole, result: [] });
     }
   } catch (error) {
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -141,7 +149,10 @@ export const refund_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
-    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'refund_form'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'refund_form'`
+    const QueryCondition =
+      userRole == "admin"
+        ? `WHERE booking_type = 'refund_form'`
+        : `WHERE agent_name = '${req.full_name}' AND booking_type = 'refund_form'`;
 
     let qry = `
             SELECT 
@@ -168,17 +179,21 @@ export const refund_list = async (req, res) => {
       res.render("refund_list", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
+
 export const exchange_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
-        const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'exchange'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'exchange'`
+    const QueryCondition =
+      userRole == "admin"
+        ? `WHERE booking_type = 'exchange'`
+        : `WHERE agent_name = '${req.full_name}' AND booking_type = 'exchange'`;
 
     let qry = `
             SELECT 
@@ -205,17 +220,21 @@ export const exchange_list = async (req, res) => {
       res.render("exchange_list", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
+
 export const seat_upgrade_list = async (req, res) => {
   try {
     const userRole = req.userRole;
 
-    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'seat_upgrade'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'seat_upgrade'`
+    const QueryCondition =
+      userRole == "admin"
+        ? `WHERE booking_type = 'seat_upgrade'`
+        : `WHERE agent_name = '${req.full_name}' AND booking_type = 'seat_upgrade'`;
 
     let qry = `
             SELECT 
@@ -242,7 +261,7 @@ export const seat_upgrade_list = async (req, res) => {
       res.render("seat_upgrade_list", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -254,7 +273,8 @@ export const AllBooking = async (req, res) => {
   try {
     const userRole = req.userRole;
 
-    const QueryCondition =  userRole == 'admin' ?  `` : `WHERE agent_name = '${req.full_name}'`
+    const QueryCondition =
+      userRole == "admin" ? `` : `WHERE agent_name = '${req.full_name}'`;
 
     let qry = `
             SELECT 
@@ -275,15 +295,13 @@ export const AllBooking = async (req, res) => {
 
     const result = await query(qry);
 
-
-
     if (result.length > 0) {
       res.render("all_booking", { userRole, result });
     } else {
       res.render("all_booking", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -296,7 +314,7 @@ export const new_booking_draft = async (req, res) => {
     const userRole = req.userRole;
     const { customer_id } = req.params;
     const FullName = req.full_name;
-    const { email } = req.query;
+    const { email, type } = req.query;
     let qry = `
             SELECT DISTINCT
                 card_holder_name,
@@ -325,20 +343,21 @@ export const new_booking_draft = async (req, res) => {
                 signed_document,
                 uploaded_document,
                 status,
-                note
+                note,
+                case_number
             FROM 
                 form_data
             WHERE 
                 customer_id = '${customer_id}'
         `;
-    
+
     const result = await query(qry);
 
-    let qry2 = `SELECT DISTINCT users.userRole FROM users JOIN form_data ON users.full_name = form_data.agent_name AND form_data.customer_id = '${customer_id}'`
+    let qry2 = `SELECT DISTINCT users.userRole FROM users JOIN form_data ON users.full_name = form_data.agent_name AND form_data.customer_id = '${customer_id}'`;
     const result2 = await query(qry2);
     const user_status = result2[0].userRole;
 
-    let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`
+    let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`;
     let result3 = await query(qry3);
     const charging_status = result3[0]?.payment_status;
 
@@ -359,8 +378,8 @@ export const new_booking_draft = async (req, res) => {
         email,
         BaseFare,
         user_status,
-        charging_status
-
+        charging_status,
+        type,
       });
     } else {
       res.render("new_booking_draft", {
@@ -370,11 +389,12 @@ export const new_booking_draft = async (req, res) => {
         email,
         BaseFare,
         user_status,
-        charging_status
+        charging_status,
+        type,
       });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -385,7 +405,8 @@ export const new_booking_draft = async (req, res) => {
 export const EmailAcknowledge = async (req, res) => {
   try {
     const { fromEmail, subject, toEmail, emailtype, customer_id } = req.body;
-    console.log(req.body);
+    const { mail_type } = req.params;
+    console.log(mail_type);
     const FullName = req.full_name;
     if (!fromEmail || !subject || !toEmail || !emailtype) {
       return res
@@ -415,7 +436,13 @@ export const EmailAcknowledge = async (req, res) => {
         arl_confirmation,
         currency,
         mco_description,
-        Docusign_Verified
+        Docusign_Verified,
+        status,
+        note,
+        refund_amount,
+        date_of_expiration,
+        case_number,
+        booking_ref_no
               FROM 
                   form_data
                   WHERE 
@@ -436,18 +463,60 @@ export const EmailAcknowledge = async (req, res) => {
           .status(404)
           .json({ success: false, ErrorMsg: "User not found" });
       }
-      const emailHtml = await ejs.renderFile(
-        path.join(__dirname, "../views", "new_booking_draft.ejs"),
-        {
-          fromEmail,
-          subject,
-          toEmail,
-          result,
-          FullName: FullName,
-          email: "false",
-          BaseFare,
-        }
-      );
+      let emailHtml;
+      if (mail_type == "refund") {
+        emailHtml = await ejs.renderFile(
+          path.join(__dirname, "../views", "new_booking_draft_refund.ejs"),
+          {
+            fromEmail,
+            subject,
+            toEmail,
+            result,
+            FullName: FullName,
+            email: "false",
+            BaseFare,
+          }
+        );
+      } else if(mail_type == 'seat_upgrade') {
+        emailHtml = await ejs.renderFile(
+          path.join(__dirname, "../views", "new_booking_draft_seat_upgrade.ejs"),
+          {
+            fromEmail,
+            subject,
+            toEmail,
+            result,
+            FullName: FullName,
+            email: "false",
+            BaseFare,
+          }
+        );
+      } else if(mail_type == 'future_credit') {
+        emailHtml = await ejs.renderFile(
+          path.join(__dirname, "../views", "new_booking_draft_future_credit.ejs"),
+          {
+            fromEmail,
+            subject,
+            toEmail,
+            result,
+            FullName: FullName,
+            email: "false",
+            BaseFare,
+          }
+        );
+      }else{
+        emailHtml = await ejs.renderFile(
+          path.join(__dirname, "../views", "new_booking_draft.ejs"),
+          {
+            fromEmail,
+            subject,
+            toEmail,
+            result,
+            FullName: FullName,
+            email: "false",
+            BaseFare,
+          }
+        );
+      }
 
       const transporter = createTransporter(fromEmail);
       // Email options
@@ -508,6 +577,10 @@ export const EmailAcknowledge = async (req, res) => {
         return (BaseFare = acc + parseFloat(item.airline_cost));
       }, 0);
 
+      if(isNaN(BaseFare)){
+        BaseFare = 0
+      }
+
       if (!result) {
         return res
           .status(404)
@@ -551,7 +624,7 @@ export const EmailAcknowledge = async (req, res) => {
       }
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(err);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -574,7 +647,7 @@ export const UpdateCurrency = async (req, res) => {
         .json({ success: false, message: "Currency not updated" });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -641,7 +714,8 @@ export const TrackIp = async (req, res) => {
     }
 
     await query(
-      `update form_data set signed_document = '${fileName}' where customer_id = '${customer_id || "no file avaiable"
+      `update form_data set signed_document = '${fileName}' where customer_id = '${
+        customer_id || "no file avaiable"
       }'`
     );
 
@@ -652,10 +726,7 @@ export const TrackIp = async (req, res) => {
     }
     res.render("iptrackingsuccess", { DeviceInfo });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ success: false, ErrorMsg: "Internal Server Error" });
+    throw new Error(error);
   }
 };
 
@@ -728,7 +799,7 @@ export const docusignPdf = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -748,7 +819,7 @@ export const thankyou = async (req, res) => {
   try {
     res.render("thankyou");
   } catch (error) {
-    console.log(error, "Server error");
+    throw new Error(error);
   }
 };
 
@@ -819,7 +890,7 @@ export const e_ticket = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error, "Server error");
+    throw new Error(error);
   }
 };
 
@@ -842,7 +913,7 @@ export const uploadDocuments = async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error, "Server error");
+    throw new Error(error);
   }
 };
 
@@ -854,13 +925,13 @@ export const ChangeStatus = async (req, res) => {
       `update form_data set status='sent_for_issuance' where customer_id='${customer_id}'`
     );
 
-     if (UpdateStatus.affectedRows == 0) {
+    if (UpdateStatus.affectedRows == 0) {
       return res.status(401).json({ success: false });
     }
 
     res.status(201).json({ success: true });
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
   }
 };
 
@@ -881,37 +952,35 @@ export const ChangeBookingStatus = async (req, res) => {
     } = req.body;
 
     let ExecuteQuery;
-    let isCustomerExists = await query(`SELECT id FROM customer_booking_status WHERE customer_id='${customer_id}'`)
+    let isCustomerExists = await query(
+      `SELECT id FROM customer_booking_status WHERE customer_id='${customer_id}'`
+    );
 
-
-    if(isCustomerExists.length > 0){
+    if (isCustomerExists.length > 0) {
       let qry = `UPDATE customer_booking_status 
-      SET customer_name='${card_holder_name}', payment_status='${payment_status}', queue_name='${queue_name}', charging_source='${charging_source}', card_verified='${verfication}', company_card_used='${companycard}', card_number='${cardnum}', voucher_used='${voucher}', amount='${amount}', remarks='${remarks}' WHERE customer_id='${customer_id}'`
-       ExecuteQuery = await query(qry);
-    }else{
+      SET customer_name='${card_holder_name}', payment_status='${payment_status}', queue_name='${queue_name}', charging_source='${charging_source}', card_verified='${verfication}', company_card_used='${companycard}', card_number='${cardnum}', voucher_used='${voucher}', amount='${amount}', remarks='${remarks}' WHERE customer_id='${customer_id}'`;
+      ExecuteQuery = await query(qry);
+    } else {
       let qry = `INSERT INTO customer_booking_status 
       (customer_id, customer_name, payment_status, queue_name, charging_source, card_verified, company_card_used, card_number, voucher_used, amount, remarks)
       VALUES ('${customer_id}','${card_holder_name}', '${payment_status}', '${queue_name}', '${charging_source}', '${verfication}','${companycard}', '${cardnum}', '${voucher}', '${amount}', '${remarks}')`;
-       ExecuteQuery = await query(qry);
+      ExecuteQuery = await query(qry);
     }
 
     await query(
       `update form_data set status='charged' where customer_id='${customer_id}'`
-    )
+    );
 
     if (ExecuteQuery.affectedRows == 0) {
       res.status(401).json({ success: false, msg: "table not updated" });
       return;
     }
-   
+
     res.status(200).json({ success: true });
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
   }
 };
-
-
-
 
 export const UpdateRemarks = async (req, res) => {
   try {
@@ -920,22 +989,24 @@ export const UpdateRemarks = async (req, res) => {
     let qry = `UPDATE form_data
     SET note='${AddNote}' 
     WHERE customer_id = '${customer_id}'`;
-    let ExecuteQuery = await query(qry)
+    let ExecuteQuery = await query(qry);
 
-    if(ExecuteQuery.affectedRows == 0){
-     return res.status(401).json({success: false, msg: "Row Not updated"})
+    if (ExecuteQuery.affectedRows == 0) {
+      return res.status(401).json({ success: false, msg: "Row Not updated" });
     }
 
-    res.status(200).json({success: true, msg: "Remarks update successfully", Remarknote: AddNote})
-
+    res
+      .status(200)
+      .json({
+        success: true,
+        msg: "Remarks update successfully",
+        Remarknote: AddNote,
+      });
   } catch (error) {
-    console.error(error);
-    return res.json(500).status({msg: "internal server error"})
+    throw new Error(error);
+    return res.json(500).status({ msg: "internal server error" });
   }
-}
-
-
-
+};
 
 export const booking_exchange = async (req, res) => {
   try {
@@ -966,7 +1037,7 @@ export const booking_exchange = async (req, res) => {
       res.render("booking", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
@@ -1002,13 +1073,12 @@ export const booking_refund = async (req, res) => {
       res.render("booking", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
-
 
 export const booking_seatupgrade = async (req, res) => {
   try {
@@ -1039,20 +1109,21 @@ export const booking_seatupgrade = async (req, res) => {
       res.render("booking", { userRole, result: [] });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
     return res
       .status(500)
       .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
 
-
 export const future_credit_list = async (req, res) => {
   try {
-
     const userRole = req.userRole;
 
-    const QueryCondition =  userRole == 'admin' ?  `WHERE booking_type = 'future_credit'` : `WHERE agent_name = '${req.full_name}' AND booking_type = 'future_credit'`
+    const QueryCondition =
+      userRole == "admin"
+        ? `WHERE booking_type = 'future_credit'`
+        : `WHERE agent_name = '${req.full_name}' AND booking_type = 'future_credit'`;
 
     let qry = `
             SELECT 
@@ -1079,6 +1150,293 @@ export const future_credit_list = async (req, res) => {
       res.render("future_credit_list", { userRole, result: [] });
     }
   } catch (error) {
-    return res.status(500).json({success: false, msg: "Internal Server Error"});
+    throw new Error(error);
+    return res
+      .status(500)
+      .json({ success: false, msg: "Internal Server Error" });
   }
-}
+};
+
+// refund email controller
+export const new_booking_draft_refund = async (req, res) => {
+  try {
+    const userRole = req.userRole;
+    const { customer_id } = req.params;
+    const FullName = req.full_name;
+    const { email, type } = req.query;
+    let qry = `
+            SELECT DISTINCT
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                card_number,
+                subject_line,
+                image,
+                passenger_details,
+                airline_info,
+                gds_pnr,
+                billing_address,
+                email,
+                billing_phone,
+                expiration,
+                cvv,
+                card_type,
+                arl_confirmation,
+                currency,
+                mco_description,
+                mco_calculated,
+                Docusign_Verified,
+                signed_document,
+                uploaded_document,
+                status,
+                note,
+                case_number,
+                refund_amount
+            FROM 
+                form_data
+            WHERE 
+                customer_id = '${customer_id}'
+        `;
+
+    const result = await query(qry);
+
+    let qry2 = `SELECT DISTINCT users.userRole FROM users JOIN form_data ON users.full_name = form_data.agent_name AND form_data.customer_id = '${customer_id}'`;
+    const result2 = await query(qry2);
+    const user_status = result2[0].userRole;
+
+    let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`;
+    let result3 = await query(qry3);
+    const charging_status = result3[0]?.payment_status;
+
+    // Calculate Base Fare
+    let BaseFare = 0;
+    let FlightDetails = result[0]?.airline_info;
+    FlightDetails = JSON.parse(FlightDetails);
+
+    FlightDetails.reduce((acc, item) => {
+      return (BaseFare = acc + parseFloat(item.airline_cost));
+    }, 0);
+
+    if (result.length > 0) {
+      res.render("new_booking_draft_refund", {
+        userRole,
+        result,
+        FullName,
+        email,
+        BaseFare,
+        user_status,
+        charging_status,
+        type,
+      });
+    } else {
+      res.render("new_booking_draft_refund", {
+        userRole,
+        result: [],
+        FullName,
+        email,
+        BaseFare,
+        user_status,
+        charging_status,
+        type,
+      });
+    }
+  } catch (error) {
+    throw new Error(error);
+    return res
+      .status(500)
+      .json({ success: false, ErrorMsg: "Internal Server Error" });
+  }
+};
+
+
+// seat upgrade email controller
+export const new_booking_draft_seat_upgrade = async (req, res) => {
+  try {
+    const userRole = req.userRole;
+    const { customer_id } = req.params;
+    const FullName = req.full_name;
+    const { email, type } = req.query;
+    let qry = `
+            SELECT DISTINCT
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                card_number,
+                subject_line,
+                image,
+                passenger_details,
+                airline_info,
+                gds_pnr,
+                billing_address,
+                email,
+                billing_phone,
+                expiration,
+                cvv,
+                card_type,
+                arl_confirmation,
+                currency,
+                mco_description,
+                mco_calculated,
+                Docusign_Verified,
+                signed_document,
+                uploaded_document,
+                status,
+                note,
+                case_number,
+                refund_amount
+            FROM 
+                form_data
+            WHERE 
+                customer_id = '${customer_id}'
+        `;
+
+    const result = await query(qry);
+
+    let qry2 = `SELECT DISTINCT users.userRole FROM users JOIN form_data ON users.full_name = form_data.agent_name AND form_data.customer_id = '${customer_id}'`;
+    const result2 = await query(qry2);
+    const user_status = result2[0].userRole;
+
+    let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`;
+    let result3 = await query(qry3);
+    const charging_status = result3[0]?.payment_status;
+
+    // Calculate Base Fare
+    let BaseFare = 0;
+    let FlightDetails = result[0]?.airline_info;
+    FlightDetails = JSON.parse(FlightDetails);
+
+    FlightDetails.reduce((acc, item) => {
+      return (BaseFare = acc + parseFloat(item.airline_cost));
+    }, 0);
+    if(isNaN(BaseFare)){
+      BaseFare = 0
+    }
+
+    if (result.length > 0) {
+      res.render("new_booking_draft_seat_upgrade", {
+        userRole,
+        result,
+        FullName,
+        email,
+        BaseFare,
+        user_status,
+        charging_status,
+        type,
+      });
+    } else {
+      res.render("new_booking_draft_seat_upgrade", {
+        userRole,
+        result: [],
+        FullName,
+        email,
+        BaseFare,
+        user_status,
+        charging_status,
+        type,
+      });
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+// future credit email controller
+export const new_booking_draft_future_credit = async (req, res) => {
+  try {
+    const userRole = req.userRole;
+    const { customer_id } = req.params;
+    const FullName = req.full_name;
+    const { email, type } = req.query;
+    let qry = `
+            SELECT DISTINCT
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                card_number,
+                subject_line,
+                image,
+                passenger_details,
+                airline_info,
+                gds_pnr,
+                billing_address,
+                email,
+                billing_phone,
+                expiration,
+                cvv,
+                card_type,
+                arl_confirmation,
+                currency,
+                mco_description,
+                mco_calculated,
+                Docusign_Verified,
+                signed_document,
+                uploaded_document,
+                status,
+                note,
+                case_number,
+                refund_amount,
+                booking_ref_no
+            FROM 
+                form_data
+            WHERE 
+                customer_id = '${customer_id}'
+        `;
+
+    const result = await query(qry);
+
+    let qry2 = `SELECT DISTINCT users.userRole FROM users JOIN form_data ON users.full_name = form_data.agent_name AND form_data.customer_id = '${customer_id}'`;
+    const result2 = await query(qry2);
+    const user_status = result2[0].userRole;
+
+    let qry3 = `SELECT payment_status FROM customer_booking_status WHERE customer_id = '${customer_id}'`;
+    let result3 = await query(qry3);
+    const charging_status = result3[0]?.payment_status;
+
+    // Calculate Base Fare
+    let BaseFare = 0;
+    let FlightDetails = result[0]?.airline_info;
+    FlightDetails = JSON.parse(FlightDetails);
+
+    FlightDetails.reduce((acc, item) => {
+      return (BaseFare = acc + parseFloat(item.airline_cost));
+    }, 0);
+    if(isNaN(BaseFare)){
+      BaseFare = 0
+    }
+
+    if (result.length > 0) {
+      res.render("new_booking_draft_future_credit", {
+        userRole,
+        result,
+        FullName,
+        email,
+        BaseFare,
+        user_status,
+        charging_status,
+        type,
+      });
+    } else {
+      res.render("new_booking_draft_future_credit", {
+        userRole,
+        result: [],
+        FullName,
+        email,
+        BaseFare,
+        user_status,
+        charging_status,
+        type,
+      });
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};

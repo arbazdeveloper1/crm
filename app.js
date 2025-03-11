@@ -56,7 +56,7 @@ app.use('/', newBooking);
 // Add a 404 route handler for undefined routes
 app.use((err, req, res, next) => {
     console.error(err.message);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    res.render('500', { error: err.message || 'Internal Server Error' });
 });
 
 app.get('/forms', (req, res) => {
