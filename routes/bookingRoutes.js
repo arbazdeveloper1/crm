@@ -20,16 +20,10 @@ import {
   refund_list,
   seat_upgrade_list,
   FutureCredit,
-<<<<<<< HEAD
-  future_credit_list
-
-=======
   future_credit_list,
   new_booking_draft_refund,
   new_booking_draft_seat_upgrade,
   new_booking_draft_future_credit
-  
->>>>>>> 980397a603f686cf5e40115de28cae13ad9852cc
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -49,14 +43,10 @@ route.get("/future_credit_list", verifyToken, future_credit_list);
 
 route.get("/new_booking_draft/:customer_id", verifyToken, new_booking_draft);
 route.get("/all_booking", verifyToken, AllBooking);
-
-<<<<<<< HEAD
 route.post("/api/send_email", verifyToken, upload.array('files', 10), EmailAcknowledge)
 route.post("/api/update_currency", verifyToken, UpdateCurrency)
-=======
 route.post("/api/send_email/:mail_type", verifyToken, upload.array('files',10), EmailAcknowledge)
 route.post("/api/update_currency", verifyToken,UpdateCurrency)
->>>>>>> 980397a603f686cf5e40115de28cae13ad9852cc
 
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
 
