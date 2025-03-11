@@ -968,7 +968,7 @@ export const ChangeBookingStatus = async (req, res) => {
     }
 
     await query(
-      `update form_data set status='charged' where customer_id='${customer_id}'`
+      `update form_data set status='${payment_status}' where customer_id='${customer_id}'`
     );
 
     if (ExecuteQuery.affectedRows == 0) {
