@@ -968,7 +968,7 @@ export const ChangeBookingStatus = async (req, res) => {
     }
 
     await query(
-      `update form_data set status='charged' where customer_id='${customer_id}'`
+      `update form_data set status='${payment_status}' where customer_id='${customer_id}'`
     );
 
     if (ExecuteQuery.affectedRows == 0) {
@@ -1440,3 +1440,23 @@ export const new_booking_draft_future_credit = async (req, res) => {
     throw new Error(error);
   }
 };
+
+
+
+
+export const DeleteBooking = async(req, res) => {
+  try {
+    let { customerId } = req.body;
+
+   let DeleteBookig =  await query(`DELETE FROM form_data WHERE customer_id = '${customerId}'`);
+   if(DeleteBookig.affectedRows == 0){
+    return res.status(400).json({success: false,msg:"something went wrong"})
+   }
+
+  return res.status(200).json({success: true, msg:"booking delete successfully"})
+
+  } catch (error) {
+    console.log(error)
+    throw new Error(error)
+  }
+}

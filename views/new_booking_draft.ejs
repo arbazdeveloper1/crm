@@ -50,7 +50,11 @@
                       Last Status: send for Charge  
                     </a>
                     <% } else if(charging_status != 'charged') { %>
+<<<<<<< HEAD
                       <a href="#" class="btn btn-danger"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: <%- charging_status  ? charging_status : 'working' %></a>
+=======
+                      <a href="#" class="btn btn-danger" ><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: <%- charging_status %></a>
+>>>>>>> 49c12978fa16bcf8986566e0d39c6e29184ca222
                     <% } else { %>
                       <a href="#" class="btn btn-danger" id="alert_for_verfication"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: working</a>
                     <% } %>
