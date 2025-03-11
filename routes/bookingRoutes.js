@@ -24,7 +24,6 @@ import {
   new_booking_draft_refund,
   new_booking_draft_seat_upgrade,
   new_booking_draft_future_credit
-  
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -44,19 +43,20 @@ route.get("/future_credit_list", verifyToken, future_credit_list);
 
 route.get("/new_booking_draft/:customer_id", verifyToken, new_booking_draft);
 route.get("/all_booking", verifyToken, AllBooking);
-
+route.post("/api/send_email", verifyToken, upload.array('files', 10), EmailAcknowledge)
+route.post("/api/update_currency", verifyToken, UpdateCurrency)
 route.post("/api/send_email/:mail_type", verifyToken, upload.array('files',10), EmailAcknowledge)
 route.post("/api/update_currency", verifyToken,UpdateCurrency)
 
 route.get("/api/TrackIp/:customer_id", verifyToken, TrackIp)
 
 route.get("/docusign_pdf/:customer_id", verifyToken, docusignPdf)
-route.get('/customer_doc_upload/:customer_id',verifyToken, customer_doc_upload);
+route.get('/customer_doc_upload/:customer_id', verifyToken, customer_doc_upload);
 route.get('/thankyou', thankyou);
-route.get('/e_ticket/:customer_id',e_ticket);
+route.get('/e_ticket/:customer_id', e_ticket);
 
 
-route.post('/api/upload_documents/:customer_id', verifyToken, upload.array('documents',5) ,uploadDocuments)
+route.post('/api/upload_documents/:customer_id', verifyToken, upload.array('documents', 5), uploadDocuments)
 
 
 route.post('/api/change_status', verifyToken, ChangeStatus)
@@ -68,9 +68,9 @@ route.post('/api/bookingstatus', verifyToken, ChangeBookingStatus)
 route.post('/api/Remarks', verifyToken, UpdateRemarks)
 
 
-route.post('/api/refund_booking', verifyToken,upload.array('file',10), RefundDescription);
+route.post('/api/refund_booking', verifyToken, upload.array('file', 10), RefundDescription);
 
-route.post('/api/future_credit', verifyToken,upload.array('file',10), FutureCredit )
+route.post('/api/future_credit', verifyToken, upload.array('file', 10), FutureCredit)
 
 
 
