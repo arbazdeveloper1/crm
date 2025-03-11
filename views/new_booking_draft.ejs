@@ -42,7 +42,7 @@
                     class="fas fa-<%= result[0].status === 'sent_for_issuance' ? 'unlock' : 'lock' %>"></i>&nbsp;&nbsp;Last
                   Status: <%- result[0].status==='sent_for_issuance' ? "Send for Issuance" : "working" %></a>
                  
-                <% } else if(result[0].status == 'charged') { %>
+                <% } else if(result[0].status == 'charged' && charging_status==='charged') { %>
                   <i class="fas fa-unlock"></i><a href="#" class="btn btn-success" id="change_status">&nbsp;&nbsp;Last
                   Status: charged</a>
                   <% } else if(result[0].status == 'sent_for_issuance')  { %>
