@@ -21,7 +21,9 @@ import {
   seat_upgrade_list,
   FutureCredit,
   future_credit_list,
-  new_booking_draft_refund
+  new_booking_draft_refund,
+  new_booking_draft_seat_upgrade,
+  new_booking_draft_future_credit
   
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
@@ -74,6 +76,12 @@ route.post('/api/future_credit', verifyToken,upload.array('file',10), FutureCred
 
 // refund booking
 route.get("/new_booking_draft_refund/:customer_id", verifyToken, new_booking_draft_refund);
+
+// seat upgrade booking
+route.get('/new_booking_draft_seat_upgrade/:customer_id',verifyToken, new_booking_draft_seat_upgrade)
+
+// future credit booking
+route.get('/new_booking_draft_future_credit/:customer_id', verifyToken, new_booking_draft_future_credit)
 
 
 export default route;

@@ -65,10 +65,16 @@
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true&type=<%- item.booking_type %>" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>
                     <% }else if(item.booking_type == 'refund_form') { %>
                       <td><a href="/new_booking_draft_refund/<%- item.customer_id %>?email=true&type=<%- item.booking_type %>" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>
-                      <% } %>
+                      <% } else if(item.booking_type == 'seat_upgrade') { %>
+                        <td><a href="/new_booking_draft_seat_upgrade/<%- item.customer_id %>?email=true&type=<%- item.booking_type %>" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>
+                        <% }else if(item.booking_type == 'future_credit') { %>
+                          <td><a href="/new_booking_draft_future_credit/<%- item.customer_id %>?email=true&type=<%- item.booking_type %>" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>
+                          <% }else{ %>
+                            <td><%= item.card_holder_name %></td>
+                            <% } %>
 
                     <td><%= item.total_amount %></td>
-                    <td><%= item.email_type %></td> 
+                    <td><%= item.booking_type %></td> 
                     <td class="text-center"><%= item.created_at %><br>
                       <% if(item.status == 'working') { %>
                         <span style="color: red;font-weight: 600;"><%= item.status %></span>

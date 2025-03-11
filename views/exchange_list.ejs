@@ -60,7 +60,7 @@
                   <tbody class="text-center">
                   <% result.forEach((item, index) => { %>
                   <tr>
-                    <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>
+                    <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true&type=<% item.booking_type %>" data-toggle="tooltip"  data-placement="right" data-original-title="Click Here"  class="text-decoration-none"><%= item.card_holder_name %></a></td>
                     <td><%= item.total_amount %></td>
                     <td><%= item.email_type %></td> 
                     <td class="text-center"><%= item.created_at %><br>
