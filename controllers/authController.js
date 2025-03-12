@@ -128,3 +128,20 @@ export const authforgetpassword = (req, res) => {
     console.error(error);
   }
 }
+
+
+export const forgetpassword = async (req, res) => {
+  try {
+    let { email } = req.body
+    
+    let isUserExist = await query(`SELECT DISTINCT email FROM users WHERE email = '${email}'`)
+    if (isUserExist.length === 0) {
+      return res.status(404).json({ success: false, message: 'Email not found.'})
+    }
+
+    return res.status(200).json({success: true})
+
+  } catch (error) {
+    console.error(error);
+  }
+}
