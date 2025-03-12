@@ -1449,6 +1449,7 @@ export const DeleteBooking = async(req, res) => {
     let { customerId } = req.body;
 
    let DeleteBookig =  await query(`DELETE FROM form_data WHERE customer_id = '${customerId}'`);
+   
    if(DeleteBookig.affectedRows == 0){
     return res.status(400).json({success: false,msg:"something went wrong"})
    }
