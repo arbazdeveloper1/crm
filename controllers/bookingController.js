@@ -369,7 +369,6 @@ export const new_booking_draft = async (req, res) => {
     FlightDetails.reduce((acc, item) => {
       return (BaseFare = acc + parseFloat(item.airline_cost));
     }, 0);
-
     if (result.length > 0) {
       res.render("new_booking_draft", {
         userRole,
