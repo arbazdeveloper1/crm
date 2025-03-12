@@ -39,6 +39,97 @@
       <!-- Main Content -->
       <div class="main-content">
         <div class="col-12 col-md-12 col-lg-12">
+
+
+          <div class=" card ">
+            <div class="card-header">
+              <div class="pull-left">
+                <h4 class="text-blue h4">Search &amp; Filters <a href="reporting" style="color:red;font-size:12px;">(Reset Filters)</a></h4>
+              </div>
+              <div class="pull-right">
+              </div>
+            </div>
+            <form class="card-body" method="post" action="">
+            <div class="row">
+                <div class="col-md-2 col-sm-12">
+                      <div class="form-group">
+                    <label>Agent Name: </label>
+                    <select name="user" class="custom-select form-control" autocomplete="off">
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="admin">Abhishek - admin</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Cliff">Cliff - Cliff</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Alex">Alex - Alex</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Ricky">Ricky Roy - Ricky</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Arbaz">Arbaz - Arbaz</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="nathan">Nathan - nathan</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Allan">Allan - Allan</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Rodolfo">Rodolfo Martinez - Rodolfo</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="shivangi">shivangi - shivangi</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Malcolm">Malcolm - Malcolm</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="MJones">M Jones - MJones</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="John">John  - John</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Gustavo">Gustavo Gonzalez - Gustavo</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Glenn">Glenn - Glenn</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Farrell Brown">Farrell Brown - Farrell Brown</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="tom">Tom - tom</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Oliver">Oliver - Oliver</option>
+                                                                          <option value="" hidden="">Select Agent</option>
+                                      <option value="Rosie">Rosie - Rosie</option>
+                                                                      </select>
+                      </div></div>
+                      <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                  <label>Booking Type</label>
+                  <select name="email_status" class="custom-select col-12">
+                    <option value="">All Bookings</option>
+                    <option value="1">New Booking</option>
+                    <option value="2">Exchange</option>
+                    <option value="3">Refund</option>
+                    <option value="3">Future Credit</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-12">
+                <div class="form-group">
+                  <label>Calendar: </label>
+                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="text">
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-12">
+                <div class="form-group">
+                  <label>CustomerPhone: </label>
+                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Enter Customer Phone no." autocomplete="OFF" type="text">
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-12">
+                <label>&nbsp; </label>
+                  <div class="form-group">
+                  <input class="btn btn-lg btn-primary" value="Search" type="submit" name="submit">
+                </div>
+              </div>
+                          
+            </div>
+            </form>
+          </div>
+
+
+
           <div class="card">
             <div class="card-header">
               <h4>All Booking</h4>
@@ -78,13 +169,15 @@
                     <td><%= item.booking_type %></td> 
                     <td class="text-center"><%= item.created_at %><br>
                       <% if(item.status == 'working') { %>
-                        <span style="color: red;font-weight: 600;"><%= item.status %></span>
+                        <span style="color: rgb(254, 150, 150);font-weight: 600;"><%= item.status %></span>
                         <% } else if(item.status == 'sent_for_issuance') { %>
                           <span style="color: rgb(198, 198, 9);font-weight: 600;">Sent for Issuance</span>
                           <% } else if(item.status == 'charged') { %>
                             <span style="color: green;font-weight: 600;"><%= item.status %></span>
-                            <% } %>
-                    (<%-  item.updated_time %>)</td>
+                            <% }else{ %>
+                              <span style="color: red;font-weight: 600;"><%= item.status %></span>
+                              <% } %>
+                              (<%-  item.updated_time %>)</td>
                     </td>
                     <td><%= item.agent_name %></td>
                     <td><%= item.customer_id %></td>
