@@ -1,8 +1,19 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { query } from '../config/db.js';
-import transporter from '../config/mailConfig.js';
+import nodemailer from 'nodemailer';
+// import transporter from '../config/mailConfig.js';
 import { findUserByEmail, findUserByUsername, updateUserOTP, resetPassword , allBooking } from '../models/userModel.js';
+
+// Nodemailer Transport Configuration
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // Your email
+    pass: process.env.EMAIL_PASS, // Your email password or app password
+  },
+});
+
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
@@ -132,16 +143,41 @@ export const authforgetpassword = (req, res) => {
 
 export const forgetpassword = async (req, res) => {
   try {
-    let { email } = req.body
-    
-    let isUserExist = await query(`SELECT DISTINCT email FROM users WHERE email = '${email}'`)
+    const { email } = req.body;
+
+    // Check if the user exists
+    const isUserExist = await query("SELECT DISTINCT email FROM users WHERE email = ?", [email]);
     if (isUserExist.length === 0) {
-      return res.status(404).json({ success: false, message: 'Email not found.'})
+      return res.status(404).json({ success: false, message: 'Email not found.' });
     }
 
-    return res.status(200).json({success: true})
+    // Generate OTP and expiry time
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpExpiry = Date.now() + 15 * 60 * 1000;
+
+    // Update OTP in the database
+    await query("UPDATE users SET otp = ?, otpExpiry = ? WHERE email = ?", [otp, otpExpiry, email]);
+
+    // Mail options
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Your OTP for Password Reset',
+      text: `Your OTP is ${otp}. It will expire in 15 minutes.`,
+    };
+
+    // Send email and handle response properly
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+        return res.status(500).json({ success: false, message: 'Error sending OTP. Please try again later.' });
+      } else {
+        return res.status(200).json({ success: true, message: 'OTP has been sent successfully' });
+      }
+    });
 
   } catch (error) {
-    console.error(error);
+    console.error("Server error:", error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
   }
-}
+};

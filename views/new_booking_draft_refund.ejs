@@ -84,9 +84,9 @@
           <li class="nav-item mx-2">
             <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal2">Change Currency</a>
           </li>
-          <!-- <li class="nav-item mx-2">
-            <a href="#" class="btn btn-success">Fetch Score</a>
-          </li> -->
+          <li class="nav-item mx-2">
+            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editDraft">Edit Draft Email</a>
+          </li>
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item mx-2">
@@ -673,7 +673,44 @@
               <% } %>
                 <!-- Remarks change modal end -->
 
-
+              <!-- Edit Draft change modal start -->
+            <% if(email==='true' ) { %>
+              <div class="modal fade" id="editDraft" tabindex="-1" role="dialog" aria-labelledby="formModal2"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                  <h5 class="modal-title" id="formModal2">Edit Draft Email</h5>
+                  <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"
+                    style="outline: none;">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="currency">ARL/Confirmation</label>
+                    <input type="text" class="form-control">
+                    <label for="currency">GDS/PNR</label>
+                    <input type="text" class="form-control">
+                    <label for="currency">Card Number</label>
+                    <input type="text" class="form-control">
+                    <label for="currency">CVV</label>
+                    <input type="text" class="form-control">
+                    <label for="currency">Expiration </label>
+                    <input type="text" class="form-control">
+                    <label for="currency">Email </label>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="changeCurrencyBtn">Update Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+              <% } %>
+                <!-- Edit Draft modal end -->
                 <!-- Attachments modal -->
                 <% if(email==='true' ) { %>
                   <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"

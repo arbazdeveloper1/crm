@@ -25,4 +25,5 @@ const createTransporter = (fromEmail) => {
   });
 };
 
+
 export default createTransporter;

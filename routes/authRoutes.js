@@ -13,10 +13,11 @@ router.get('/', checkAuth, (req, res) => {
 router.get('/Dashboard', verifyToken, dashboard);
 router.post('/login', login);
 router.post('/logout', logoutUser);
-router.post('/forgot_password', verifyToken, sendOTP);
-router.post('/reset_password', verifyToken, resetPasswordHandler);
-router.get('/auth_forgot_password', verifyToken, authforgetpassword)
-router.post('/verify_email', verifyToken, forgetpassword)
+router.post('/forgot_password', sendOTP);
+router.post('/reset_password', resetPasswordHandler);
+router.get('/auth_forgot_password', authforgetpassword)
+router.post('/verify_email', forgetpassword)
+// router.post('/auth_verify_otp',auth_verify_otp)
 
 
 export default router;
