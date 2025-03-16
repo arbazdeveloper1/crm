@@ -22,8 +22,8 @@ export const login = async (req, res) => {
     const user = results[0];
     const match = await bcrypt.compare(password, user.password);
     if (match) {
-      const token = jwt.sign({ id: user.id, role: user.userRole, full_name: user.full_name, username: user.username }, process.env.JWT_SECRET, { expiresIn: '12h' });
-      res.cookie('token', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
+        const token = jwt.sign({ id: user.id, role: user.userRole, full_name: user.full_name, username: user.username }, process.env.JWT_SECRET, { expiresIn: '12h' });
+        res.cookie('token', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
       return res.redirect('/dashboard');
     } else {
       return res.status(401).send('Invalid username or password');
@@ -181,3 +181,52 @@ export const forgetpassword = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Internal server error.' });
   }
 };
+
+
+
+
+export const auth_verify_otp = async (req, res) => {
+  try {
+    let { otp } = req.body;
+
+    let Checkotp = await query(`SELECT otp,otpExpiry,email from users WHERE otp = '${otp}'`);
+
+    if(Checkotp.length == 0){
+      return res.status(400).json({ success: false, msg: "OTP is Wrong" })
+    }
+
+    const { otp: storedotp, expiry, email } = Checkotp[0]
+
+    if(new Date(expiry) < new Date()){
+      return res.status(400).json({ success: false, msg: "OTP is Expired"})
+    }
+
+    // Set the Token
+    const resetToken = jwt.sign({email} , process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    return res.status(200).json({success: true, msg: "otp is correct", resetToken: resetToken})
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ success: false, msg: "Internal server Error" })
+  }
+}
+
+
+export const auth_reset_password = async (req, res) => {
+  try {
+    const { newPassword, resetToken } = req.body;
+  if (!resetToken) return res.status(401).json({ message: 'Unauthorized request' });
+
+  jwt.verify(resetToken, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) return res.status(403).json({ message: 'Invalid or expired reset token' });
+    const email = decoded.email;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await resetPassword(hashedPassword, email);
+    res.status(200).json({ success: true, message: 'Password Reset Successfully' });
+  });
+  } catch (error) {
+    console.err("Error:", error);
+    return res.status(500).json({ success: false, message: 'Internal server error.'}) 
+  }
+}

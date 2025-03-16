@@ -344,7 +344,8 @@ export const new_booking_draft = async (req, res) => {
                 uploaded_document,
                 status,
                 note,
-                case_number
+                case_number,
+                date_of_expiration
             FROM 
                 form_data
             WHERE 
@@ -1454,6 +1455,26 @@ export const DeleteBooking = async(req, res) => {
    }
 
   return res.status(200).json({success: true, msg:"booking delete successfully"})
+
+  } catch (error) {
+    console.log(error)
+    throw new Error(error)
+  }
+}
+
+
+
+
+export const UpdateEmailDraft = async (req, res) => {
+  try {
+    let { customer_id, arl_confirmation, pnr_no, card_number, cvv, date_of_expiration, email }  = req.body;
+
+    let UpdateEmailDraft = await query(`UPDATE form_data SET email = '${email}', card_number = '${card_number}',cvv='${cvv}', arl_confirmation='${arl_confirmation}',date_of_expiration='${date_of_expiration}' WHERE customer_id = '${customer_id}'`);
+
+    if(UpdateEmailDraft.affectedRows == 0){
+      return res.status(401).json({ success: false, msg: "Something went wrong" });
+    }
+    return res.status(200).json({ success: true, msg:"Data Updated succesfully" })
 
   } catch (error) {
     console.log(error)

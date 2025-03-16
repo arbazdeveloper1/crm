@@ -24,7 +24,8 @@ import {
   new_booking_draft_refund,
   new_booking_draft_seat_upgrade,
   new_booking_draft_future_credit,
-  DeleteBooking
+  DeleteBooking,
+  UpdateEmailDraft
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -85,7 +86,10 @@ route.get('/new_booking_draft_seat_upgrade/:customer_id',verifyToken, new_bookin
 route.get('/new_booking_draft_future_credit/:customer_id', verifyToken, new_booking_draft_future_credit)
 
 
-route.post('/api/delete_booking', verifyToken, DeleteBooking)
+route.post('/api/delete_booking', verifyToken, DeleteBooking);
+
+
+route.post('/api/update_Email_Draft', verifyToken, UpdateEmailDraft)
 
 
 export default route;

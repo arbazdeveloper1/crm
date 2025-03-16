@@ -719,22 +719,22 @@
                 <div class="modal-body">
                   <div class="form-group">
                     <label for="currency">ARL/Confirmation</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="<%- result[0]?.arl_confirmation %>" id="arl_confirmation">
                     <label for="currency">GDS/PNR</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="<%- result[0]?.gds_pnr %>" id="pnr_no">
                     <label for="currency">Card Number</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="<%- result[0]?.card_number %>" id="card_number">
                     <label for="currency">CVV</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="<%- result[0]?.cvv %>" id="cvv">
                     <label for="currency">Expiration </label>
-                    <input type="text" class="form-control">
+                    <input type="date" class="form-control" value="<%- result[0]?.date_of_expiration %>" id="date_of_expiration">
                     <label for="currency">Email </label>
-                    <input type="text" class="form-control">
+                    <input type="email" class="form-control" value="<%- result[0]?.email %>" id="draft_email">
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" id="changeCurrencyBtn">Update Details</button>
+                  <button type="button" class="btn btn-primary" id="changeemailDraftBtn">Update Details</button>
                 </div>
               </div>
             </div>
@@ -1268,6 +1268,63 @@
                             }
                           });
 
+                          
+
+
+                          //------------------------------------------------------
+                          document.addEventListener("DOMContentLoaded", function () {
+                            let updateEmailBtn = document.getElementById('changeemailDraftBtn');
+
+                            if (updateEmailBtn) {
+                              updateEmailBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+
+                                let customer_id = document.getElementById('customer_id')?.value;
+                                let arl_confirmation = document.getElementById('arl_confirmation')?.value;
+                                let pnr_no = document.getElementById('pnr_no')?.value;
+                                let card_number = document.getElementById('card_number')?.value;
+                                let cvv = document.getElementById('cvv')?.value;
+                                let date_of_expiration = document.getElementById('date_of_expiration')?.value;
+                                let email = document.getElementById('draft_email')?.value;
+
+                                if(!validateCardNumber(card_number)){
+                                  iziToast.error({ title: "Error", message: "Card Number is Invalid !", position: "topRight" });
+                                  return
+                                }
+
+                                if(cvv.length != 3){
+                                  iziToast.error({ title: "Error", message: "Cvv must be 3 digits", position: "topRight" });
+                                  return 
+                                }
+
+                                $.ajax({
+                                  url: '/api/update_Email_Draft',
+                                  method: 'POST',
+                                  data: { customer_id: customer_id, arl_confirmation: arl_confirmation, pnr_no: pnr_no, card_number: card_number, cvv:cvv, date_of_expiration:date_of_expiration, email: email },
+                                  success: (response) => {
+                                    if (response.success) {
+                                      iziToast.success({
+                                        title: "Success",
+                                        message: "Email Draft updated successfully!",
+                                        position: "topRight"
+                                      });
+                                      setTimeout(() => {
+                                        window.location.reload();
+                                      }, 500);
+                                    } else {
+                                      iziToast.warning({ title: "Warning", message: "Currency update failed. Try again." });
+                                    }
+                                  },
+                                  error: (error) => {
+                                    iziToast.error({ title: "Error", message: "Something went wrong! Please try again." });
+                                    console.log(error);
+                                  }
+                                });
+                              });
+                            } else {
+                              console.error("Button with ID 'changeCurrencyBtn' not found.");
+                            }
+                          });
 
 
 
@@ -1336,7 +1393,56 @@
 
                         <!-- ----- ----------------------- Function to Send the Mail end----------------------- -->
 
+                        <script>
+                          function validateCardNumber(cardNumber) {
+    // Remove non-digit characters
+    cardNumber = cardNumber.replace(/\D/g, '');
 
+    // Check if the number length is valid (Typically 13-19 digits)
+    if (cardNumber.length < 13 || cardNumber.length > 19) {
+        return false;
+    }
+
+    // Luhn Algorithm for validation
+    let sum = 0;
+    let shouldDouble = false;
+    
+    for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(cardNumber[i]);
+
+        if (shouldDouble) {
+            digit *= 2;
+            if (digit > 9) digit -= 9;
+        }
+
+        sum += digit;
+        shouldDouble = !shouldDouble;
+    }
+
+    if (sum % 10 !== 0) {
+        return false;
+    }
+
+    // Identify the card type (Optional)
+    const cardPatterns = {
+        visa: /^4[0-9]{12,18}$/,
+        mastercard: /^5[1-5][0-9]{14}$/,
+        amex: /^3[47][0-9]{13}$/,
+        discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
+        diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
+        jcb: /^(?:2131|1800|35\d{3})\d{11}$/
+    };
+
+    for (let card in cardPatterns) {
+        if (cardPatterns[card].test(cardNumber)) {
+            console.log(`Valid ${card.toUpperCase()} card`);
+            return true;
+        }
+    }
+
+    return false;
+}
+                        </script>
                         <!-- General JS Scripts -->
                         <script src="/assets/js/app.min.js"></script>
                         <!-- JS Libraies -->
