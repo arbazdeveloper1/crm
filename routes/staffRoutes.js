@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test, newBookingForm, refund_form, docusign_list, future_credit_form
+import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test, newBookingForm, refund_form, docusign_list, future_credit_form, chat
 } from '../controllers/staffController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -18,7 +18,7 @@ router.post('/newBookingForm', newBookingForm);
 router.get('/refund_form', verifyToken, refund_form);
 router.get('/future_credit_form', verifyToken, future_credit_form);
 router.get('/docusign_list', verifyToken, docusign_list);
-
+router.get('/chat',verifyToken, chat)
 
 
 

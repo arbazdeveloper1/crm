@@ -1,0 +1,20 @@
+when deploying 
+
+1. change db 
+2. change file except node modules
+3.db port change
+
+DB_HOST=localhost
+DB_USER=crmadmin
+DB_PASSWORD="Omega@202444"
+DB_NAME=crm
+JWT_SECRET=THISISSECRETMOUSE
+PORT=3306
+EMAIL_PASS1=rbcy uwak uhqq atwm
+EMAIL_PASS2=rbcy uwak uhqq atwm
+EMAIL_PASS=rbcy uwak uhqq atwm
+EMAIL_USER=ravi.vermaa120@gmail.com 
+
+
+4.server site port 9000
+5.
