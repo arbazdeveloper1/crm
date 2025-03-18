@@ -189,6 +189,9 @@ export const refund_list = async (req, res) => {
 export const exchange_list = async (req, res) => {
   try {
     const userRole = req.userRole;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
     const QueryCondition =
       userRole == "admin"
@@ -210,14 +213,20 @@ export const exchange_list = async (req, res) => {
                 form_data 
                 ${QueryCondition}
             ORDER BY id DESC
+            LIMIT ${limit} OFFSET ${offset}
         `;
 
     const result = await query(qry);
 
+    let countQry = `SELECT COUNT(*) AS total FROM form_data ${QueryCondition}`;
+    const countResult = await query(countQry);
+    const totalRows = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalRows / limit);
+
     if (result.length > 0) {
-      res.render("exchange_list", { userRole, result });
+      res.render("exchange_list", { userRole, result, currentPage: page, totalPages });
     } else {
-      res.render("exchange_list", { userRole, result: [] });
+      res.render("exchange_list", { userRole, result: [], currentPage: page, totalPages });
     }
   } catch (error) {
     throw new Error(error);
@@ -272,6 +281,9 @@ export const seat_upgrade_list = async (req, res) => {
 export const AllBooking = async (req, res) => {
   try {
     const userRole = req.userRole;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
     const QueryCondition =
       userRole == "admin" ? `` : `WHERE agent_name = '${req.full_name}'`;
@@ -290,21 +302,31 @@ export const AllBooking = async (req, res) => {
             FROM 
                 form_data 
                 ${QueryCondition}
-            ORDER BY id DESC
+                ORDER BY id DESC
+                LIMIT ${limit} OFFSET ${offset}
         `;
 
     const result = await query(qry);
 
+    let countQry = `SELECT COUNT(*) AS total FROM form_data ${QueryCondition}`;
+    const countResult = await query(countQry);
+    const totalRows = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalRows / limit);
+
+    let qry2 = `SELECT 
+                  full_name,
+                  userRole
+                FROM users`
+    const result2 = await query(qry2);
+
     if (result.length > 0) {
-      res.render("all_booking", { userRole, result });
+      res.render("all_booking", { userRole, result, result2, currentPage: page, totalPages });
     } else {
-      res.render("all_booking", { userRole, result: [] });
+      res.render("all_booking", { userRole, result: [], result2:[], currentPage: page, totalPages });
     }
   } catch (error) {
+    console.log(error)
     throw new Error(error);
-    return res
-      .status(500)
-      .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
 
@@ -315,6 +337,11 @@ export const new_booking_draft = async (req, res) => {
     const { customer_id } = req.params;
     const FullName = req.full_name;
     const { email, type } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+
+
     let qry = `
             SELECT DISTINCT
                 card_holder_name,
@@ -350,6 +377,7 @@ export const new_booking_draft = async (req, res) => {
                 form_data
             WHERE 
                 customer_id = '${customer_id}'
+                LIMIT ${limit} OFFSET ${offset}
         `;
 
     const result = await query(qry);

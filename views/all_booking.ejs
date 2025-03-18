@@ -54,61 +54,36 @@
                 <div class="col-md-2 col-sm-12">
                       <div class="form-group">
                     <label>Agent Name: </label>
-                    <select name="user" class="custom-select form-control" autocomplete="off">
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="admin">Abhishek - admin</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Cliff">Cliff - Cliff</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Alex">Alex - Alex</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Ricky">Ricky Roy - Ricky</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Arbaz">Arbaz - Arbaz</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="nathan">Nathan - nathan</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Allan">Allan - Allan</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Rodolfo">Rodolfo Martinez - Rodolfo</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="shivangi">shivangi - shivangi</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Malcolm">Malcolm - Malcolm</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="MJones">M Jones - MJones</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="John">John  - John</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Gustavo">Gustavo Gonzalez - Gustavo</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Glenn">Glenn - Glenn</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Farrell Brown">Farrell Brown - Farrell Brown</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="tom">Tom - tom</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Oliver">Oliver - Oliver</option>
-                                                                          <option value="" hidden="">Select Agent</option>
-                                      <option value="Rosie">Rosie - Rosie</option>
-                                                                      </select>
+                    <select name="user" id="agents" class="custom-select form-control" autocomplete="off">
+                      
+                      <% result2.forEach((res) => { %>
+                        <option value="" hidden="">Select Agent</option>
+                        <option value="<%- res.full_name %>"><%- res.full_name %> - <%- res.userRole %></option>
+                       <% }) %>                                                     
+                     </select>
                       </div></div>
                       <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label>Booking Type</label>
                   <select name="email_status" class="custom-select col-12">
                     <option value="">All Bookings</option>
-                    <option value="1">New Booking</option>
-                    <option value="2">Exchange</option>
-                    <option value="3">Refund</option>
-                    <option value="3">Future Credit</option>
+                    <option value="new_booking">New Booking</option>
+                    <option value="exchange">Exchange</option>
+                    <option value="refund_form">Refund</option>
+                    <option value="future_credit">Future Credit</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-2 col-sm-12">
                 <div class="form-group">
-                  <label>Calendar: </label>
-                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="text">
+                  <label>From date: </label>
+                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="date">
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-12">
+                <div class="form-group">
+                  <label>To date: </label>
+                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="date">
                 </div>
               </div>
               <div class="col-md-2 col-sm-12">
@@ -207,20 +182,32 @@
             <div class="card-footer text-right">
               <nav class="d-inline-block">
                 <ul class="pagination mb-0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
+                  
+                  <!-- Previous Button -->
+                  <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= currentPage - 1 %>" tabindex="-1">
+                      <i class="fas fa-chevron-left"></i>
+                    </a>
                   </li>
-                  <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2</a>
+            
+                  <!-- Page Numbers -->
+                  <% for(let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                  <% } %>
+            
+                  <!-- Next Button -->
+                  <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= currentPage + 1 %>">
+                      <i class="fas fa-chevron-right"></i>
+                    </a>
                   </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                  </li>
+            
                 </ul>
               </nav>
             </div>
+            
           </div>
         </div>
       </div>
