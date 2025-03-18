@@ -49,7 +49,7 @@
               <div class="pull-right">
               </div>
             </div>
-            <form class="card-body" method="post" action="">
+            <!-- <form class="card-body" method="post" action=""> -->
             <div class="row">
                 <div class="col-md-2 col-sm-12">
                       <div class="form-group">
@@ -65,7 +65,7 @@
                       <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                   <label>Booking Type</label>
-                  <select name="email_status" class="custom-select col-12">
+                  <select name="form_type" class="custom-select col-12">
                     <option value="">All Bookings</option>
                     <option value="new_booking">New Booking</option>
                     <option value="exchange">Exchange</option>
@@ -77,30 +77,38 @@
               <div class="col-md-2 col-sm-12">
                 <div class="form-group">
                   <label>From date: </label>
-                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="date">
+                    <input name="daterange" id="from_date" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="date">
                 </div>
               </div>
               <div class="col-md-2 col-sm-12">
                 <div class="form-group">
                   <label>To date: </label>
-                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="date">
+                    <input name="daterange" id="to_date" class="form-control datetimepicker-range" placeholder="Select Date Range" autocomplete="OFF" type="date">
                 </div>
               </div>
               <div class="col-md-2 col-sm-12">
                 <div class="form-group">
                   <label>CustomerPhone: </label>
-                    <input name="daterange" value="" class="form-control datetimepicker-range" placeholder="Enter Customer Phone no." autocomplete="OFF" type="text">
+                    <input name="daterange" id="phone" class="form-control datetimepicker-range" placeholder="Enter Customer Phone no." autocomplete="OFF" type="text">
                 </div>
               </div>
+              <script>
+                let Agents = document.getElementById('agents').value;
+                let type = document.getElementById('form_type').value;
+                let from_date = document.getElementById('from_date').value;
+                let to_date = document.getElementById('to_date').value;
+                let phone = document.getElementById('phone').value;
+              </script>
               <div class="col-md-2 col-sm-12">
                 <label>&nbsp; </label>
                   <div class="form-group">
-                  <input class="btn btn-lg btn-primary" value="Search" type="submit" name="submit">
+                  <!-- <input class="btn btn-lg btn-primary" value="Search" type="submit" name="submit"> -->
+                  <button class="btn btn-lg btn-primary" id="search">Search</button>
                 </div>
               </div>
                           
             </div>
-            </form>
+            <!-- </form> -->
           </div>
 
 

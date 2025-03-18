@@ -148,6 +148,9 @@ export const new_booking_list = async (req, res) => {
 export const refund_list = async (req, res) => {
   try {
     const userRole = req.userRole;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
     const QueryCondition =
       userRole == "admin"
@@ -169,14 +172,21 @@ export const refund_list = async (req, res) => {
                 form_data 
                 ${QueryCondition}
             ORDER BY id DESC
+            LIMIT ${limit} OFFSET ${offset}
         `;
 
     const result = await query(qry);
 
+    let countQry = `SELECT COUNT(*) AS total FROM form_data ${QueryCondition}`;
+    const countResult = await query(countQry);
+    const totalRows = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalRows / limit);
+
+
     if (result.length > 0) {
-      res.render("refund_list", { userRole, result });
+      res.render("refund_list", { userRole, result, currentPage: page, totalPages });
     } else {
-      res.render("refund_list", { userRole, result: [] });
+      res.render("refund_list", { userRole, result: [], currentPage: page, totalPages });
     }
   } catch (error) {
     throw new Error(error);
@@ -239,6 +249,9 @@ export const exchange_list = async (req, res) => {
 export const seat_upgrade_list = async (req, res) => {
   try {
     const userRole = req.userRole;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
     const QueryCondition =
       userRole == "admin"
@@ -260,20 +273,23 @@ export const seat_upgrade_list = async (req, res) => {
                 form_data 
                 ${QueryCondition}
             ORDER BY id DESC
+            LIMIT ${limit} OFFSET ${offset}
         `;
 
     const result = await query(qry);
 
+    let countQry = `SELECT COUNT(*) AS total FROM form_data ${QueryCondition}`;
+    const countResult = await query(countQry);
+    const totalRows = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalRows / limit);
+
     if (result.length > 0) {
-      res.render("seat_upgrade_list", { userRole, result });
+      res.render("seat_upgrade_list", { userRole, result, currentPage: page, totalPages });
     } else {
-      res.render("seat_upgrade_list", { userRole, result: [] });
+      res.render("seat_upgrade_list", { userRole, result: [], currentPage: page, totalPages });
     }
   } catch (error) {
     throw new Error(error);
-    return res
-      .status(500)
-      .json({ success: false, ErrorMsg: "Internal Server Error" });
   }
 };
 
@@ -1147,6 +1163,9 @@ export const booking_seatupgrade = async (req, res) => {
 export const future_credit_list = async (req, res) => {
   try {
     const userRole = req.userRole;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
     const QueryCondition =
       userRole == "admin"
@@ -1168,14 +1187,20 @@ export const future_credit_list = async (req, res) => {
                 form_data 
                 ${QueryCondition}
             ORDER BY id DESC
+            LIMIT ${limit} OFFSET ${offset}
         `;
 
     const result = await query(qry);
 
+    let countQry = `SELECT COUNT(*) AS total FROM form_data ${QueryCondition}`;
+    const countResult = await query(countQry);
+    const totalRows = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalRows / limit);
+
     if (result.length > 0) {
-      res.render("future_credit_list", { userRole, result });
+      res.render("future_credit_list", { userRole, result, currentPage: page, totalPages });
     } else {
-      res.render("future_credit_list", { userRole, result: [] });
+      res.render("future_credit_list", { userRole, result: [], currentPage: page, totalPages });
     }
   } catch (error) {
     throw new Error(error);
