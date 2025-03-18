@@ -253,7 +253,14 @@ export const newBookingForm = async (req, res) => {
 
 
 
-
+export const chat = async (req, res) => {
+  try{
+    const userRole = req.userRole
+    res.render('chat', {userRole})
+  }catch{
+  res.status(500).json({success: false, message: 'Error loading page'})
+  }
+}
 
 
 
