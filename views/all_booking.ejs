@@ -44,7 +44,7 @@
           <div class=" card ">
             <div class="card-header">
               <div class="pull-left">
-                <h4 class="text-blue h4">Search &amp; Filters <a href="reporting" style="color:red;font-size:12px;">(Reset Filters)</a></h4>
+                <h4 class="text-blue h4">Search &amp; Filters <span id="reset_filter" style="color:red;font-size:12px;cursor: pointer;">(Reset Filters)</span></h4>
               </div>
               <div class="pull-right">
               </div>
@@ -65,11 +65,12 @@
                       <div class="col-md-2 col-sm-12">
                 <div class="form-group">
                   <label>Booking Type</label>
-                  <select name="form_type" class="custom-select col-12">
+                  <select name="form_type" id="form_type" class="custom-select col-12">
                     <option value="">All Bookings</option>
                     <option value="new_booking">New Booking</option>
                     <option value="exchange">Exchange</option>
                     <option value="refund_form">Refund</option>
+                    <option value="seat_upgrade">Seat Upgrade</option>
                     <option value="future_credit">Future Credit</option>
                   </select>
                 </div>
@@ -92,13 +93,7 @@
                     <input name="daterange" id="phone" class="form-control datetimepicker-range" placeholder="Enter Customer Phone no." autocomplete="OFF" type="text">
                 </div>
               </div>
-              <script>
-                let Agents = document.getElementById('agents').value;
-                let type = document.getElementById('form_type').value;
-                let from_date = document.getElementById('from_date').value;
-                let to_date = document.getElementById('to_date').value;
-                let phone = document.getElementById('phone').value;
-              </script>
+             
               <div class="col-md-2 col-sm-12">
                 <label>&nbsp; </label>
                   <div class="form-group">
@@ -118,7 +113,7 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered table-md">
+                <table class="table table-bordered table-md" id="resultTable">
                   <thead class="text-center">
                   <tr >
                     <th>Customer</th>
@@ -223,28 +218,149 @@
 
 
   
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll(".delete-btn").forEach(btn => {
-        btn.addEventListener("click", function(event) {
-          event.preventDefault();
-          const customerId = this.getAttribute("data-id");
-          if (confirm("Are you sure you want to delete this booking?")) {
-            // window.location.href = `/delete_booking/${customerId}`;
-            $.ajax({
-              url:"/api/delete_booking",
-              type:"json",
-              method:"post",
-              data: {customerId: customerId},
-              success: function(res){
-                window.location.reload();
-              }
-            })
-          }
-        });
+ 
+
+<script>
+  let currentPage = 1; // Track current page
+
+  function fetchFilteredData(page = 1) {
+    let Agents = document.getElementById('agents').value;
+    let type = document.getElementById('form_type').value;
+    let from_date = document.getElementById('from_date').value;
+    let to_date = document.getElementById('to_date').value;
+    let phone = document.getElementById('phone').value;
+
+    $.ajax({
+      url: "/api/filter",
+      type: "POST",
+      data: {
+        Agents: Agents,
+        type: type,
+        from_date: from_date,
+        to_date: to_date,
+        phone: phone,
+        page: page,  // Pass the current page
+      },
+      success: function (res) {
+        if (res.success) {
+  let tableBody = document.querySelector("#resultTable tbody");
+  let paginationContainer = document.querySelector(".pagination");
+
+  tableBody.innerHTML = "";
+  paginationContainer.innerHTML = ""; // Clear existing pagination
+
+  if (res.data.length > 0) {
+    res.data.forEach((item) => {
+      let statusColor =
+        item.status === "working"
+          ? "rgb(254, 150, 150)"
+          : item.status === "sent_for_issuance"
+          ? "#6777ef"
+          : item.status === "charged"
+          ? "green"
+          : "red";
+
+      let row = `
+        <tr>
+          <td>
+            ${item.booking_type === "new_booking" || item.booking_type === "exchange"
+              ? `<a href="/new_booking_draft/${item.customer_id}?email=true&type=${item.booking_type}" data-toggle="tooltip" data-placement="right" class="text-decoration-none">${item.card_holder_name}</a>`
+              : item.booking_type === "refund_form"
+              ? `<a href="/new_booking_draft_refund/${item.customer_id}?email=true&type=${item.booking_type}" data-toggle="tooltip" data-placement="right" class="text-decoration-none">${item.card_holder_name}</a>`
+              : item.booking_type === "seat_upgrade"
+              ? `<a href="/new_booking_draft_seat_upgrade/${item.customer_id}?email=true&type=${item.booking_type}" data-toggle="tooltip" data-placement="right" class="text-decoration-none">${item.card_holder_name}</a>`
+              : item.booking_type === "future_credit"
+              ? `<a href="/new_booking_draft_future_credit/${item.customer_id}?email=true&type=${item.booking_type}" data-toggle="tooltip" data-placement="right" class="text-decoration-none">${item.card_holder_name}</a>`
+              : item.card_holder_name}
+          </td>
+          <td>${item.total_amount}</td>
+          <td>${item.booking_type}</td>
+          <td class="text-center">${item.created_at}<br>
+            <span style="color: ${statusColor}; font-weight: 600;">${item.status}</span> (${item.updated_time})
+          </td>
+          <td>${item.agent_name}</td>
+          <td>${item.customer_id}</td>
+          <td>
+            <div class="dropdown">
+              <button class="btn btn-primary" type="button" data-bs-toggle="dropdown">
+                &#x22EE;
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/new_booking_draft/${item.customer_id}?email=true">View</a></li>
+                <li><a class="dropdown-item text-danger delete-btn" href="#" data-id="${item.customer_id}">Delete</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      `;
+      tableBody.innerHTML += row;
+    });
+
+    // Add pagination
+    let totalPages = res.totalPages; // Get from API response
+    let paginationHtml = `
+      <li class="page-item ${page === 1 ? "disabled" : ""}">
+        <a class="page-link" href="#" onclick="fetchFilteredData(${page - 1})">
+          <i class="fas fa-chevron-left"></i>
+        </a>
+      </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+      paginationHtml += `
+        <li class="page-item ${page === i ? "active" : ""}">
+          <a class="page-link" href="#" onclick="fetchFilteredData(${i})">${i}</a>
+        </li>`;
+    }
+
+    paginationHtml += `
+      <li class="page-item ${page === totalPages ? "disabled" : ""}">
+        <a class="page-link" href="#" onclick="fetchFilteredData(${page + 1})">
+          <i class="fas fa-chevron-right"></i>
+        </a>
+      </li>`;
+
+    paginationContainer.innerHTML = paginationHtml;
+  } else {
+    tableBody.innerHTML = "<tr><td colspan='6'>No records found</td></tr>";
+  }
+}
+      }
+    });
+  }
+
+  document.getElementById('search').addEventListener('click', function () {
+    fetchFilteredData(1); 
+  });
+
+  let reset_filter = document.getElementById('reset_filter')
+  reset_filter.addEventListener('click', async() => {
+    window.location.reload();
+  })
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+      btn.addEventListener("click", function(event) {
+        event.preventDefault();
+        const customerId = this.getAttribute("data-id");
+        if (confirm("Are you sure you want to delete this booking?")) {
+          // window.location.href = `/delete_booking/${customerId}`;
+          $.ajax({
+            url:"/api/delete_booking",
+            type:"json",
+            method:"post",
+            data: {customerId: customerId},
+            success: function(res){
+              window.location.reload();
+            }
+          })
+        }
       });
     });
-    </script>
+  });
+  </script>
+
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/assets/js/app.min.js"></script>
