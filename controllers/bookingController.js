@@ -1534,3 +1534,51 @@ export const UpdateEmailDraft = async (req, res) => {
     throw new Error(error)
   }
 }
+
+
+
+export const filtercontroller = async (req, res) => {
+  try {
+    let { Agents, type, from_date, to_date, phone, page = 1, limit = 10 } = req.body;
+    let offset = (page - 1) * limit;
+
+    let conditions = [];
+
+    if(Agents){
+      conditions.push(`agent_name = '${Agents}'`);
+    }
+    if(type) {
+      conditions.push(`booking_type = '${type}'`)
+    }
+    if(from_date && to_date) {
+      conditions.push(`created_at BETWEEN STR_TO_DATE('${from_date}', '%Y-%m-%d') AND STR_TO_DATE('${to_date}', '%Y-%m-%d')`)
+    }
+    if(phone) {
+      conditions.push(`phone='${phone}'`)
+    }
+
+    let whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+
+    let qry = `SELECT card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                booking_type,
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time FROM form_data ${whereClause} LIMIT ${limit} OFFSET ${offset}`
+    let result = await query(qry);
+
+    let countQry = `SELECT COUNT(*) AS total FROM form_data ${whereClause}`;
+    let countResult = await query(countQry); // Remove limit & offset values
+    let totalRecords = countResult[0].total;
+    let totalPages = Math.ceil(totalRecords / limit);
+
+    return res.status(200).json({ success: true, data: result, totalPages });
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ success: false, msg: "internal server error" })
+  }
+}
