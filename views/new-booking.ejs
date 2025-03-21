@@ -207,8 +207,8 @@
                 <label>Card Type<span class="text-danger">*</span></label>
                 <select name="cardType" class="form-control" required>
                   <option value="" disabled selected>Choose an option</option>
-                  <option value="Amex">Amex</option>
                   <option value="Visa">Visa</option>
+                  <option value="Amex">Amex</option>
                   <option value="Discover">Discover</option>
                   <option value="Master">Master</option>
                 </select>
@@ -216,7 +216,7 @@
               <div class="form-group">
                 <label>Currency<span class="text-danger">*</span></label>
                 <select name="currency" class="form-control">
-                  <option value="USD" selected>USD</option>
+                  <option value="USD" selected>USD</option>+
                   <option value="CAD">CAD</option>
                   <option value="GBP">GBP</option>
                   <option value="EUR">EUR</option>
@@ -256,7 +256,7 @@
                 <label>Billing Phone<span class="text-danger">*</span></label>
                 <input type="text" name="billingPhone" class="form-control" maxlength="13" pattern="[0-9]+"
                   placeholder="Enter phone number"
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 13);" required />
+                  oninput="this.value = this.values.replace(/[^0-9]/g, '').substring(0, 13);" required />
               </div>
             </div>
           </div>
