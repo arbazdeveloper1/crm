@@ -1554,7 +1554,7 @@ export const filtercontroller = async (req, res) => {
       conditions.push(`created_at BETWEEN STR_TO_DATE('${from_date}', '%Y-%m-%d') AND STR_TO_DATE('${to_date}', '%Y-%m-%d')`)
     }
     if(phone) {
-      conditions.push(`phone='${phone}'`)
+      conditions.push(`billing_phone='${phone}'`)
     }
 
     let whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
