@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test, newBookingForm, refund_form, docusign_list, future_credit_form, chat
+import { getStaffList, addStaffform, addStaff, deleteUser,updateUser,getUserById, newBooking, test, newBookingForm, refund_form, docusign_list, future_credit_form, chat, getChats  
 } from '../controllers/staffController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -23,4 +23,7 @@ router.get('/chat',verifyToken, chat)
 
 
 router.get('/test',verifyToken, test); //New booking auth
+
+router.get('/getChats/:sender_id/:receiver_id', verifyToken, getChats); //New booking auth
+
 export default router;  
