@@ -29,6 +29,7 @@ export const login = async (req, res) => {
       return res.status(401).send('Invalid username or password');
     }
   } else {
+    return res.render('/login')
     return res.status(401).send('Invalid username or password');
   }
 };

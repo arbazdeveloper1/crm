@@ -700,10 +700,9 @@ export const TrackIp = async (req, res) => {
   try {
     const { customer_id } = req.params;
     const FullName = req.full_name;
+
     if (!customer_id) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Customer ID is required" });
+      return res.status(400).json({ success: false, message: "Customer ID is required" });
     }
 
     const userAgent = req.headers["user-agent"];
@@ -722,7 +721,6 @@ export const TrackIp = async (req, res) => {
     });
 
     let CurrentDate = getCurrentDateFormatted();
-
     let publicIP = await getPublicIP();
 
     let DeviceInfo = {
@@ -736,43 +734,50 @@ export const TrackIp = async (req, res) => {
       userIp: userIp || "Null",
     };
 
-    // update the form_data table with the docusign_verified status
+    // Update the form_data table with the docusign_verified status
     let qry = `update form_data set docusign_verified = 'true' where customer_id = '${customer_id}'`;
     const result = await query(qry);
+    
     if (!result) {
-      return res
-        .status(400)
-        .json({ success: false, message: "IP Address not updated" });
+      return res.status(400).json({ success: false, message: "IP Address not updated" });
     }
 
     // Insert the data store user system configuration
     let qry1 = `insert into user_device_config (customer_id, browser, browser_version, operating_system, operating_system_version, device_type, system_ip, user_ip) values ('${customer_id}', '${DeviceInfo?.browser}', '${DeviceInfo?.browserVersion}', '${DeviceInfo?.os}', '${DeviceInfo?.osVersion}', '${DeviceInfo?.deviceType}', '${DeviceInfo?.systemIp}', '${DeviceInfo?.userIp}')`;
+    
     const result1 = await query(qry1);
+    
+    if (!result1) {
+      return res.status(400).json({ success: false, message: "Data not inserted" });
+    }
 
-    // Function to generate the PDF
+    // Generate the PDF file
     const fileName = await GeneratePDF(req, res, customer_id, FullName);
     if (!fileName) {
-      return res
-        .status(400)
-        .json({ success: false, message: "PDF not generated" });
+      return res.status(400).json({ success: false, message: "PDF not generated" });
     }
 
+    // Update signed document in form_data table
     await query(
-      `update form_data set signed_document = '${fileName}' where customer_id = '${
-        customer_id || "no file avaiable"
-      }'`
+      `update form_data set signed_document = '${fileName}' where customer_id = '${customer_id || "no file available"}'`
     );
 
-    if (!result1) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Data not inserted" });
+    // Ensure no headers have already been sent before rendering
+    if (res.headersSent) {
+      console.log("Headers already sent. Skipping res.render...");
+      return;
     }
+
     res.render("iptrackingsuccess", { DeviceInfo });
+
   } catch (error) {
-    throw new Error(error);
+    console.error("Error in TrackIp:", error); // Logs the error instead of crashing the server
+    if (!res.headersSent) {
+      return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
   }
 };
+
 
 export const docusignPdf = async (req, res) => {
   try {
