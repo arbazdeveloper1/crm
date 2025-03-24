@@ -166,6 +166,8 @@ export const forgetpassword = async (req, res) => {
       subject: 'Your OTP for Password Reset',
       text: `Your OTP is ${otp}. It will expire in 15 minutes.`,
     };
+    console.log(mailOptions.from)
+    console.log(mailOptions)
 
     // Send email and handle response properly
     transporter.sendMail(mailOptions, (error, info) => {

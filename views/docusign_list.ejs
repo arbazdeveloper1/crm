@@ -120,6 +120,37 @@
                     
                   </div>
                 </div>
+
+                <div class="card-footer text-right">
+                  <nav class="d-inline-block">
+                    <ul class="pagination mb-0">
+                      
+                      <!-- Previous Button -->
+                      <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= currentPage - 1 %>" tabindex="-1">
+                          <i class="fas fa-chevron-left"></i>
+                        </a>
+                      </li>
+                
+                      <!-- Page Numbers -->
+                      <% for(let i = 1; i <= totalPages; i++) { %>
+                        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                        </li>
+                      <% } %>
+                
+                      <!-- Next Button -->
+                      <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= currentPage + 1 %>">
+                          <i class="fas fa-chevron-right"></i>
+                        </a>
+                      </li>
+                
+                    </ul>
+                  </nav>
+                </div>
+
+
               </div>
             </div>
           </div>

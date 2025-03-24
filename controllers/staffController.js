@@ -167,14 +167,23 @@ export const future_credit_form = async (req, res) => {
 
 export const docusign_list = async (req, res) => {
   try{
-    const form_data = await query('SELECT * FROM form_data');
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+
+    const form_data = await query(`SELECT * FROM form_data LIMIT ${limit} OFFSET ${offset}`);
+
+    let countQry = `SELECT COUNT(*) AS total`;
+    const countResult = await query(countQry);
+    const totalRows = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalRows / limit);
 
     res.render('docusign_list', { 
       form_data, 
-      userRole: req.userRole 
+      userRole: req.userRole,
+      currentPage: page, totalPages
     });
   } catch(error){
-    throw new Error(err)
     res.status(500).json({success:false, message: 'Error loading page'})
   }
 }
@@ -255,8 +264,15 @@ export const newBookingForm = async (req, res) => {
 
 export const chat = async (req, res) => {
   try{
-    const userRole = req.userRole
-    res.render('chat', {userRole})
+    const userRole = req.userRole;
+    const full_name = req.full_name;
+    const user_id = req.userId;
+
+   
+    let qry = await query(`SELECT * FROM users`);
+
+
+    res.render('chat', {userRole, data: qry, full_name: full_name, senderid: user_id})
   }catch{
   res.status(500).json({success: false, message: 'Error loading page'})
   }
@@ -278,6 +294,27 @@ export const test = async (req, res) => {
 }
 
 
+
+export const getChats = async(req, res) => {
+  try {
+
+    let { receiver_id, sender_id } = req.params;
+
+
+    let qry = await query(`
+      SELECT * FROM messages 
+      WHERE (receiver = '${receiver_id}' AND sender = '${sender_id}')
+      OR (receiver = '${sender_id}' AND sender = '${receiver_id}')
+      ORDER BY sent_at ASC
+    `);
+
+    res.status(200).json({ success: true, msg: 'Chats retrieved successfully', data: qry });
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ success: false, msg: "Internal Server Error" })
+  }
+}
 
 
 
