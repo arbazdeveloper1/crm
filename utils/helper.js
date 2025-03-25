@@ -146,7 +146,6 @@ async function GeneratePDF(req, res, customer_id, FullName) {
  
   } catch (error) {
     console.error("Error generating PDF:", error);
-    res.status(500).send("Failed to generate PDF");
   }
 }
 

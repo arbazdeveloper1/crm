@@ -750,18 +750,18 @@ export const TrackIp = async (req, res) => {
     const result1 = await query(qry1);
 
     // Function to generate the PDF
-    const fileName = await GeneratePDF(req, res, customer_id, FullName);
-    if (!fileName) {
-      return res
-        .status(400)
-        .json({ success: false, message: "PDF not generated" });
-    }
+    // const fileName = await GeneratePDF(req, res, customer_id, FullName);
+    // if (!fileName) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "PDF not generated" });
+    // }
 
-    await query(
-      `update form_data set signed_document = '${fileName}' where customer_id = '${
-        customer_id || "no file avaiable"
-      }'`
-    );
+    // await query(
+    //   `update form_data set signed_document = '${fileName}' where customer_id = '${
+    //     customer_id || "no file avaiable"
+    //   }'`
+    // );
 
     if (!result1) {
       return res
@@ -770,7 +770,8 @@ export const TrackIp = async (req, res) => {
     }
     res.render("iptrackingsuccess", { DeviceInfo });
   } catch (error) {
-    throw new Error(error);
+    console.log(error)
+    // throw new Error(error);
   }
 };
 
