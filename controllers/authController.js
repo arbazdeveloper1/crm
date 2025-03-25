@@ -141,6 +141,15 @@ export const authforgetpassword = (req, res) => {
   }
 }
 
+export const profile = (req, res) => {
+  try {
+    res.render('profile', {})
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
 
 export const forgetpassword = async (req, res) => {
   try {

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Dashboard </title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="/assets/css/app.min.css">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <!-- toastr -->
+  <link rel="stylesheet" href="/assets/bundles/izitoast/css/iziToast.min.css">
+  <script src="/assets/bundles/izitoast/js/iziToast.min.js"></script>
+</head>
+
+<body>
+  <!-- <div class="loader"></div> -->
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+
+
+      <%-include('./common/Header.ejs') %>
+        <%- include('./common/AdminSidebar.ejs') %>
+
+        <div class="main-content">
+          <section class="section">
+            <div class="section-body">
+              <div class="row justify-content-center mt-sm-4">
+                <div class="col-12 col-md-10">
+                  <div class="card author-box p-5">
+                    <div class="card-body text-center">
+                      <input type="file" id="imageUpload" accept="image/*" hidden>
+                      <label for="imageUpload">
+                        <img id="profileImage" src="/assets/img/users/user-1.png" 
+                          class="rounded-circle author-box-picture" alt="Profile Image" 
+                          style="cursor: pointer; width: 220px; height: 220px; border: 5px solid #6777ef;">
+                      </label>
+                      <div class="author-box-name mt-4" style="font-size: 26px; font-weight: bold;">
+                        <a href="#" style="text-decoration: none; color: black;">Sarah Smith</a>
+                      </div>
+                      <div class="author-box-job" style="font-size: 22px; color: gray;">Web Developer</div>
+                      <button class="btn btn-primary mt-4" id="uploadBtn" 
+                        style="font-size: 20px; padding: 12px 24px; border-radius: 8px;">
+                        Upload Image
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        
+        <script>
+          document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+        
+          document.getElementById('uploadBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('imageUpload');
+            if (fileInput.files.length > 0) {
+              alert('Image ready for upload! Implement backend logic to upload.');
+              // You can implement an AJAX request here to send the file to the server.
+            } else {
+              alert('Please select an image first.');
+            }
+          });
+        </script>
+        
+        
+        
+        
+    </div>
+  </div>
+
+
+  <!-- General JS Scripts -->
+  <script src="/assets/js/app.min.js"></script>
+  <!-- JS Libraies -->
+  <script src="/assets/bundles/apexcharts/apexcharts.min.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="/assets/js/page/chat.js"></script>
+  <!-- Template JS File -->
+  <script src="/assets/js/scripts.js"></script>
+  <!-- Custom JS File -->
+  <script src="/assets/js/custom.js"></script>
+</body>
+
+
+</html>
+
