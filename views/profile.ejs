@@ -31,22 +31,27 @@
         <div class="main-content">
           <section class="section">
             <div class="section-body">
-              <div class="row justify-content-center mt-sm-4">
-                <div class="col-12 col-md-10">
-                  <div class="card author-box p-5">
-                    <div class="card-body text-center">
+              <div class="row justify-content-center mt-5">
+                <div class="col-12 col-md-8">
+                  <div class="card author-box p-4 shadow-lg border-0" 
+                       style="border-radius: 16px; background: #fff; text-align: center;">
+                    <div class="card-body">
                       <input type="file" id="imageUpload" accept="image/*" hidden>
                       <label for="imageUpload">
                         <img id="profileImage" src="/assets/img/users/user-1.png" 
-                          class="rounded-circle author-box-picture" alt="Profile Image" 
-                          style="cursor: pointer; width: 220px; height: 220px; border: 5px solid #6777ef;">
+                          class="rounded-circle author-box-picture shadow" alt="Profile Image" 
+                          style="cursor: pointer; width: 200px; height: 200px; 
+                                 border: 5px solid transparent; 
+                                 background: linear-gradient(45deg, #6777ef, #49a6e9); padding: 5px;">
                       </label>
-                      <div class="author-box-name mt-4" style="font-size: 26px; font-weight: bold;">
-                        <a href="#" style="text-decoration: none; color: black;">Sarah Smith</a>
+                      <div class="author-box-name mt-3" style="font-size: 24px; font-weight: bold; color: #333;">
+                        <a href="#" style="text-decoration: none; color: #333;">Sarah Smith</a>
                       </div>
-                      <div class="author-box-job" style="font-size: 22px; color: gray;">Web Developer</div>
-                      <button class="btn btn-primary mt-4" id="uploadBtn" 
-                        style="font-size: 20px; padding: 12px 24px; border-radius: 8px;">
+                      <div class="author-box-job" style="font-size: 18px; color: #777;">Web Developer</div>
+                      <button class="btn btn-primary mt-4 px-4 py-2" id="uploadBtn" 
+                        style="font-size: 18px; border-radius: 50px; 
+                               background: linear-gradient(45deg, #6777ef, #49a6e9); 
+                               border: none; transition: 0.3s; cursor: pointer;">
                         Upload Image
                       </button>
                     </div>
@@ -73,7 +78,7 @@
             const fileInput = document.getElementById('imageUpload');
             if (fileInput.files.length > 0) {
               alert('Image ready for upload! Implement backend logic to upload.');
-              // You can implement an AJAX request here to send the file to the server.
+              // Implement AJAX request here to send the file to the server if needed.
             } else {
               alert('Please select an image first.');
             }
