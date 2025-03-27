@@ -381,7 +381,8 @@
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
-    border-radius: 50%
+    border-radius: 50%;
+    height: 40px;
 }
 
 .people-list img {
@@ -607,7 +608,8 @@
 .chat-box .chat-content .chat-item>img {
     float: left;
     width: 50px;
-    border-radius: 50%
+    border-radius: 50%;
+    height: 40px;
 }
 
 .chat-box .chat-content .chat-item .chat-details {

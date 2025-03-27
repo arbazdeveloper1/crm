@@ -299,7 +299,7 @@ export const getChats = async(req, res) => {
   try {
 
     let { receiver_id, sender_id } = req.params;
-
+    console.log(receiver_id, sender_id)
 
     let qry = await query(`
       SELECT * FROM messages 
@@ -308,7 +308,14 @@ export const getChats = async(req, res) => {
       ORDER BY sent_at ASC
     `);
 
-    res.status(200).json({ success: true, msg: 'Chats retrieved successfully', data: qry });
+
+    let qry1 = await query(`SELECT profile_img FROM users WHERE id = '${receiver_id}'`);
+    let receiverimg = qry1[0]?.profile_img
+
+    let qry2 = await query(`SELECT profile_img FROM users WHERE id = '${sender_id}'`);
+    let senderimg = qry2[0]?.profile_img
+
+    res.status(200).json({ success: true, msg: 'Chats retrieved successfully', data: qry, receiverimg, senderimg});
 
   } catch (error) {
     console.log(error)

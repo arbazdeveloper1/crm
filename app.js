@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/uploads', express.static('uploads'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/pdfupload', express.static(path.join(__dirname, 'pdfupload')));
+app.use('/profileimg', express.static(path.join(__dirname, 'profileImg')));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

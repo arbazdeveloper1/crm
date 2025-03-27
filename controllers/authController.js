@@ -141,9 +141,17 @@ export const authforgetpassword = (req, res) => {
   }
 }
 
-export const profile = (req, res) => {
+export const profile = async(req, res) => {
   try {
-    res.render('profile', {})
+    const user_id = req.userId;
+
+    let qry = await query(`select * from users where id = ${user_id}`);
+
+
+    let profieData = await query(`select profile_img from users where id = ${user_id}`);
+    let profileimg =  profieData[0]?.profile_img
+
+    res.render('profile', {profiledata: qry?.[0]})
   } catch (error) {
     console.error(error);
   }
@@ -240,5 +248,27 @@ export const auth_reset_password = async (req, res) => {
   } catch (error) {
     console.err("Error:", error);
     return res.status(500).json({ success: false, message: 'Internal server error.'}) 
+  }
+}
+
+
+
+
+export const UploadProfileImg = async (req, res) => {
+  try {
+    
+    const user_id = req.userId;
+    const filename = req.file.filename;
+
+    let qry = await query(`update users set profile_img = '${filename}' where id = ${user_id}`);
+    if (qry) {
+      return res.status(200).json({ success: true, msg: "Profile Image Updated Successfully", filename: filename });
+      } else {
+        return res.status(400).json({ success: false, msg: "Failed to Update Profile"});
+      }
+
+  } catch (error) {
+    
+    return res.status(500).json({ success: false, msg: "Internal server Error" })
   }
 }

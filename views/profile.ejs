@@ -38,22 +38,22 @@
                     <div class="card-body">
                       <input type="file" id="imageUpload" accept="image/*" hidden>
                       <label for="imageUpload">
-                        <img id="profileImage" src="/assets/img/users/user-1.png" 
+                        <img id="profileImage" src="<%= profiledata?.profile_img ? 'profileimg/' + profiledata.profile_img : '/assets/img/users/img.avif' %>" 
                           class="rounded-circle author-box-picture shadow" alt="Profile Image" 
                           style="cursor: pointer; width: 200px; height: 200px;
                                  border: 5px solid transparent;
                                  background: linear-gradient(45deg, #6777ef, #49a6e9); padding: 5px;">
                       </label>
                       <div class="author-box-name mt-3" style="font-size: 24px; font-weight: bold; color: #333;">
-                        <a href="#" style="text-decoration: none; color: #333;">Sarah Smith</a>
+                        <a href="#" style="text-decoration: none; color: #333;"><%- profiledata?.full_name %></a>
                       </div>
-                      <div class="author-box-job" style="font-size: 18px; color: #777;">Web Developer</div>
-                      <button class="btn btn-primary mt-4 px-4 py-2" id="uploadBtn" 
-                        style="font-size: 18px; border-radius: 50px;
+                      <div class="author-box-job" style="font-size: 18px; color: #777;"><%- profiledata?.userRole %></div>
+                      <!-- <button class="btn btn-primary mt-4 px-4 py-2" id="uploadBtn" 
+                        style="font-size: 18px; border-radius: 50px; 
                                background: linear-gradient(45deg, #6777ef, #49a6e9); 
                                border: none; transition: 0.3s; cursor: pointer;">
                         Upload Image
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>
@@ -63,26 +63,35 @@
         </div>
         
         <script>
-          document.getElementById('imageUpload').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-              const reader = new FileReader();
-              reader.onload = function(e  ) {
-                document.getElementById('profileImage').src = e.target.result;
-              };
-              reader.readAsDataURL(file);
+         document.getElementById('imageUpload').addEventListener('change', async function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append('image', file); // Append file to FormData
+
+        try {
+
+          $.ajax({
+            url: "/profileImgupload",
+            type: "post",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(res) {
+              if(res.success){
+                document.getElementById('profileImage').src = `profileimg/${res.filename}`;
+              }
+            },
+            error: function(error) {
+              console.log(error)
             }
-          });
-        
-          document.getElementById('uploadBtn').addEventListener('click', function() {
-            const fileInput = document.getElementById('imageUpload');
-            if (fileInput.files.length > 0) {
-              alert('Image ready for upload! Implement backend logic to upload.');
-              // Implement AJAX request here to send the file to the server if needed.
-            } else {
-              alert('Please select an image first.');
-            }
-          });
+          })
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    }
+});
+
         </script>
         
         
