@@ -39,6 +39,7 @@ export const dashboard = async (req, res) => {
     const userRole = req.userRole;
     const bookings = await allBooking();
     const users = await query('SELECT * FROM users');
+    const id = req.userId
 
     // Fetch form_data records
     const formData = await query('SELECT * FROM form_data');
@@ -58,6 +59,8 @@ export const dashboard = async (req, res) => {
     const employeeRefundCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ? AND agent_name = ?', ['refund_form', agentName]))[0].total;
     const employeeSeatUpgradeCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ? AND agent_name = ?', ['seat_upgrade', agentName]))[0].total;
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
 
     // Render dashboard with data
     res.render('dashboard', { 
@@ -73,7 +76,8 @@ export const dashboard = async (req, res) => {
       employeeRefundCount, 
       totalSeatUpgradeCount, 
       employeeSeatUpgradeCount,
-      agentName
+      agentName,
+      ProfileImg
     });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
