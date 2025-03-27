@@ -24,7 +24,7 @@ const SetupServer = async (server) => {
         const receiverSocketId = users[receiver_id];
 
         const sql = "INSERT INTO messages (sender, receiver, message) VALUES (?, ?, ?)";
-        await query(sql, [sender_id, receiver_id, message])
+        await query(sql, [sender_id, receiver_id, message]);
 
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", data);
