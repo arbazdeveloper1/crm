@@ -10,13 +10,18 @@ export const getStaffList = async (req, res) => {
     const hodCount = await query('SELECT COUNT(*) as count FROM users WHERE userRole = "HOD"');
     const userCount = users.length; // Count of total users
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+
     res.render('staff_list', { 
       users, 
       userCount, // Total employee count
       agentCount: agentCount[0].count, 
       adminCount: adminCount[0].count, 
       hodCount: hodCount[0].count, 
-      userRole: req.userRole 
+      userRole: req.userRole,
+      ProfileImg
     });
   } catch (error) {
     console.error('Error fetching staff list:', error);
@@ -28,7 +33,11 @@ export const getStaffList = async (req, res) => {
 export const addStaffform = async (req, res) => {
   try {
     const users = await query('SELECT * FROM users');
-    res.render('add_staff', { users, userRole: req.userRole });
+
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+    res.render('add_staff', { users, userRole: req.userRole, ProfileImg });
   } catch (error) {
     console.error('Error fetching staff list:', error);
     res.status(500).send('Server error, API down');
@@ -136,10 +145,12 @@ export const newBooking = async (req, res) => {
 
     let { customer_id } = req.query
     const users = await query('SELECT * FROM users');
-
     const form_data = await query(`SELECT * FROM form_data WHERE customer_id='${customer_id}'`)
 
-    res.render('new-booking',{users, form_data})
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+    res.render('new-booking',{users, form_data, ProfileImg})
   }catch(error){
     console.log(error)
     throw new Error(error)
@@ -149,7 +160,10 @@ export const newBooking = async (req, res) => {
 export const refund_form = async (req, res) => {
   try{
     const users = await query('SELECT * FROM users');
-    res.render('refund_form',{users})
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+    res.render('refund_form',{users, ProfileImg})
   }catch(error){
     throw new Error(err)
     res.status(500).json({success:false, message: 'Error loading page'})
@@ -158,7 +172,10 @@ export const refund_form = async (req, res) => {
 export const future_credit_form = async (req, res) => {
   try{
     const users = await query('SELECT * FROM users');
-    res.render('future_credit_form',{users})
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+    res.render('future_credit_form',{users, ProfileImg})
   }catch(error){
     throw new Error(err)
     res.status(500).json({success:false, message: 'Error loading page'})
@@ -178,10 +195,14 @@ export const docusign_list = async (req, res) => {
     const totalRows = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalRows / limit);
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
     res.render('docusign_list', { 
       form_data, 
       userRole: req.userRole,
-      currentPage: page, totalPages
+      currentPage: page, totalPages,
+      ProfileImg
     });
   } catch(error){
     res.status(500).json({success:false, message: 'Error loading page'})
@@ -270,9 +291,10 @@ export const chat = async (req, res) => {
 
    
     let qry = await query(`SELECT * FROM users`);
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
 
-
-    res.render('chat', {userRole, data: qry, full_name: full_name, senderid: user_id})
+    res.render('chat', {userRole, data: qry, full_name: full_name, senderid: user_id, ProfileImg})
   }catch{
   res.status(500).json({success: false, message: 'Error loading page'})
   }
@@ -287,7 +309,10 @@ export const chat = async (req, res) => {
 
 export const test = async (req, res) => {
   try{
-    res.render('test')
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+    res.render('test',{ProfileImg})
   }catch{
     res.status(500).json({success: false, message: 'Error loading page'})
   }

@@ -132,11 +132,13 @@ export const new_booking_list = async (req, res) => {
         `;
 
     const result = await query(qry);
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
 
     if (result.length > 0) {
-      res.render("new_booking_list", { userRole, result });
+      res.render("new_booking_list", { userRole, result, ProfileImg });
     } else {
-      res.render("new_booking_list", { userRole, result: [] });
+      res.render("new_booking_list", { userRole, result: [], ProfileImg });
     }
   } catch (error) {
     throw new Error(error);
@@ -182,11 +184,13 @@ export const refund_list = async (req, res) => {
     const totalRows = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalRows / limit);
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
 
     if (result.length > 0) {
-      res.render("refund_list", { userRole, result, currentPage: page, totalPages });
+      res.render("refund_list", { userRole, result, currentPage: page, totalPages, ProfileImg });
     } else {
-      res.render("refund_list", { userRole, result: [], currentPage: page, totalPages });
+      res.render("refund_list", { userRole, result: [], currentPage: page, totalPages, ProfileImg });
     }
   } catch (error) {
     throw new Error(error);
@@ -233,10 +237,13 @@ export const exchange_list = async (req, res) => {
     const totalRows = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalRows / limit);
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
     if (result.length > 0) {
-      res.render("exchange_list", { userRole, result, currentPage: page, totalPages });
+      res.render("exchange_list", { userRole, result, currentPage: page, totalPages, ProfileImg });
     } else {
-      res.render("exchange_list", { userRole, result: [], currentPage: page, totalPages });
+      res.render("exchange_list", { userRole, result: [], currentPage: page, totalPages, ProfileImg });
     }
   } catch (error) {
     throw new Error(error);
@@ -283,10 +290,13 @@ export const seat_upgrade_list = async (req, res) => {
     const totalRows = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalRows / limit);
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
     if (result.length > 0) {
-      res.render("seat_upgrade_list", { userRole, result, currentPage: page, totalPages });
+      res.render("seat_upgrade_list", { userRole, result, currentPage: page, totalPages, ProfileImg });
     } else {
-      res.render("seat_upgrade_list", { userRole, result: [], currentPage: page, totalPages });
+      res.render("seat_upgrade_list", { userRole, result: [], currentPage: page, totalPages, ProfileImg });
     }
   } catch (error) {
     throw new Error(error);
@@ -335,8 +345,11 @@ export const AllBooking = async (req, res) => {
                 FROM users`
     const result2 = await query(qry2);
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
     if (result.length > 0) {
-      res.render("all_booking", { userRole, result, result2, currentPage: page, totalPages });
+      res.render("all_booking", { userRole, result, result2, currentPage: page, totalPages, ProfileImg });
     } else {
       res.render("all_booking", { userRole, result: [], result2:[], currentPage: page, totalPages });
     }
@@ -772,7 +785,10 @@ export const TrackIp = async (req, res) => {
       return;
     }
 
-    res.render("iptrackingsuccess", { DeviceInfo });
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+    res.render("iptrackingsuccess", { DeviceInfo, ProfileImg });
 
   } catch (error) {
     console.error(error);
@@ -1204,10 +1220,13 @@ export const future_credit_list = async (req, res) => {
     const totalRows = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalRows / limit);
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
     if (result.length > 0) {
-      res.render("future_credit_list", { userRole, result, currentPage: page, totalPages });
+      res.render("future_credit_list", { userRole, result, currentPage: page, totalPages, ProfileImg });
     } else {
-      res.render("future_credit_list", { userRole, result: [], currentPage: page, totalPages });
+      res.render("future_credit_list", { userRole, result: [], currentPage: page, totalPages, ProfileImg });
     }
   } catch (error) {
     throw new Error(error);
@@ -1280,6 +1299,9 @@ export const new_booking_draft_refund = async (req, res) => {
       return (BaseFare = acc + parseFloat(item.airline_cost));
     }, 0);
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
     if (result.length > 0) {
       res.render("new_booking_draft_refund", {
         userRole,
@@ -1290,6 +1312,7 @@ export const new_booking_draft_refund = async (req, res) => {
         user_status,
         charging_status,
         type,
+        ProfileImg
       });
     } else {
       res.render("new_booking_draft_refund", {
@@ -1301,6 +1324,7 @@ export const new_booking_draft_refund = async (req, res) => {
         user_status,
         charging_status,
         type,
+        ProfileImg
       });
     }
   } catch (error) {
@@ -1378,6 +1402,9 @@ export const new_booking_draft_seat_upgrade = async (req, res) => {
       BaseFare = 0
     }
 
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
     if (result.length > 0) {
       res.render("new_booking_draft_seat_upgrade", {
         userRole,
@@ -1388,6 +1415,7 @@ export const new_booking_draft_seat_upgrade = async (req, res) => {
         user_status,
         charging_status,
         type,
+        ProfileImg
       });
     } else {
       res.render("new_booking_draft_seat_upgrade", {
@@ -1399,6 +1427,7 @@ export const new_booking_draft_seat_upgrade = async (req, res) => {
         user_status,
         charging_status,
         type,
+        ProfileImg
       });
     }
   } catch (error) {
@@ -1472,6 +1501,8 @@ export const new_booking_draft_future_credit = async (req, res) => {
     if(isNaN(BaseFare)){
       BaseFare = 0
     }
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
 
     if (result.length > 0) {
       res.render("new_booking_draft_future_credit", {
@@ -1483,6 +1514,7 @@ export const new_booking_draft_future_credit = async (req, res) => {
         user_status,
         charging_status,
         type,
+        ProfileImg
       });
     } else {
       res.render("new_booking_draft_future_credit", {
@@ -1494,6 +1526,7 @@ export const new_booking_draft_future_credit = async (req, res) => {
         user_status,
         charging_status,
         type,
+        ProfileImg
       });
     }
   } catch (error) {

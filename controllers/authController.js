@@ -155,7 +155,10 @@ export const profile = async(req, res) => {
     let profieData = await query(`select profile_img from users where id = ${user_id}`);
     let profileimg =  profieData[0]?.profile_img
 
-    res.render('profile', {profiledata: qry?.[0]})
+    let ProfileData2 = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData2[0]?.profile_img;
+
+    res.render('profile', {profiledata: qry?.[0], ProfileImg})
   } catch (error) {
     console.error(error);
   }
