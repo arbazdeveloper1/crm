@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, sendOTP, resetPasswordHandler, dashboard, logoutUser, authforgetpassword, forgetpassword, auth_verify_otp, auth_reset_password} from '../controllers/authController.js';
+import { login, sendOTP, resetPasswordHandler, dashboard, logoutUser, authforgetpassword, forgetpassword, auth_verify_otp, auth_reset_password, profile} from '../controllers/authController.js';
 import { checkAuth, verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
@@ -11,6 +11,7 @@ router.get('/', checkAuth, (req, res) => {
 
 
 router.get('/Dashboard', verifyToken, dashboard);
+router.get('/profile', verifyToken, profile);
 router.post('/login', login);
 router.post('/logout', logoutUser);
 router.post('/forgot_password', sendOTP);
