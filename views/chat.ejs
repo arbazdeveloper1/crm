@@ -96,7 +96,7 @@
                                   <% if(data[i]?.id != senderid) { %>
                                   
                                 <li class="clearfix" data-id="<%- data[i]?.id %>">
-                                  <img src="/assets/img/users/img.avif" alt="avatar">
+                                  <img src="<%= data[i]?.profile_img ? 'profileimg/' + data[i]?.profile_img : '/assets/img/users/img.avif' %>" alt="avatar">
                                   <div class="about">
                                     <div class="name"><%- data[i]?.full_name %></div>
                                     <div class="status">
@@ -276,7 +276,7 @@ function sendMessage() {
 }
 
 
-function appendMessage(position, message) {
+function appendMessage(position, message, receiverimg, senderimg) {
     let date = new Date();
     let formattedTime = date.toLocaleTimeString("en-US", {
         hour: "2-digit",
@@ -288,7 +288,7 @@ function appendMessage(position, message) {
 
     $(".chat-content").append(`
         <div class="chat-item ${position}">
-            <img src="assets/img/users/${position === 'chat-right' ? 'user-1.png' : 'user-5.png'}">
+            <img src="profileimg/${position === 'chat-right' ? receiverimg : senderimg}">
             <div class="chat-details">
                 <div class="chat-text">${message}</div>
                 <div class="chat-time">${formattedTime}</div>
@@ -329,7 +329,7 @@ function fetchChats(receiverid) {
                 $(".chat-content").html("");
                 res.data.forEach(chat => {
                     let position = chat.sender === sender_id ? "chat-right" : "chat-left";
-                    appendMessage(position, chat.message);
+                    appendMessage(position, chat.message, res.receiverimg, res.senderimg);
                 });
             }
         },
