@@ -272,11 +272,11 @@ function sendMessage() {
         input.value = "";        
 
       }
-      appendMessage("chat-right", message, "",""); 
+      appendMessage("chat-right", message); 
 }
 
 
-function appendMessage(position, message, receiverimg, senderimg) {
+function appendMessage(position, message) {
     let date = new Date();
     let formattedTime = date.toLocaleTimeString("en-US", {
         hour: "2-digit",
@@ -285,10 +285,10 @@ function appendMessage(position, message, receiverimg, senderimg) {
     });
 
     let chatContent = $(".chat-content");
+    // <img src="profileimg/${position === 'chat-right' ? senderimg : receiverimg}">
 
     $(".chat-content").append(`
         <div class="chat-item ${position}">
-            <img src="profileimg/${position === 'chat-right' ? senderimg : receiverimg}">
             <div class="chat-details">
                 <div class="chat-text">${message}</div>
                 <div class="chat-time">${formattedTime}</div>
@@ -311,7 +311,7 @@ socket.on("newMessage", (data) => {
         let position = data.sender_id === sender_id ? "chat-right" : "chat-left";
 
         setTimeout(() => {
-            appendMessage(position, data.message, "", "");
+            appendMessage(position, data.message);
         }, 300);
     }
 });
@@ -329,7 +329,7 @@ function fetchChats(receiverid) {
                 $(".chat-content").html("");
                 res.data.forEach(chat => {
                     let position = chat.sender === sender_id ? "chat-right" : "chat-left";
-                    appendMessage(position, chat.message, res.receiverimg, res.senderimg);
+                    appendMessage(position, chat.message);
                 });
             }
         },
