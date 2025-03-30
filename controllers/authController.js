@@ -148,6 +148,7 @@ export const authforgetpassword = (req, res) => {
 export const profile = async(req, res) => {
   try {
     const user_id = req.userId;
+    const id = req.userId;
 
     let qry = await query(`select * from users where id = ${user_id}`);
 
@@ -169,6 +170,7 @@ export const profile = async(req, res) => {
 export const forgetpassword = async (req, res) => {
   try {
     const { email } = req.body;
+    const id = req.userId;
 
     // Check if the user exists
     const isUserExist = await query("SELECT DISTINCT email FROM users WHERE email = ?", [email]);

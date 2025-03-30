@@ -108,6 +108,7 @@ export const FutureCredit = async (req, res) => {
 export const new_booking_list = async (req, res) => {
   try {
     const userRole = req.userRole;
+    const id = req.userId;
 
     const QueryCondition =
       userRole == "admin"
@@ -153,6 +154,7 @@ export const refund_list = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const id = req.userId;
 
     const QueryCondition =
       userRole == "admin"
@@ -206,6 +208,7 @@ export const exchange_list = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const id = req.userId;
 
     const QueryCondition =
       userRole == "admin"
@@ -259,6 +262,7 @@ export const seat_upgrade_list = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const id = req.userId;
 
     const QueryCondition =
       userRole == "admin"
@@ -310,6 +314,7 @@ export const AllBooking = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const id = req.userId;
 
     const QueryCondition =
       userRole == "admin" ? `` : `WHERE agent_name = '${req.full_name}'`;
@@ -369,6 +374,7 @@ export const new_booking_draft = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const id = req.userId;
 
 
     let qry = `
@@ -1189,6 +1195,7 @@ export const future_credit_list = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const id = req.userId
 
     const QueryCondition =
       userRole == "admin"
@@ -1581,6 +1588,7 @@ export const filtercontroller = async (req, res) => {
   try {
     let { Agents, type, from_date, to_date, phone, page = 1, limit = 10 } = req.body;
     let offset = (page - 1) * limit;
+    const id = req.userId;
 
     let conditions = [];
 

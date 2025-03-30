@@ -142,7 +142,7 @@ export const updateUser = async (req, res) => {
 
 export const newBooking = async (req, res) => {
   try{
-
+    const id = req.userId;
     let { customer_id } = req.query
     const users = await query('SELECT * FROM users');
     const form_data = await query(`SELECT * FROM form_data WHERE customer_id='${customer_id}'`)
@@ -159,6 +159,7 @@ export const newBooking = async (req, res) => {
 
 export const refund_form = async (req, res) => {
   try{
+    const id = req.userId;
     const users = await query('SELECT * FROM users');
     let ProfileData = await query(`select profile_img from users where id='${id}'`)
     let ProfileImg = ProfileData[0]?.profile_img;
@@ -171,6 +172,7 @@ export const refund_form = async (req, res) => {
 }
 export const future_credit_form = async (req, res) => {
   try{
+    const id = req.userId;
     const users = await query('SELECT * FROM users');
     let ProfileData = await query(`select profile_img from users where id='${id}'`)
     let ProfileImg = ProfileData[0]?.profile_img;
@@ -187,6 +189,7 @@ export const docusign_list = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
+    const id = req.userId;
 
     const form_data = await query(`SELECT * FROM form_data LIMIT ${limit} OFFSET ${offset}`);
 
@@ -288,6 +291,7 @@ export const chat = async (req, res) => {
     const userRole = req.userRole;
     const full_name = req.full_name;
     const user_id = req.userId;
+    const id = req.userId;
 
    
     let qry = await query(`SELECT * FROM users`);
@@ -309,6 +313,7 @@ export const chat = async (req, res) => {
 
 export const test = async (req, res) => {
   try{
+    const id = req.userId;
     let ProfileData = await query(`select profile_img from users where id='${id}'`)
     let ProfileImg = ProfileData[0]?.profile_img;
 
@@ -324,7 +329,7 @@ export const getChats = async(req, res) => {
   try {
 
     let { receiver_id, sender_id } = req.params;
-    console.log(receiver_id, sender_id)
+    const id = req.userId;
 
     let qry = await query(`
       SELECT * FROM messages 
