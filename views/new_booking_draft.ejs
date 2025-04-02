@@ -88,7 +88,7 @@
             <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editDraft">Edit Draft Email</a>
           </li>
           <li class="nav-item mx-2">
-            <a href="#" class="btn btn-success">swap</a>
+            <a href="#" class="btn btn-success" id="swap_no">swap</a>
           </li>
         </ul>
         <ul class="navbar-nav">
@@ -314,13 +314,15 @@
                             </tr>
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">BASE FARE:</th>
-                              <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- BaseFare %>
+                              <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- (!result[0]?.base_fare) ? BaseFare : result[0]?.base_fare %>
+                                <input type="text" id="base_fare" value="<%- (!result[0]?.base_fare) ? BaseFare : result[0]?.base_fare %>" style="display: none;">
                               </td>
                             </tr>
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">TAXES & FEES:</th>
                               <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%-
                                   result[0]?.mco_calculated %></td>
+                                  <input type="text" id="taxes_fees" value="<%- result[0]?.mco_calculated %>" style="display: none;">
                             </tr>
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">REASON OF BOOKING:
@@ -342,7 +344,7 @@
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">CARD NUMBER:</th>
                               <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%-
-                                  result[0]?.card_number %> (<%- result[0]?.card_type %>)</td>
+                                result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %> (<%- result[0]?.card_type %>)</td>
                             </tr>
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">CARD EXPIRY / CVV:
@@ -1444,6 +1446,35 @@
 
     return false;
 }
+
+
+let btnn = document.getElementById('swap_no')
+btnn.addEventListener('click', function(){
+  let customer_id = document.getElementById('customer_id').value;
+  let taxes_fees = document.getElementById('taxes_fees').value;
+  let base_fare = document.getElementById('base_fare').value;
+
+  
+                             $.ajax({
+                              url: "/api/swap_tax",
+                              type: "POST",
+                              dataType: "json",
+                              data: { customer_id: customer_id, taxes_fees: taxes_fees, base_fare: base_fare },
+                              success: function (res) {
+                                if (res.success) {
+                                  iziToast.success({
+                                    title: "Success",
+                                    message: "Tax and base fare swaped !!",
+                                    position: "topRight"
+                                  });
+
+                                  setTimeout(() => {
+                                    window.location.reload()
+                                  }, 1000);
+                                }
+                              }})
+                            })
+
                         </script>
                         <!-- General JS Scripts -->
                         <script src="/assets/js/app.min.js"></script>

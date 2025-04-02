@@ -407,7 +407,8 @@ export const new_booking_draft = async (req, res) => {
                 status,
                 note,
                 case_number,
-                date_of_expiration
+                date_of_expiration,
+                base_fare
             FROM 
                 form_data
             WHERE 
@@ -464,6 +465,25 @@ export const new_booking_draft = async (req, res) => {
   }
 };
 
+
+export const swap_tax = async (req, res) => {
+  try {
+    
+    let { customer_id, taxes_fees, base_fare } = req.body;
+
+    let updateqry = await query(`update form_data set mco_calculated='${base_fare}',base_fare='${taxes_fees}' where customer_id='${customer_id}'`)
+
+    if(updateqry.affectedRows == 0){
+    return res.json({success: false})
+    }
+
+    return res.json({success: true})
+
+  } catch (error) {
+    return res.status(500).json({success: false, msg: "Internal server error"})
+  }
+}
+
 // Email Acknowledge
 export const EmailAcknowledge = async (req, res) => {
   try {
@@ -505,7 +525,8 @@ export const EmailAcknowledge = async (req, res) => {
         refund_amount,
         date_of_expiration,
         case_number,
-        booking_ref_no
+        booking_ref_no,
+        base_fare
               FROM 
                   form_data
                   WHERE 
@@ -624,7 +645,8 @@ export const EmailAcknowledge = async (req, res) => {
         arl_confirmation,
         currency,
         mco_description,
-        Docusign_Verified
+        Docusign_Verified,
+        base_fare
               FROM 
                   form_data
                   WHERE 
@@ -833,7 +855,8 @@ export const docusignPdf = async (req, res) => {
                 currency,
                 mco_description,
                 mco_calculated,
-                Docusign_Verified
+                Docusign_Verified,
+                base_fare
             FROM 
                 form_data
             WHERE 
@@ -928,7 +951,8 @@ export const e_ticket = async (req, res) => {
                 mco_description,
                 mco_calculated,
                 Docusign_Verified,
-                signed_document
+                signed_document,
+                base_fare
             FROM 
                 form_data
             WHERE 
