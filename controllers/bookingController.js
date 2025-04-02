@@ -719,6 +719,7 @@ export const TrackIp = async (req, res) => {
   try {
     const { customer_id } = req.params;
     const FullName = req.full_name;
+    const id = req.userId
 
     if (!customer_id) {
       return res.status(400).json({ success: false, message: "Customer ID is required" });
