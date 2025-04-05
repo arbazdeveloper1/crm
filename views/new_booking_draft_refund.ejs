@@ -173,7 +173,7 @@
                                 <p style="margin: 0; color:#666666;">We know things happen between the time you buy a ticket and when it comes time to fly. I’m happy to review your request for a refund.
                           <br><br>
 
-                            We have cancelled your booking for the refund amount of $ <%- result[0]?.refund_amount %> <%- result[0]?.currency %>. with a cancellation fee of $ <%- result[0]?.total_amount %> USD and the same amount would be charged on your Visa card ending with <%- result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
+                            We have cancelled your booking for the refund amount of  <%- result[0]?.refund_amount %> <%- result[0]?.currency %>. with a cancellation fee of $ <%- result[0]?.total_amount %> USD and the same amount would be charged on your Visa card ending with <%- result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
                             <br><br>
 
                             Note: - Your credit card may be billed in multiple charges not exceeding the total amount. On your bank statement, the charge would be shown under <%- result[0]?.mco_description=='my_fly_support' ? 'My Fly Support' : result[0]?.mco_description %>.

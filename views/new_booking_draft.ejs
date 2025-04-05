@@ -175,7 +175,7 @@
                           have
                           booked your itinerary as follows -
                           <br><br>
-                          Total price for all passenger(s) including taxes and fees: <b>$ <%- result[0]?.total_amount %>
+                          Total price for all passenger(s) including taxes and fees: <b> <%- result[0]?.total_amount %>
                               <%- result[0]?.currency %></b> (Total for all
                           passengers) and the same amount would be charged on your Visa card ending with <%-
                             result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
@@ -197,8 +197,8 @@
 
                                 <% airline_data.forEach((airline, pIndex)=> { %>
                                   <%= pIndex===0 ? "one from" : ", one from" %>
-                                    <%= airline.airline_name %> for <%= airline.airline_cost %>
-                                        <%= row.currency %>
+                                    <%= airline.airline_name %> for <b> <%= airline.airline_cost %>
+                                        <%= row.currency %></b>
                                           <% }); %>
                                             would be shown under <%- result[0]?.mco_description=='my_fly_support'
                                               ? 'My Fly Support' : result[0]?.mco_description %>.

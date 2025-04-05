@@ -175,7 +175,7 @@
                           We have received your cancellation request for booking reference <%- result[0]?.booking_ref_no %> for passenger(s):
                             <br><br>
 
-                            A $ <%- result[0]?.total_amount %> <%- result[0]?.currency %> cancellation fee will be charged to the account provided, once the cancellation is confirmed. and the same amount would be charged on your <%- result[0]?.card_type %> card ending with <%- result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
+                            A <b><%- result[0]?.total_amount %> <%- result[0]?.currency %></b> cancellation fee will be charged to the account provided, once the cancellation is confirmed. and the same amount would be charged on your <%- result[0]?.card_type %> card ending with <%- result[0]?.card_number.replace(/\d(?=\d{4})/g, "X" ) || "No card available" %>
 
 
 
