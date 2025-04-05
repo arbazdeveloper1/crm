@@ -312,6 +312,8 @@
                               <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%-
                                   result[0]?.total_amount %></td>
                             </tr>
+
+                            <% if(email==='true' ) { %>
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">BASE FARE:</th>
                               <td style="border: 1px solid #666666; text-align: left; padding: 5px;"><%- (!result[0]?.base_fare) ? BaseFare : result[0]?.base_fare %>
@@ -324,6 +326,9 @@
                                   result[0]?.mco_calculated %></td>
                                   <input type="text" id="taxes_fees" value="<%- result[0]?.mco_calculated %>" style="display: none;">
                             </tr>
+                            <% } %>
+
+
                             <tr>
                               <th style="border: 1px solid #666666; text-align: left; padding: 5px;">REASON OF BOOKING:
                               </th>
