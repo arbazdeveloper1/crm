@@ -489,7 +489,7 @@ export const EmailAcknowledge = async (req, res) => {
   try {
     const { fromEmail, subject, toEmail, emailtype, customer_id } = req.body;
     const { mail_type } = req.params;
-    console.log(mail_type);
+    console.log(mail_type,'fdsafas');
     const FullName = req.full_name;
     if (!fromEmail || !subject || !toEmail || !emailtype) {
       return res
@@ -526,7 +526,8 @@ export const EmailAcknowledge = async (req, res) => {
         date_of_expiration,
         case_number,
         booking_ref_no,
-        base_fare
+        base_fare,
+        mco_calculated
               FROM 
                   form_data
                   WHERE 
@@ -646,12 +647,12 @@ export const EmailAcknowledge = async (req, res) => {
         currency,
         mco_description,
         Docusign_Verified,
-        base_fare
+        base_fare,
+        mco_calculated
               FROM 
                   form_data
                   WHERE 
-                  customer_id = '${customer_id}'
-                  `;
+                  customer_id = '${customer_id}'`;
 
       const result = await query(qry);
 
@@ -1474,6 +1475,7 @@ export const new_booking_draft_future_credit = async (req, res) => {
     const { customer_id } = req.params;
     const FullName = req.full_name;
     const { email, type } = req.query;
+    const id = req.userId;
     let qry = `
             SELECT DISTINCT
                 card_holder_name,
