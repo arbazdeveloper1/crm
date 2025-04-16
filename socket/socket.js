@@ -23,7 +23,6 @@ const SetupServer = async (server) => {
         const { sender_id, receiver_id, message, file } = data;
         const receiverSocketId = users[receiver_id];
 
-        console.log(data)
         const fileUrl = file || null;
 
         const sql = "INSERT INTO messages (sender, receiver, message, attachement) VALUES (?, ?, ?, ?)";
@@ -33,7 +32,7 @@ const SetupServer = async (server) => {
         } catch (error) {
           console.error('Error inserting into database:', error);
         }
-        
+
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", data);
         }

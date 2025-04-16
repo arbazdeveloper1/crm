@@ -339,6 +339,9 @@ function appendMessage(position, message, path) {
         hour12: false
     });
 
+    // Add the day of the week
+    let formattedDay = date.toLocaleDateString("en-US", { weekday: "short" });
+
     let content = "";
 
     if (message && message.trim() !== "") {
@@ -348,14 +351,14 @@ function appendMessage(position, message, path) {
     if (path) {
         const lowerPath = path.toLowerCase();
         if (lowerPath.endsWith(".jpg") || lowerPath.endsWith(".jpeg") || lowerPath.endsWith(".png") || lowerPath.endsWith(".gif")) {
-          content += `
+            content += `
             <div class="chat-attachment">
                 <a href="${path}" target="_blank">
-                    <img src="${path}" alt="image" style="max-width: 200px; border-radius: 8px; margin-top: 5px; cursor: pointer;" />
+                    <img src="${path}" alt="image" style="max-width: 200px; border-radius: 5px;" />
                 </a>
             </div>`;
         } else if (lowerPath.endsWith(".pdf")) {
-            content += `<div class="chat-attachment"><a href="${path}" target="_blank" style="color: blue; text-decoration: underline;">📄 View PDF</a></div>`;
+            content += `<div class="chat-attachment"><a href="${path}" target="_blank" class="btn btn-sm btn-outline-primary">📄 View PDF</a></div>`;
         } else {
             content += `<div class="chat-attachment"><a href="${path}" target="_blank">Download File</a></div>`;
         }
@@ -367,7 +370,9 @@ function appendMessage(position, message, path) {
             <div class="chat-item ${position}">
                 <div class="chat-details">
                     ${content}
-                    <div class="chat-time">${formattedTime}</div>
+                    <div class="chat-time">
+                        <span class="chat-day">${formattedDay},</span> ${formattedTime}
+                    </div>
                 </div>
             </div>
         `);
