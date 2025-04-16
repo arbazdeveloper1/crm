@@ -10,12 +10,15 @@ import staffRoutes from './routes/staffRoutes.js';
 // import { checkAuth } from './middlewares/authMiddleware.js';
  // Only import checkAuth since verifyToken is used in specific routes
 import newBooking from './routes/bookingRoutes.js';
+import chat_router from './utils/upload_chatattchement.js';
 
 dotenv.config();
 
 const app = express();
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/pdfupload', express.static(path.join(__dirname, 'pdfupload')));
 app.use('/profileimg', express.static(path.join(__dirname, 'profileImg')));
+
+app.use('/chatuploads', express.static('chatuploads')); // Public folder
+app.use('/api/upload_chatattachment', chat_router);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

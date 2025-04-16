@@ -71,8 +71,6 @@
       <% } else if (userRole === 'agent') { %>
         <%- include('./common/AgentSidebar.ejs') %>
       <% } %>
-      
-
 
 
           <!-- Main Content -->
@@ -151,14 +149,26 @@
                                     </div>
                                 </div>
                             </div>
-                
-                            <div class="card-footer chat-form">
-                                <input type="text" class="form-control" id="messageInput" placeholder="Type a message" style="border: 1px solid black;">
-                                <button onclick="sendMessage()" class="btn btn-primary">
-                                    <i class="far fa-paper-plane"></i>
-                                </button>
+                            <div class="card-footer chat-form d-flex align-items-center gap-3" style="padding: 10px; background-color: #f8f9fa;">
+                              <!-- Hidden file input -->
+                              <input type="file" id="fileInput" style="display: none;" />
+                            
+                              <!-- Attachment icon -->
+                              <label for="fileInput" style="cursor: pointer; margin: 0;">
+                                <i class="fa fa-paperclip fa-lg" style="color: black;margin-right: 10px;"></i> <!-- FIXED -->
+                              </label>
+                            
+                              <!-- Message input -->
+                              <input type="text" class="form-control flex-grow-1" id="messageInput" placeholder="Type a message" style="border: 1px solid #ccc;" />
+                            
+                              <!-- Send button -->
+                              <button onclick="sendMessage()" class="btn btn-primary">
+                                <i class="far fa-paper-plane"></i>
+                              </button>
                             </div>
-                        </div>
+                            
+                            
+                            
                     </div>
                   </div>
                 
@@ -172,6 +182,13 @@
   
   <script src="/socket.io/socket.io.js"></script>
   <script>
+
+document.getElementById("fileInput").addEventListener("change", function () {
+        if (this.files.length > 0) {
+            sendMessage(); // Automatically call sendMessage
+        }
+    });
+
     const socket = io(); // Connect to the server
 
     socket.on("connect", () => {
@@ -251,9 +268,10 @@ socket.on("updateOnlineUsers", (onlineUsers) => {
 
 
 
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById("messageInput");
     const sender_id = document.getElementById('senderid').value;
+    let fileUrl;
 
     if (!selectedUserId) {
         alert("Please select a user to send a message.");
@@ -261,22 +279,59 @@ function sendMessage() {
     }
 
     const message = input.value.trim();
-    if (message) {
-        const data = {
-            sender_id: sender_id,
-            receiver_id: selectedUserId,
-            message: message
-        };
 
-        socket.emit("message", data); // Send message
-        input.value = "";        
+    if (fileInput.files.length > 0) {
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      console.log(fileInput.files[0])
 
-      }
-      appendMessage("chat-right", message); 
+    try {
+      const res = await fetch("/api/upload_chatattachment", {
+        method: "POST",
+        body: formData,
+      });
+      console.log(res)
+
+      const result = await res.json();
+      console.log(result,'This is the result')
+      fileUrl = result.fileUrl; // 👈 File URL after upload
+    } catch (err) {
+      console.error("File upload failed", err);
+      return;
+    }
+  }
+
+if (!message && !fileUrl) return;
+
+  const data = {
+    sender_id: sender_id,
+    receiver_id: selectedUserId,
+    message: message || null,  // If no message, pass null
+    file: fileUrl || null,     
+};
+socket.emit("message", data);
+
+
+if (fileUrl) {
+    const ext = fileUrl.split('.').pop().toLowerCase();
+    if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
+      appendMessage("chat-right", `<img src="${fileUrl}" style="max-width: 200px; border-radius: 5px;" />`);
+    } else {
+      appendMessage("chat-right", `<a href="${fileUrl}" target="_blank" class="btn btn-sm btn-outline-primary">📄 View File</a>`);
+    }
+  }
+
+  if (message) {
+    appendMessage("chat-right", message);
+  }
+
+  input.value = "";
+  fileInput.value = "";
+      // }
+      // appendMessage("chat-right", message); 
 }
 
-
-function appendMessage(position, message) {
+function appendMessage(position, message, path) {
     let date = new Date();
     let formattedTime = date.toLocaleTimeString("en-US", {
         hour: "2-digit",
@@ -284,37 +339,73 @@ function appendMessage(position, message) {
         hour12: false
     });
 
-    let chatContent = $(".chat-content");
-    // <img src="profileimg/${position === 'chat-right' ? senderimg : receiverimg}">
+    let content = "";
 
-    $(".chat-content").append(`
-        <div class="chat-item ${position}">
-            <div class="chat-details">
-                <div class="chat-text">${message}</div>
-                <div class="chat-time">${formattedTime}</div>
+    if (message && message.trim() !== "") {
+        content += `<div class="chat-text">${message}</div>`;
+    }
+
+    if (path) {
+        const lowerPath = path.toLowerCase();
+        if (lowerPath.endsWith(".jpg") || lowerPath.endsWith(".jpeg") || lowerPath.endsWith(".png") || lowerPath.endsWith(".gif")) {
+          content += `
+            <div class="chat-attachment">
+                <a href="${path}" target="_blank">
+                    <img src="${path}" alt="image" style="max-width: 200px; border-radius: 8px; margin-top: 5px; cursor: pointer;" />
+                </a>
+            </div>`;
+        } else if (lowerPath.endsWith(".pdf")) {
+            content += `<div class="chat-attachment"><a href="${path}" target="_blank" style="color: blue; text-decoration: underline;">📄 View PDF</a></div>`;
+        } else {
+            content += `<div class="chat-attachment"><a href="${path}" target="_blank">Download File</a></div>`;
+        }
+    }
+
+    if (content !== "") {
+        let chatContent = $(".chat-content");
+        chatContent.append(`
+            <div class="chat-item ${position}">
+                <div class="chat-details">
+                    ${content}
+                    <div class="chat-time">${formattedTime}</div>
+                </div>
             </div>
-        </div>
-    `);
+        `);
 
-    chatContent.scrollTop(chatContent[0].scrollHeight);
-    chatContent[0].offsetHeight;
+        chatContent.scrollTop(chatContent[0].scrollHeight);
+        chatContent[0].offsetHeight;
+    }
 }
 
-
 socket.on("newMessage", (data) => {
-    const sender_id = document.getElementById('senderid').value;
+  const sender_id = document.getElementById("senderid").value;
 
-    if (
-        (data.sender_id === sender_id && data.receiver_id === selectedUserId) ||
-        (data.sender_id === selectedUserId && data.receiver_id === sender_id)
-    ) {
-        let position = data.sender_id === sender_id ? "chat-right" : "chat-left";
+  // Only show message if it's between the right sender and receiver
+  if (
+    (data.sender_id === sender_id && data.receiver_id === selectedUserId) ||
+    (data.sender_id === selectedUserId && data.receiver_id === sender_id)
+  ) {
+    let position = data.sender_id === sender_id ? "chat-right" : "chat-left";
 
-        setTimeout(() => {
-            appendMessage(position, data.message);
-        }, 300);
-    }
+    setTimeout(() => {
+      if (data.file) {
+        const fileExt = data.file.split(".").pop().toLowerCase();
+
+        if (["jpg", "jpeg", "png", "gif", "webp"].includes(fileExt)) {
+          appendMessage(position, `<img src="${data.file}" style="max-width: 200px; border-radius: 5px;" />`);
+        } else {
+          appendMessage(position, `<a href="${data.file}" target="_blank" class="btn btn-sm btn-outline-primary">📄 View File</a>`);
+        }
+      }
+
+      // Then: Handle message text
+      if (data.message) {
+        appendMessage(position, data.message);
+      }
+    }, 300);
+  }
 });
+
 
 
 
@@ -329,7 +420,7 @@ function fetchChats(receiverid) {
                 $(".chat-content").html("");
                 res.data.forEach(chat => {
                     let position = chat.sender === sender_id ? "chat-right" : "chat-left";
-                    appendMessage(position, chat.message);
+                    appendMessage(position, chat.message, chat.attachement);
                 });
             }
         },

@@ -595,7 +595,7 @@
 
 .chat-box .chat-content .chat-item.chat-right .chat-details {
     margin-left: 0;
-    margin-right: 70px;
+    margin-right: 7px;
     text-align: right
 }
 
@@ -613,7 +613,7 @@
 }
 
 .chat-box .chat-content .chat-item .chat-details {
-    margin-left: 70px
+    margin-left: 7px
 }
 
 .chat-box .chat-content .chat-item .chat-details .chat-text {

@@ -20,12 +20,20 @@ const SetupServer = async (server) => {
     
 
       socket.on("message", async(data) => {
-        const { sender_id, receiver_id, message } = data;
+        const { sender_id, receiver_id, message, file } = data;
         const receiverSocketId = users[receiver_id];
 
-        const sql = "INSERT INTO messages (sender, receiver, message) VALUES (?, ?, ?)";
-        await query(sql, [sender_id, receiver_id, message]);
+        console.log(data)
+        const fileUrl = file || null;
 
+        const sql = "INSERT INTO messages (sender, receiver, message, attachement) VALUES (?, ?, ?, ?)";
+        try {
+          await query(sql, [sender_id, receiver_id, message || null, fileUrl]);  // Ensure message can be null
+          console.log('Message saved successfully in DB');
+        } catch (error) {
+          console.error('Error inserting into database:', error);
+        }
+        
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", data);
         }
