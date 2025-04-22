@@ -1296,10 +1296,10 @@
                                 let date_of_expiration = document.getElementById('date_of_expiration')?.value;
                                 let email = document.getElementById('draft_email')?.value;
 
-                                if(!validateCardNumber(card_number)){
-                                  iziToast.error({ title: "Error", message: "Card Number is Invalid !", position: "topRight" });
-                                  return
-                                }
+                                // if(!validateCardNumber(card_number)){
+                                //   iziToast.error({ title: "Error", message: "Card Number is Invalid !", position: "topRight" });
+                                //   return
+                                // }
 
                                 if(cvv.length != 3){
                                   iziToast.error({ title: "Error", message: "Cvv must be 3 digits", position: "topRight" });
