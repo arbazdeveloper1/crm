@@ -79,11 +79,7 @@ export const Refund_Description = async (payload, FileName) => {
         card_type , cvv, email, currency, 
         billing_phone, mco_calculated, card_holder_name, airline_info, passenger_details, gds_pnr,
         subject_line, tfn, billing_address,image,customer_id, agent_name,created_at, email_type, booking_type,Docusign_Verified, status,refund_amount,case_number) VALUES
-        ('${parseFloat(
-          totalAmountQuoted
-        )}', '${mcoDescription}','${typeOfCharge}', '${cardNumber}', '${formatExpirationNative(
-      expiration
-    )}','${arlConfirmation}', '${cardType}', '${cvv}', '${email}', '${currency}', '${billingPhone}', '${mco_calculated}', '${cardHolderName}','${airline_info}', '${passenger_details}','${GDS_PRN}', '${subjectLine}', '${TFN}', '${billingAddress}','${FileName}','${generateRandomAlphaNumeric()}','${fullname}','${getCurrentDateFormatted()}','supplier','${booking_type}','false', 'working', '${refund_amount}','${case_number}')`;
+        ('${parseFloat(totalAmountQuoted)}', '${mcoDescription}','${typeOfCharge}', '${cardNumber}', '${formatExpirationNative(expiration)}','${arlConfirmation}', '${cardType}', '${cvv}', '${email}', '${currency}', '${billingPhone}', '${totalAmountQuoted}', '${cardHolderName}','${airline_info}', '${passenger_details}','${GDS_PRN}', '${subjectLine}', '${TFN}', '${billingAddress}','${FileName}','${generateRandomAlphaNumeric()}','${fullname}','${getCurrentDateFormatted()}','supplier','${booking_type}','false', 'working', '${refund_amount}','${case_number}')`;
 
     const insert_resp = await query(insert_query);
 
