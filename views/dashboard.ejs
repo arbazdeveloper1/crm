@@ -334,7 +334,7 @@
           </div>
           <div class="col-md-12 col-lg-12 col-xl-12">
             <!-- create by  -->
-            <div class="d-flex justify-content-center" >
+            <!-- <div class="d-flex justify-content-center" >
               <h4 class="mb-0" style="font-size: small;">Created by 
                 <a href="#">
                   <span style="color: #6777ef;">
@@ -342,7 +342,7 @@
                   </span>
                 </a>
               </h4>
-            </div>
+            </div> -->
             <!-- created by
               -->
           </div>
@@ -366,10 +366,9 @@
       };
   
       let formattedTime = new Intl.DateTimeFormat("en-US", options).format(now);
-      
       // Adjust format to match "March 5, 2025 at 2:55:45 pm"
       formattedTime = formattedTime.replace(",", "") // Remove extra comma
-                                  .replace("AM", "am")
+                                  .replace("AM", "am") 
                                   .replace("PM", "pm");
       
       document.getElementById("currentTime").innerText = formattedTime;
