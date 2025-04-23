@@ -1272,6 +1272,7 @@ export const future_credit_list = async (req, res) => {
 // refund email controller
 export const new_booking_draft_refund = async (req, res) => {
   try {
+    const id = req.userId
     const userRole = req.userRole;
     const { customer_id } = req.params;
     const FullName = req.full_name;
