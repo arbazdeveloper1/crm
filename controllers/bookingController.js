@@ -1338,6 +1338,10 @@ export const new_booking_draft_refund = async (req, res) => {
       return (BaseFare = acc + parseFloat(item.airline_cost));
     }, 0);
 
+    if(isNaN(BaseFare)){
+      BaseFare = 0  
+    }
+
     let ProfileData = await query(`select profile_img from users where id='${id}'`)
     let ProfileImg = ProfileData[0]?.profile_img;
 
