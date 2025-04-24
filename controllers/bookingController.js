@@ -715,10 +715,11 @@ export const EmailAcknowledge = async (req, res) => {
       }
     }
   } catch (error) {
-    throw new Error(err);
-    return res
-      .status(500)
-      .json({ success: false, ErrorMsg: "Internal Server Error" });
+    // throw new Error(err);
+    // return res
+      // .status(500)
+      // .json({ success: false, ErrorMsg: "Internal Server Error" });
+      console.log(error)
   }
 };
 
