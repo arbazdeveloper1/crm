@@ -37,7 +37,7 @@ export const login = async (req, res) => {
 export const dashboard = async (req, res) => {
   try {
     const userRole = req.userRole;
-    const bookings = await allBooking();
+    const bookings = (await allBooking()).reverse().slice(0, 5);
     const users = await query('SELECT * FROM users');
     const id = req.userId
 
@@ -45,7 +45,7 @@ export const dashboard = async (req, res) => {
     const formData = await query('SELECT * FROM form_data');
 
     // Extract agent_name from req.userRole (if available)
-    const agentName = req?.full_name;
+    const agentName = req?.full_name;  
 
     // Get total counts for each booking type
     const totalNewbookingCount = (await query('SELECT COUNT(*) AS total FROM form_data WHERE booking_type = ?', ['new_booking']))[0].total;
@@ -84,6 +84,7 @@ export const dashboard = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+
 
 
 
