@@ -27,7 +27,8 @@ import {
   DeleteBooking,
   UpdateEmailDraft,
   filtercontroller,
-  swap_tax
+  swap_tax,
+  upcoming_Travels
 } from "../controllers/bookingController.js";
 import upload from "../utils/multer.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
@@ -98,6 +99,9 @@ route.post('/api/filter', verifyToken, filtercontroller)
 
 route.post('/api/swap_tax', verifyToken, swap_tax);
 
+
+
+route.get('/upcoming_travels', verifyToken, upcoming_Travels);
 
 
 export default route;

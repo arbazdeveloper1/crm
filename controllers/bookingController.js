@@ -356,7 +356,7 @@ export const AllBooking = async (req, res) => {
     if (result.length > 0) {
       res.render("all_booking", { userRole, result, result2, currentPage: page, totalPages, ProfileImg });
     } else {
-      res.render("all_booking", { userRole, result: [], result2:[], currentPage: page, totalPages });
+      res.render("all_booking", { userRole, result: [], result2:[], currentPage: page, totalPages, ProfileImg });
     }
   } catch (error) {
     console.log(error)
@@ -1666,5 +1666,59 @@ export const filtercontroller = async (req, res) => {
   } catch (error) {
     console.log(error)
     return res.status(500).json({ success: false, msg: "internal server error" })
+  }
+}
+
+
+
+
+export const upcoming_Travels = async(req, res) => {
+  try {
+    const userRole = req.userRole;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+    const id = req.userId
+
+    const QueryCondition =
+      userRole == "admin"
+        ? ``
+        : `WHERE agent_name = '${req.full_name}'`;
+
+    let qry = `
+            SELECT 
+                card_holder_name,
+                total_amount,
+                email_type,
+                created_at,
+                agent_name,
+                customer_id,
+                booking_type,
+                status,
+                DATE_FORMAT(updated_at, '%H:%i') as updated_time
+            FROM 
+                form_data 
+                ${QueryCondition}
+            ORDER BY id DESC
+            LIMIT ${limit} OFFSET ${offset}
+        `;
+
+    const result = await query(qry);
+
+    let countQry = `SELECT COUNT(*) AS total FROM form_data ${QueryCondition}`;
+    const countResult = await query(countQry);
+    const totalRows = countResult[0]?.total || 0;
+    const totalPages = Math.ceil(totalRows / limit);
+
+    let ProfileData = await query(`select profile_img from users where id='${id}'`)
+    let ProfileImg = ProfileData[0]?.profile_img;
+
+    if (result.length > 0) {
+      res.render("upcoming_Travels", { userRole, result, currentPage: page, totalPages, ProfileImg });
+    } else {
+      res.render("upcoming_Travels", { userRole, result: [], currentPage: page, totalPages, ProfileImg });
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
