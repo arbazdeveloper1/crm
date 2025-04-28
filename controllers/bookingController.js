@@ -1673,7 +1673,7 @@ export const filtercontroller = async (req, res) => {
 
 
 
-export const upcoming_Travels = async(req, res) => {
+export const upcoming_travels = async(req, res) => {
   try {
     const userRole = req.userRole;
     const page = parseInt(req.query.page) || 1;
@@ -1712,12 +1712,12 @@ export const upcoming_Travels = async(req, res) => {
     const totalPages = Math.ceil(totalRows / limit);
 
     let ProfileData = await query(`select profile_img from users where id='${id}'`)
-    let ProfileImg = ProfileData[0]?.profile_img;
+    let ProfileImg = ProfileData[0]?.profile_img; 
 
     if (result.length > 0) {
-      res.render("upcoming_Travels", { userRole, result, currentPage: page, totalPages, ProfileImg });
+      res.render("upcoming_travels", { userRole, result, currentPage: page, totalPages, ProfileImg });
     } else {
-      res.render("upcoming_Travels", { userRole, result: [], currentPage: page, totalPages, ProfileImg });
+      res.render("upcoming_travels", { userRole, result: [], currentPage: page, totalPages, ProfileImg });
     }
   } catch (error) {
     console.error(error);
