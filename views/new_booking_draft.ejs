@@ -726,20 +726,39 @@
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="currency">ARL/Confirmation</label>
-                    <input type="text" class="form-control" value="<%- result[0]?.arl_confirmation %>" id="arl_confirmation">
-                    <label for="currency">GDS/PNR</label>
-                    <input type="text" class="form-control" value="<%- result[0]?.gds_pnr %>" id="pnr_no">
-                    <label for="currency">Card Number</label>
-                    <input type="text" class="form-control" value="<%- result[0]?.card_number %>" id="card_number">
-                    <label for="currency">CVV</label>
-                    <input type="text" class="form-control" value="<%- result[0]?.cvv %>" id="cvv">
-                    <label for="currency">Expiration </label>
-                    <input type="text" class="form-control" value="<%- result[0]?.date_of_expiration %>" id="date_of_expiration">
-                    <label for="currency">Email </label>
-                    <input type="email" class="form-control" value="<%- result[0]?.email %>" id="draft_email">
+                    <label for="arl_confirmation">ARL/Confirmation</label>
+                    <input type="text" class="form-control" id="arl_confirmation" value="<%- result[0]?.arl_confirmation %>">
+                
+                    <label for="pnr_no">GDS/PNR</label>
+                    <input type="text" class="form-control" id="pnr_no" value="<%- result[0]?.gds_pnr %>">
+                
+                    <label for="card_number">Card Number</label>
+                    <input type="text" class="form-control" id="card_number" value="<%- result[0]?.card_number %>">
+                
+                    <label for="cvv">CVV</label>
+                    <input type="text" class="form-control" id="cvv" value="<%- result[0]?.cvv %>">
+                
+                    <label for="date_of_expiration">Expiration</label>
+                    <input type="text" class="form-control" id="date_of_expiration" value="<%- result[0]?.date_of_expiration %>">
+                
+                    <label for="draft_email">Email</label>
+                    <input type="email" class="form-control" id="draft_email" value="<%- result[0]?.email %>">
+                  </div>
+                
+                  <div class="form-group mt-4">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="upcoming_departing_date">Departing Date</label>
+                        <input type="date" id="upcoming_departing_date" name="upcoming_departing_date" class="form-control">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="upcoming_returning_date">Returning Date</label>
+                        <input type="date" id="upcoming_returning_date" name="upcoming_returning_date" class="form-control">
+                      </div>
+                    </div>
                   </div>
                 </div>
+                
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary" id="changeemailDraftBtn">Update Details</button>
