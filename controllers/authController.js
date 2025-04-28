@@ -24,13 +24,13 @@ export const login = async (req, res) => {
     if (match) {
         const token = jwt.sign({ id: user.id, role: user.userRole, full_name: user.full_name, username: user.username }, process.env.JWT_SECRET, { expiresIn: '12h' });
         res.cookie('token', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
-      return res.redirect('/dashboard');
+      // return res.redirect('/dashboard');
+      return res.status(200).json({ success: true, msg: "login successfull" })
     } else {
-      return res.status(401).send('Invalid username or password');
+      return res.status(201).json({ success: false, msg: "password_wrong" });
     }
   } else {
-    return res.render('/login')
-    return res.status(401).send('Invalid username or password');
+    return res.status(401).json({ success: false, msg: "User_not_found" })
   }
 };
 
