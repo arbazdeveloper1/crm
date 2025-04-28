@@ -67,7 +67,7 @@
                             <i class="fas fa-<%= result[0].status === 'charged' ? 'unlock' : 'lock' %>"></i>  Last Status: <%- charging_status ? charging_status : 'working' %>
 
                           </a>
-                          <% } else if(charging_status != 'charged') { %>
+                          <% } else if(charging_status != 'charged' && charging_status != undefined) { %>
                             <a href="#" class="btn btn-danger"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: <%- charging_status ? charging_status : 'working' %></a>
                             <% }else{ %>
                               <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
