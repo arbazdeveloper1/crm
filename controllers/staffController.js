@@ -4,6 +4,7 @@ import { query } from '../config/db.js';
 // Function to get the staff list
 export const getStaffList = async (req, res) => {
   try {
+    const id = req.userId
     const users = await query('SELECT * FROM users');
     const agentCount = await query('SELECT COUNT(*) as count FROM users WHERE userRole = "agent"');
     const adminCount = await query('SELECT COUNT(*) as count FROM users WHERE userRole = "admin"');
@@ -33,7 +34,8 @@ export const getStaffList = async (req, res) => {
 export const addStaffform = async (req, res) => {
   try {
     const users = await query('SELECT * FROM users');
-
+    const id = req.userId
+    
     let ProfileData = await query(`select profile_img from users where id='${id}'`)
     let ProfileImg = ProfileData[0]?.profile_img;
 
