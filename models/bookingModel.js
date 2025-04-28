@@ -19,7 +19,7 @@ export const Price_Description = async (payload, FileName) => {
       passenger_details,
       mco_calculated,
     } = payload;
-    const { subjectLine, cardHolderName, TFN, billingAddress, fullname, booking_type } =
+    const { subjectLine, cardHolderName, TFN, billingAddress, fullname, booking_type, upcoming_departing_date } =
       payload;
 
     const insert_query = `INSERT INTO form_data 
