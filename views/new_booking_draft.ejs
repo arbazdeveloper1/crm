@@ -57,25 +57,13 @@
                     <% } %>
                     
                     <% if(userRole=='admin' ) { %>
-                      <% if (userRole=='admin' && result[0].status==="sent_for_issuance" ) { %>
-                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#chargeModal">
-                          Last Status: Recieved for Charge  
-                        </a>
-                        <% } else if (userRole=='admin' && charging_status==='charged') { %>
-
-                          <a href="#" class="btn btn-<%= charging_status == 'charged' ? 'success' : 'danger' %>">
-                            <i class="fas fa-<%= result[0].status === 'charged' ? 'unlock' : 'lock' %>"></i>  Last Status: <%- charging_status ? charging_status : 'working' %>
-
-                          </a>
-                          <% } else if(charging_status != 'charged' && charging_status != undefined) { %>
-                            <a href="#" class="btn btn-danger" id="alert_for_verfication"><i class="fas fa-lock"></i>&nbsp;&nbsp;Last Status: <%- charging_status ? charging_status : 'working' %></a>
-                            <% }else{ %>
+                   
                               <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
                                 Last Status: <%- charging_status ? charging_status : 'working' %>
                               </a>
                               <% } %>
-                              <% } %>
                               
+
 
           </li>
           <li class="nav-item mx-2">
