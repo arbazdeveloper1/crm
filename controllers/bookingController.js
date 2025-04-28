@@ -1683,8 +1683,8 @@ export const upcoming_travels = async(req, res) => {
 
     const QueryCondition =
       userRole == "admin"
-        ? ``
-        : `WHERE agent_name = '${req.full_name}'`;
+        ? `WHERE upcoming_departing_date >= CURRENT_DATE`
+        : `WHERE agent_name = '${req.full_name}' AND upcoming_departing_date >= CURRENT_DATE`;
 
     let qry = `
             SELECT 
@@ -1699,7 +1699,7 @@ export const upcoming_travels = async(req, res) => {
                 DATE_FORMAT(updated_at, '%H:%i') as updated_time
             FROM 
                 form_data 
-                ${QueryCondition}
+                ${QueryCondition} 
             ORDER BY id DESC
             LIMIT ${limit} OFFSET ${offset}
         `;
