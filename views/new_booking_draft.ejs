@@ -1313,6 +1313,8 @@
                                 let cvv = document.getElementById('cvv')?.value;
                                 let date_of_expiration = document.getElementById('date_of_expiration')?.value;
                                 let email = document.getElementById('draft_email')?.value;
+                                let upcoming_departing_date = document.getElementById('upcoming_departing_date')?.value;
+                                let upcoming_returning_date = document.getElementById('upcoming_returning_date')?.value;
 
                                 // if(!validateCardNumber(card_number)){
                                 //   iziToast.error({ title: "Error", message: "Card Number is Invalid !", position: "topRight" });
@@ -1327,7 +1329,7 @@
                                 $.ajax({
                                   url: '/api/update_Email_Draft',
                                   method: 'POST',
-                                  data: { customer_id: customer_id, arl_confirmation: arl_confirmation, pnr_no: pnr_no, card_number: card_number, cvv:cvv, date_of_expiration:date_of_expiration, email: email },
+                                  data: { customer_id: customer_id, arl_confirmation: arl_confirmation, pnr_no: pnr_no, card_number: card_number, cvv:cvv, date_of_expiration:date_of_expiration, email: email, upcoming_departing_date: upcoming_departing_date,upcoming_returning_date: upcoming_returning_date },
                                   success: (response) => {
                                     if (response.success) {
                                       iziToast.success({

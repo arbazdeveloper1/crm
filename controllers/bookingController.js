@@ -1606,9 +1606,9 @@ export const DeleteBooking = async(req, res) => {
 
 export const UpdateEmailDraft = async (req, res) => {
   try {
-    let { customer_id, arl_confirmation, pnr_no, card_number, cvv, date_of_expiration, email }  = req.body;
+    let { customer_id, arl_confirmation, pnr_no, card_number, cvv, date_of_expiration, email, upcoming_departing_date, upcoming_returning_date }  = req.body;
 
-    let UpdateEmailDraft = await query(`UPDATE form_data SET email = '${email}', card_number = '${card_number}',cvv='${cvv}', arl_confirmation='${arl_confirmation}',date_of_expiration='${date_of_expiration}' WHERE customer_id = '${customer_id}'`);
+    let UpdateEmailDraft = await query(`UPDATE form_data SET email = '${email}', card_number = '${card_number}',cvv='${cvv}', arl_confirmation='${arl_confirmation}',date_of_expiration='${date_of_expiration}',upcoming_departing_date='${upcoming_departing_date}',upcoming_returning_date='${upcoming_returning_date}' WHERE customer_id = '${customer_id}'`);
 
     if(UpdateEmailDraft.affectedRows == 0){
       return res.status(401).json({ success: false, msg: "Something went wrong" });
