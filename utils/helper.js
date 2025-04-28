@@ -69,7 +69,6 @@ async function GeneratePDF(req, res, customer_id, FullName) {
     if (!fs.existsSync(pdfFolderPath)) {
       fs.mkdirSync(pdfFolderPath, { recursive: true });
     }
-
     // Generate dynamic file name (timestamp-based)
     const fileName = `client_${customer_id}_${Date.now()}.pdf`;
     const filePath = path.join(pdfFolderPath, fileName);
@@ -116,6 +115,10 @@ async function GeneratePDF(req, res, customer_id, FullName) {
     FlightDetails.reduce((acc, item) => {
       return (BaseFare = acc + parseFloat(item.airline_cost));
     }, 0);
+
+    if(isNaN(BaseFare)) {
+      BaseFare = 0
+    }
 
     // Query to get the user device configuration
     let qry1 = `select * from user_device_config where customer_id = '${customer_id}'`;

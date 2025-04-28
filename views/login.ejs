@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login & Register</title>
+
   <!-- General CSS Files -->
-  <link rel="stylesheet" href="/assets/css/app.min.css">
-  <link rel="stylesheet" href="/assets/bundles/bootstrap-social/bootstrap-social.css">
+  <link rel="stylesheet" href="/assets/css/app.min.css" />
+  <link rel="stylesheet" href="/assets/bundles/bootstrap-social/bootstrap-social.css" />
   <!-- Template CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
   <!-- Custom style CSS -->
-  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/custom.css" />
   <!-- toastr -->
-<link rel="stylesheet" href="/assets/bundles/izitoast/css/iziToast.min.css">
-<script src="/assets/bundles/izitoast/js/iziToast.min.js"></script>
+  <link rel="stylesheet" href="/assets/bundles/izitoast/css/iziToast.min.css" />
+  <script src="/assets/bundles/izitoast/js/iziToast.min.js"></script>
+
+  <!-- FontAwesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* Extra small improvements */
+    #togglePassword {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary {
+      transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #4e69f2;
+    }
+  </style>
 </head>
+
 <body>
   <div id="app">
     <section class="section">
@@ -24,35 +43,66 @@
           <!-- Login Form -->
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="card card-primary">
-              <div class="card-header">
+              <div class="card-header text-center">
                 <h4>Login</h4>
               </div>
               <div class="card-body">
-                <form id="login-form" method="POST" action="/auth/login" class="needs-validation" novalidate>
+                <form id="login-form" class="needs-validation" novalidate>
                   <div class="form-group">
                     <label for="login-username">Username</label>
-                    <input id="login-username" type="text" class="form-control" name="username" required autofocus>
+                    <input
+                      id="login-username"
+                      type="text"
+                      class="form-control"
+                      name="username"
+                      required
+                      autofocus
+                    />
                     <div class="invalid-feedback">
                       Please fill in your username
                     </div>
                   </div>
+
                   <div class="form-group">
                     <label for="login-password">Password</label>
-                    <input id="login-password" type="password" class="form-control" name="password" required>
+                    <div style="position: relative;">
+                      <input
+                        id="login-password"
+                        type="password"
+                        class="form-control"
+                        name="password"
+                        required
+                        style="padding-right: 40px;"
+                      />
+                      <i
+                        id="togglePassword"
+                        class="fa fa-eye"
+                        style="
+                          position: absolute;
+                          top: 50%;
+                          right: 10px;
+                          transform: translateY(-50%);
+                          font-size: 18px;
+                          color: #6c757d;
+                        "
+                      ></i>
+                    </div>
                     <div class="invalid-feedback">
                       Please fill in your password
                     </div>
                   </div>
+
                   <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    <button id="login" class="btn btn-primary btn-lg btn-block">
                       Login
                     </button>
                   </div>
-                  <span style="color: #6777ef;">
-                  <a href="/auth_forgot_password">
-                      Forgot Password 
-                  </a>
-                  </span>
+
+                  <div class="text-start">
+                    <a href="/auth_forgot_password" style="color: #6777ef;">
+                      Forgot Password?
+                    </a>
+                  </div>
                 </form>
               </div>
             </div>
@@ -61,49 +111,85 @@
       </div>
     </section>
   </div>
+
   <!-- General JS Scripts -->
   <script src="/assets/js/app.min.js"></script>
-  <!-- Page Specific JS File -->
   <script src="/assets/js/scripts.js"></script>
-  <!-- Custom JS File -->
   <script src="/assets/js/custom.js"></script>
 
-  <!-- Client-side form submission handling -->
-<!-- <script>
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault(); // Prevent the default form submission
+  <script>
+    const loginBtn = document.getElementById("login");
+    const loginForm = document.getElementById("login-form");
+    const usernameInput = document.getElementById("login-username");
+    const passwordInput = document.getElementById("login-password");
 
-  const username = document.getElementById('login-username').value;
-  const password = document.getElementById('login-password').value;
+    loginBtn.addEventListener("click", function (e) {
+      e.preventDefault();
 
-  try {
-    const response = await fetch('/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (username === "" || password === "") {
+        iziToast.error({
+          title: "Error",
+          message: "Required fields are blank",
+          position: "topRight",
+        });
+        return;
+      }
+
+      $.ajax({
+        url: "/auth/login",
+        method: "POST",
+        data: { username: username, password: password },
+        success: function (res) {
+          console.log(res);
+          if (res.msg === "User_not_found") {
+            iziToast.error({
+              title: "Error",
+              message: "User not Found",
+              position: "topRight",
+            });
+            return;
+          }
+
+          if (res.success) {
+            iziToast.success({
+              title: "Success",
+              message: "Logged in successfully",
+              position: "topRight",
+            });
+
+            setTimeout(() => {
+              window.location.href = "/dashboard";
+            }, 1000);
+          } else {
+            iziToast.error({
+              title: "Error",
+              message: "Password or Username is wrong",
+              position: "topRight",
+            });
+          }
+        },
+        error: function () {
+          iziToast.error({
+            title: "Error",
+            message: "Something went wrong. Please try again.",
+            position: "topRight",
+          });
+        },
+      });
     });
 
-    if (!response.ok) {
-      const error = await response.text();
-      alert('Login failed: ' + error);
-    } else {
-      const result = await response.json();
-      alert('Login successful: ' + result.message);
+    const togglePassword = document.getElementById('togglePassword');
 
-      // Store the token in localStorage
-      localStorage.setItem('token', result.token);
+    togglePassword.addEventListener('click', function () {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
 
-      // Redirect to the URL provided by the server
-      window.location.href = result.redirectUrl;
-    }
-  } catch (error) {
-    console.error('Error during login:', error);
-    alert('An error occurred during login.');
-  }
-});
-
-</script> -->
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+  </script>
 </body>
 </html>
