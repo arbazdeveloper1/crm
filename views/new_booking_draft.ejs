@@ -57,10 +57,17 @@
                     <% } %>
                     
                     <% if(userRole=='admin' ) { %>
-                              <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
+                   
+                      <% if(charging_status == 'charged') { %>
+                              <a href="#" class="btn btn-success" data-toggle="modal" data-target="#chargeModal">
                                 Last Status: <%- charging_status ? charging_status : 'working' %>
                               </a>
-                              <% } %>
+                        <% } else { %>
+                          <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#chargeModal">
+                            Last Status: <%- charging_status ? charging_status : 'working' %>
+                          </a>
+                          <% } %>
+                          <% } %>
                               
 
 
