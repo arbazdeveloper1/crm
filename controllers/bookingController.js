@@ -1696,10 +1696,12 @@ export const upcoming_travels = async(req, res) => {
                 customer_id,
                 booking_type,
                 status,
+                upcoming_departing_date,
+                upcoming_returning_date,
                 DATE_FORMAT(updated_at, '%H:%i') as updated_time
             FROM 
                 form_data 
-                ${QueryCondition} 
+                ${QueryCondition}
             ORDER BY id DESC
             LIMIT ${limit} OFFSET ${offset}
         `;

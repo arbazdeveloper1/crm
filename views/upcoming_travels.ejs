@@ -49,10 +49,10 @@
                   <tr style="background-color: rgb(0, 0, 0, 0.04);">
                     <th>Customer</th>
                     <th>Price (USD)</th>
-                    <th>Email Type</th>
-                    <th>Date & Time</th>
                     <th>Agent</th>
                     <th>Cust Id</th>
+                    <th>Departing Date</th>
+                    <th>Returning Date</th>
                     <th>Action</th>
                   </tr>
                 </tbody>
@@ -62,19 +62,10 @@
                   <tr>
                     <td><a href="/new_booking_draft/<%- item.customer_id %>?email=true&type=<%- item.booking_type %>"><%= item.card_holder_name %></a></td>
                     <td><%= item.total_amount %></td>
-                    <td><%= item.email_type %></td>
-                    <td><%= item.created_at %><br>
-                      <% if(item.status == 'working') { %>
-                        <span style="color: red;font-weight: 600;"><%= item.status %></span>
-                        <% } else if(item.status == 'sent_for_issuance') { %>
-                          <span style="color: rgb(198, 198, 9);font-weight: 600;">Sent for Issuance</span>
-                          <% } else if(item.status == 'charged') { %>
-                            <span style="color: green;font-weight: 600;"><%= item.status %></span>
-                            <% } %>
-                            (<%= item.updated_time %>)
-                  </td>
                     <td><%= item.agent_name %></td>
                     <td><%= item.customer_id %></td>
+                    <td><%= item.upcoming_departing_date %></td>
+                    <td><%= item.upcoming_returning_date %></td>
                     <td><a href="/new-booking?customer_id=<%- item.customer_id %>" class="btn btn-primary">Details</a></td>
                   </tr>
                   <% }) %>
