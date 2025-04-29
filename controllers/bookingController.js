@@ -494,7 +494,7 @@ export const EmailAcknowledge = async (req, res) => {
   try {
     const { fromEmail, subject, toEmail, emailtype, customer_id } = req.body;
     const { mail_type } = req.params;
-    console.log(mail_type,'fdsafas');
+    console.log('sent');
     const FullName = req.full_name;
     if (!fromEmail || !subject || !toEmail || !emailtype) {
       return res

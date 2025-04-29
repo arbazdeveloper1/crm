@@ -13,7 +13,7 @@ PORT=3306
 EMAIL_PASS1=rbcy uwak uhqq atwm
 EMAIL_PASS2=rbcy uwak uhqq atwm
 EMAIL_PASS=rbcy uwak uhqq atwm
-EMAIL_USER=ravi.vermaa120@gmail.com 
+EMAIL_USER=support@myflysupport.com
 
 
 4.server site port 9000

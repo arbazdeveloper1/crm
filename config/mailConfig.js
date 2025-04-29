@@ -5,7 +5,7 @@ dotenv.config();
 
 const emailAccounts = {
   "support@myflysupports.com": process.env.EMAIL_PASS1,
-  "e-ticket@myflysupport.com": process.env.EMAIL_PASS2,
+  "e-tickets@myflysupports.com": process.env.EMAIL_PASS2,
 };
 
 const createTransporter = (fromEmail) => {

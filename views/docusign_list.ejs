@@ -63,24 +63,7 @@
                     <div class="table-responsive">
                       <table class="table table-striped">
                         <tr>
-                          <th class="text-center">
-                            <div
-                              class="custom-checkbox custom-checkbox-table custom-control"
-                            >
-                              <input
-                                type="checkbox"
-                                data-checkboxes="mygroup"
-                                data-checkbox-role="dad"
-                                class="custom-control-input"
-                                id="checkbox-all"
-                              />
-                              <label
-                                for="checkbox-all"
-                                class="custom-control-label"
-                                >&nbsp;</label
-                              >
-                            </div>
-                          </th>
+                          <th>S no.</th>
                           <th>Full Name</th>
                           <th>Customer ID</th>
                           <th>Email</th>
@@ -90,23 +73,8 @@
                           <th>Action</th>
                         </tr>
                         <tbody id="table-body">
-                          <% form_data.forEach(function(form_data) { %>
-                          <tr>
-                            <td class="p-0 text-center">
-                              <div class="custom-checkbox custom-control">
-                                <input
-                                  type="checkbox"
-                                  data-checkboxes="mygroup"
-                                  class="custom-control-input"
-                                  id="checkbox-<%= form_data.username %>"
-                                />
-                                <label
-                                  for="checkbox-<%= form_data.username %>"
-                                  class="custom-control-label"
-                                  >&nbsp;</label
-                                >
-                              </div>
-                            </td>
+                          <% form_data.forEach(function(form_data, index) { %>
+                            <td><%= index + 1 %></td>
                             <td><%= form_data.card_holder_name %></td>
                             <td><%= form_data.customer_id %></td>
                             <td><%= form_data.email %></td>
