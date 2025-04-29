@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const emailAccounts = {
-  "arbaz.developer1@gmail.com": process.env.EMAIL_PASS1,
-  "support@kingjourney.com": process.env.EMAIL_PASS2,
+  "support@myflysupports.com": process.env.EMAIL_PASS1,
+  "e-ticket@myflysupport.com": process.env.EMAIL_PASS2,
 };
 
 const createTransporter = (fromEmail) => {
