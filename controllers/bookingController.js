@@ -1725,3 +1725,25 @@ export const upcoming_travels = async(req, res) => {
     console.error(error);
   }
 }
+
+
+
+export const SearchData = async(req, res) => {
+  try {
+    
+    let {searchinput} = req.body
+
+    let quer = `select * from form_data where customer_id = '${searchinput}'`
+    let data = await query(quer);
+    console.log(data)
+
+    if(data.length == 0){
+      return res.status(404).json({ success: false, data: [] })
+    } else {
+      return res.status(200).json({ success: true, data: data })
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}
