@@ -258,7 +258,7 @@
                             <% images?.forEach(image=> { %>
                               <% if (image.trim()) { %>
                                 <img style="width: 546px; margin-bottom: 10px;"
-                                  src="http://crm.mfstravels.com/uploads/<%= image.trim() %>" alt="Trip Details"><br>
+                                  src="https://crm.mfstravels.com/uploads/<%= image.trim() %>" alt="Trip Details"><br>
                                 <% } %>
                                   <% }); %>
 
@@ -367,13 +367,13 @@
                         <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
                         <% if(email=='false' ) { %>
                           <div style="display: flex; align-items: center; gap: 15px;">
-                            <a href="http://crm.mfstravels.com/api/TrackIp/<%- result[0]?.customer_id %>"
+                            <a href="https://crm.mfstravels.com/api/TrackIp/<%- result[0]?.customer_id %>"
                               style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
                               I Acknowledge
                             </a>
 
 
-                            <a href="http://crm.mfstravels.com/customer_doc_upload/<%- encodeURIComponent(result[0]?.customer_id) %>"
+                            <a href="https://crm.mfstravels.com/customer_doc_upload/<%- encodeURIComponent(result[0]?.customer_id) %>"
                               style="color:white;background-color:black;padding:8px;border:1px solid green;text-decoration:none;padding:8px;">
                               Upload Files
                             </a>
