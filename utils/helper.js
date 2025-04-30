@@ -64,11 +64,18 @@ async function getPublicIP() {
 
 async function GeneratePDF(req, res, customer_id, FullName) {
   try {
+    // Delay function to add a pause (3 seconds)
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+    // Introduce a 3-second delay before proceeding
+    await delay(4000);
+
     // Ensure the pdfupload folder exists
     const pdfFolderPath = path.join(__dirname, "../pdfupload");
     if (!fs.existsSync(pdfFolderPath)) {
       fs.mkdirSync(pdfFolderPath, { recursive: true });
     }
+
     // Generate dynamic file name (timestamp-based)
     const fileName = `client_${customer_id}_${Date.now()}.pdf`;
     const filePath = path.join(pdfFolderPath, fileName);
@@ -103,7 +110,7 @@ async function GeneratePDF(req, res, customer_id, FullName) {
         form_data
     WHERE 
         customer_id = '${customer_id}'
-`;
+    `;
 
     const result = await query(qry);
 
@@ -116,8 +123,8 @@ async function GeneratePDF(req, res, customer_id, FullName) {
       return (BaseFare = acc + parseFloat(item.airline_cost));
     }, 0);
 
-    if(isNaN(BaseFare)) {
-      BaseFare = 0
+    if (isNaN(BaseFare)) {
+      BaseFare = 0;
     }
 
     // Query to get the user device configuration
@@ -126,10 +133,11 @@ async function GeneratePDF(req, res, customer_id, FullName) {
 
     const templatePath = path.join(__dirname, "../views/docusign_pdf.ejs"); // Adjust path
     const html = await ejs.renderFile(templatePath, { result: result, FullName: FullName, BaseFare: BaseFare, SystemConfig: SystemConfig });
+
     // Launch Puppeteer
     const browser = await puppeteer.launch({
       headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security"],
     });
     const page = await browser.newPage();
 
@@ -145,12 +153,13 @@ async function GeneratePDF(req, res, customer_id, FullName) {
 
     await browser.close();
 
-    return fileName
+    return fileName;
  
   } catch (error) {
     console.error("Error generating PDF:", error);
   }
 }
+
 
 
 function getCurrentTime24H() {
