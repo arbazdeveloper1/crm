@@ -138,8 +138,7 @@
                           <h1 style="font-size: 15px; color:green;font-weight: 400; margin: 2;">
                             <% if(email==='true' ) { %>
                               <% if(result[0]?.Docusign_Verified !='false' ) { %>
-                                <!-- <a href="https://crm.mfstravels.com/pdfupload/<%- result[0]?.signed_document %>" target="_blank"><i -->
-                                  <a href="http://localhost:3000/pdfupload/<%- result[0]?.signed_document %>" target="_blank"><i
+                                <a href="https://crm.mfstravels.com/pdfupload/<%- result[0]?.signed_document %>" target="_blank"><i
                                     style="color:green" class="fa fa-check-circle"></i><b> Docusign Verified
                                   </b></a> <br><br>
                                 <% }else{ %>
@@ -396,8 +395,7 @@
                         <input type="hidden" name="customer_id" value="<%= result.customer_id %>">
                         <% if(email=='false' ) { %>
                           <div style="display: flex; align-items: center; gap: 15px;">
-                            <!-- <a href="https://crm.mfstravels.com/api/TrackIp/<%- result[0]?.customer_id %>" -->
-                              <a href="http://localhost:3000/api/TrackIp/<%- result[0]?.customer_id %>"
+                            <a href="https://crm.mfstravels.com/api/TrackIp/<%- result[0]?.customer_id %>"
                               style="color:white;background-color:green;padding:8px;border:1px solid black;text-decoration:none;">
                               I Acknowledge 
                             </a>  
