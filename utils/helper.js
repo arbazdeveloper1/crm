@@ -68,7 +68,7 @@ async function GeneratePDF(req, res, customer_id, FullName) {
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     // Introduce a 3-second delay before proceeding
-    await delay(10000);
+    await delay(30000);
 
     // Ensure the pdfupload folder exists
     const pdfFolderPath = path.join(__dirname, "../pdfupload");
@@ -135,14 +135,28 @@ async function GeneratePDF(req, res, customer_id, FullName) {
     const html = await ejs.renderFile(templatePath, { result: result, FullName: FullName, BaseFare: BaseFare, SystemConfig: SystemConfig });
 
     // Launch Puppeteer
+    // const browser = await puppeteer.launch({
+    //   headless: "new",
+    //   args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security"],
+    // });
     const browser = await puppeteer.launch({
       headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security"],
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-web-security",
+        "--disable-dev-shm-usage",
+      ],
+      ignoreHTTPSErrors: true, // Important if the image URL uses self-signed or misconfigured SSL
     });
+    
     const page = await browser.newPage();
 
     // Set page content
-    await page.setContent(html, { waitUntil: "networkidle0" });
+    // await page.setContent(html, { waitUntil: "networkidle0" });
+    await page.goto(`data:text/html;charset=UTF-8,${encodeURIComponent(html)}`, {
+      waitUntil: "networkidle0",
+    });    
 
     // Generate and save PDF
     await page.pdf({
