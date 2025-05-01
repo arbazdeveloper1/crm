@@ -68,7 +68,7 @@ async function GeneratePDF(req, res, customer_id, FullName) {
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     // Introduce a 3-second delay before proceeding
-    await delay(4000);
+    await delay(10000);
 
     // Ensure the pdfupload folder exists
     const pdfFolderPath = path.join(__dirname, "../pdfupload");
