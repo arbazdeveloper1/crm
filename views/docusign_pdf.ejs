@@ -194,13 +194,17 @@
                                     <b  >Trip Details –</b><br><br>
                                     </p>
                                     <p>
-                                        <% const images=result[0]?.image.split(','); %>
-                            <% images?.forEach(image=> { %>
-                              <% if (image.trim()) { %>
-                                <img style="width: 546px; margin-bottom: 10px;"
-                                  src="https://crm.mfstravels.com/uploads/<%= image.trim() %>" alt="Trip Details"><br>
-                                <% } %>
-                                  <% }); %>
+                                        <% const images = result[0]?.image?.split(','); %>
+                                        <% images?.forEach(image => { %>
+                                          <% if (image.trim()) { %>
+                                            <img style="width: 546px; margin-bottom: 10px;" 
+                                                 src="data:image/jpeg;base64,<%= base64Images[image.trim()] %>" 
+                                                 onerror="this.style.display='none'" 
+                                                 alt="Trip Details" />
+                                          <% } %>
+                                        <% }); %>
+                                        
+                                        
                                         <br></p>
                                     <p></p>
 
